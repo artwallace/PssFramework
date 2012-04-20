@@ -1,0 +1,6 @@
+.DS_Store
+# Build Folders
+[Bb]in/
+[Oo]bj/
+
+*.pidb
