@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="PssFramework\Modes\TopDown2d\PlayerInputMovementStrategy.cs">
+    <Files>
+      <File FileName="PssFramework\Modes\TopDown2d\WanderMovementStrategy.cs" Line="70" Column="4" />
+      <File FileName="PssFramework\Modes\TopDown2d\PlayerInputMovementStrategy.cs" Line="38" Column="17" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="PssFramework\TopDown2d\Background.cs" line="100" offsetX="899" offsetY="1458" expression="Sprites" liveUpdate="False" />
+    <Watch file="PssFramework\TopDown2d\Background.cs" line="204" offsetX="989" offsetY="2079" expression="Sprites" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+</Properties>
