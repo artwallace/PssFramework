@@ -1,5 +1,0 @@
-M:\Dropbox\Development\Projects\PssFramework\PssFramework\bin\Debug\PssFramework.dll
-M:\Dropbox\Development\Projects\PssFramework\PssFramework\bin\Debug\PssFramework.pdb
-M:\Dropbox\Development\Projects\PssFramework\PssFramework\obj\Debug\ResolveAssemblyReference.cache
-M:\Dropbox\Development\Projects\PssFramework\PssFramework\obj\Debug\PssFramework.dll
-M:\Dropbox\Development\Projects\PssFramework\PssFramework\obj\Debug\PssFramework.pdb
