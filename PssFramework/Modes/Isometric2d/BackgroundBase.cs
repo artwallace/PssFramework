@@ -114,7 +114,7 @@ namespace PssFramework.Modes.Isometric2d
 			CalculateTilesNeededToFillScreen();
 			
 			TileSpriteList = Mode.TextureManager.CreateRawSpriteTileList(Asset, this, AssetColumns, AssetRows, SpriteColumns * SpriteRows);
-			TileSpriteList.BlendMode = BlendMode.PremultipliedAlpha;
+			TileSpriteList.BlendMode = BlendMode.PremultipliedAlpha; //What is best?
 			
 			Room.AddToScene(TileSpriteList, DrawLayers.Backgroundi);
 		}
@@ -130,7 +130,6 @@ namespace PssFramework.Modes.Isometric2d
 		private void CalculateTilesNeededToFillScreen()
 		{
 			//TODO: Wrong Calculation!
-			
 			SpriteColumns = Convert.ToInt32(Mgr.ScreenWidth / AssetTileWidth * 2) + 2;
 			SpriteRows = Convert.ToInt32(Mgr.ScreenHeight / AssetTileHeight) + 2;
 		}
@@ -204,6 +203,7 @@ namespace PssFramework.Modes.Isometric2d
 		
 		private void CleanupTiles()
 		{
+			Tiles = new BackgroundTile[0,0];
 //			for (Int32 column = 0; column < Columns; column++)
 //			{
 //				for (Int32 row = 0; row < Rows; row++)

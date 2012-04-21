@@ -57,9 +57,6 @@
     <Compile Include="Zombies\Assets.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.cfg" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Zombies\" />
     <Folder Include="Fireworks\" />
     <Folder Include="TwinStickShooter\" />
@@ -76,6 +73,9 @@
     <Content Include="TwinStickShooter\Images\Logo.png" />
     <Content Include="Zombies\Images\Background.png" />
     <Content Include="MainMenu\MainMenu.png" />
+    <Content Include="app.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PssFramework\PssFramework.csproj">

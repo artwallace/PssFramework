@@ -106,6 +106,23 @@ namespace PssFramework.Modes
 			}
 		}
 		
+		public Bounds2 GetCameraBounds()
+		{
+			return GameScene.Camera.CalcBounds();
+		}
+		
+		public Single GetCameraWidth()
+		{
+			Bounds2 b = GameScene.Camera.CalcBounds();
+			return b.Size.X;
+		}
+		
+		public Single GetCameraHeight()
+		{
+			Bounds2 b = GameScene.Camera.CalcBounds();
+			return b.Size.Y;
+		}
+		
 		#endregion
 		
 		#region TextureManager

@@ -1,6 +1,7 @@
 using System;
 using PssFramework.Modes.Isometric2d;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.Pss.Core;
 
 namespace Demo
 {
@@ -25,20 +26,31 @@ namespace Demo
 		
 		public override void Cleanup()
 		{
-			SetCameraSubject(null);
+			//SetCameraSubject(null);
 		}
 		
 		public override void Update()
 		{
 			//Actors are updated in base class. Just change room stuff here.
-			
-			//This should be moved to an door actor
-//			if (Ship != null)
-//				if (Background.GetTileFromRoomPostion(Ship.Position) == DoorToNextRoom)
-//					Level.AdvanceToNextRoom();
+			MoveCameraFromGamePad();
 		}
 		
-		//private Vector2i DoorToNextRoom = new Vector2i(6,1);
+		private void MoveCameraFromGamePad()
+		{
+			Vector2 move = Vector2.Zero;
+			
+			if (Mgr.GamePad0_Up)
+				move.Y += 1f * Mgr.TicksSinceLastUpdate;
+			else if (Mgr.GamePad0_Down)
+				move.Y -= 1f * Mgr.TicksSinceLastUpdate;
+			
+			if (Mgr.GamePad0_Left)
+				move.X -= 1f * Mgr.TicksSinceLastUpdate;
+			else if (Mgr.GamePad0_Right)
+				move.X += 1f * Mgr.TicksSinceLastUpdate;
+			
+			MoveCamera(move);
+		}
 		
 		#endregion
 		

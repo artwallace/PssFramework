@@ -151,6 +151,20 @@ namespace PssFramework.Modes.Isometric2d
 			CameraSubject = null;
 		}
 		
+		public void SetCameraPosition(Vector2 position)
+		{
+			ClearCameraSubject();
+			CameraPstn = position;
+			UpdateCamera();
+		}
+		
+		public void MoveCamera(Vector2 movement)
+		{
+			ClearCameraSubject();
+			CameraPstn += movement;
+			UpdateCamera();
+		}
+		
 		#endregion
 		
 		#region Sprites
@@ -328,9 +342,8 @@ namespace PssFramework.Modes.Isometric2d
 			sb.Append("Camera Tile: ");
 			sb.AppendLine(cameraTile.ToString());
 			
-//			Vector2i actorTile = Background.GetTileFromRoomPostion(CameraSubject.Position);
-//			sb.Append("Actor Tile: ");
-//			sb.AppendLine(actorTile.ToString());
+			sb.Append("Camera Position: ");
+			sb.AppendLine(CameraPstn.ToString());
 			
 			Background.GetDebugInfo(sb);
 		}

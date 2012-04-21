@@ -30,8 +30,8 @@ namespace PssFramework.Modes.Isometric2d
 			
 			Vector2i lowerLeftPstn = GetTileFromRoomPostion(Mode.CameraLowerLeftPosition);
 			
-			Int32 lowX = lowerLeftPstn.X;
-			Int32 lowY = lowerLeftPstn.Y;
+			Int32 lowX = System.Math.Max(lowerLeftPstn.X, 0);
+			Int32 lowY = System.Math.Max(lowerLeftPstn.Y, 0);
 			
 			Int32 highX = System.Math.Min(lowX + SpriteColumns, Columns);
 			Int32 highY = System.Math.Min(lowY + SpriteRows, Rows);
