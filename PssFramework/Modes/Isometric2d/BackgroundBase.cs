@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D;
@@ -47,9 +48,7 @@ namespace PssFramework.Modes.Isometric2d
 			Columns = columns;
 			Rows = rows;
 			
-			//TODO: Wrong Calculation!
-			Width = Columns * AssetTileWidth;
-			Height = Rows * AssetTileHeight;
+			CalcDimensions();
 			
 			InitializeSpriteList();
 			InitializeSprites();
@@ -68,13 +67,7 @@ namespace PssFramework.Modes.Isometric2d
 		
 		#endregion
 		
-		#region Update
-		
-		internal abstract void Update();
-		
-		#endregion
-		
-		#region Asset
+				#region Asset
 		
 		private String Asset;// { get; set; }
 		
@@ -94,8 +87,10 @@ namespace PssFramework.Modes.Isometric2d
 		public Int32 HorizontalScreenPadding { get; private set; }
 		public Int32 VerticalScreenPadding { get; private set; }
 		
-		public Int32 Width { get; private set; }
-		public Int32 Height { get; private set; }
+		public Int32 Width { get; protected set; }
+		public Int32 Height { get; protected set; }
+		
+		protected abstract void CalcDimensions();
 		
 		#endregion
 		
@@ -114,7 +109,7 @@ namespace PssFramework.Modes.Isometric2d
 			CalculateTilesNeededToFillScreen();
 			
 			TileSpriteList = Mode.TextureManager.CreateRawSpriteTileList(Asset, this, AssetColumns, AssetRows, SpriteColumns * SpriteRows);
-			TileSpriteList.BlendMode = BlendMode.PremultipliedAlpha; //What is best?
+			TileSpriteList.BlendMode = BlendMode.PremultipliedAlpha;
 			
 			Room.AddToScene(TileSpriteList, DrawLayers.Backgroundi);
 		}
@@ -127,12 +122,7 @@ namespace PssFramework.Modes.Isometric2d
 			TileSpriteList = null;
 		}
 		
-		private void CalculateTilesNeededToFillScreen()
-		{
-			//TODO: Wrong Calculation!
-			SpriteColumns = Convert.ToInt32(Mgr.ScreenWidth / AssetTileWidth * 2) + 2;
-			SpriteRows = Convert.ToInt32(Mgr.ScreenHeight / AssetTileHeight) + 2;
-		}
+		protected abstract void CalculateTilesNeededToFillScreen();
 		
 		public void AddToSpriteList(RawSpriteTile sprite)
 		{
@@ -222,6 +212,7 @@ namespace PssFramework.Modes.Isometric2d
 		
 		public Vector2i GetTileFromRoomPostion(Vector2 position)
 		{
+			//TODO: Wrong calculation!
 			Int32 column = (Int32)System.Math.Floor(position.X / AssetTileWidth);
 			Int32 row = (Int32)System.Math.Floor(position.Y / AssetTileHeight);
 			return new Vector2i(column, row);
@@ -255,11 +246,39 @@ namespace PssFramework.Modes.Isometric2d
 				return new Vector2(x, (AssetTileHeight * row) + (AssetTileHeight / 2) + VerticalScreenPadding);
 		}
 		
-//		private Vector2 GetPositionOfLowerLeftVisibleTile()
-//		{
-//			Vector2i ll = GetTileFromRoomPostion(Mode.CameraLowerLeftPosition);
-//			return GetTilePositionAtLowerLeft(ll.X, ll.Y);
-//		}
+		#endregion
+		
+		#region Names
+		
+		private Dictionary<String, Vector2i> Names;
+		
+		private void InitializeNames()
+		{
+			Names = new Dictionary<string, Vector2i>();
+		}
+		
+		private void CleanupNames()
+		{
+			Names.Clear();
+			Names = null;
+		}
+		
+		internal void AddName(String name, Int32 column, Int32 row)
+		{
+			if(String.IsNullOrWhiteSpace(name))
+				throw new ArgumentNullException();
+			
+			if(Names.ContainsKey(name))
+				throw new ArgumentException("Duplicate name encountered.");
+			
+			Names[name] = new Vector2i(column, row);
+		}
+		
+		#endregion
+		
+		#region Update
+		
+		internal abstract void Update();
 		
 		#endregion
 		

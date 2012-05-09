@@ -63,8 +63,8 @@ namespace Demo
 		protected override Int32 BackgroundAssetRows { get { return Assets.Zombie_BackgroundTileTestRows; } }
 		protected override Int32 BackgroundAssetTileWidth { get { return Assets.Zombie_BackgroundTileTestWidth; } }
 		protected override Int32 BackgroundAssetTileHeight { get { return Assets.Zombie_BackgroundTileTestHeight; } }
-		protected override Int32 BackgroundTileColumns { get { return 40; } }
-		protected override Int32 BackgroundTileRows { get { return 30; } }
+		protected override Int32 BackgroundTileColumns { get { return 14; } }
+		protected override Int32 BackgroundTileRows { get { return 6; } }
 		protected override Int32 BackgroundHorizontalScreenPadding { get { return 15; } }
 		protected override Int32 BackgroundVerticalScreenPadding { get { return 15; } }
 		
@@ -83,17 +83,17 @@ namespace Demo
 				assetCol = 3;
 				assetRow = 0;
 			}
-//			else if (column == DoorToNextRoom.X && row == DoorToNextRoom.Y)
-//			{
-//				assetCol = 3;
-//				assetRow = 0;
-//			}
 			else if (column == 0 || column == BackgroundTileColumns - 1 || column == 15)
 			{
 				assetCol = 2;
 				assetRow = 0;
 			}
-			else if (column % 2 == 0 && (row == 0 || row == BackgroundTileRows - 1))
+			else if (column % 2 == 0 && row == 0)
+			{
+				assetCol = 2;
+				assetRow = 0;
+			}
+			else if (column % 2 != 0 && row == BackgroundTileRows - 1)
 			{
 				assetCol = 2;
 				assetRow = 0;

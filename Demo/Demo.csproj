@@ -83,4 +83,7 @@
       <Name>PssFramework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Zombies\Level1Room1Background.xml" />
+  </ItemGroup>
 </Project>

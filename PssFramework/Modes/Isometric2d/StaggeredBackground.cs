@@ -54,6 +54,30 @@ namespace PssFramework.Modes.Isometric2d
 		
 		#endregion
 		
+		#region Size
+		
+		protected override void CalcDimensions()
+		{
+			//TODO: Wrong Calculation!
+			Width = AssetTileWidth + ((Columns - 1) * (AssetTileWidth / 2)) + (HorizontalScreenPadding * 2);
+			Height = Rows * AssetTileHeight;
+		}
+		
+		#endregion
+		
+		#region SpriteList
+		
+		protected override void CalculateTilesNeededToFillScreen()
+		{
+			//TODO: Wrong Calculation!
+			Single c = Mgr.ScreenWidth / (AssetTileWidth / 2) + 2;
+			
+			SpriteColumns = System.Math.Min(Convert.ToInt32(c), Columns);
+			SpriteRows = System.Math.Min(Convert.ToInt32(Mgr.ScreenHeight / AssetTileHeight) + 2, Rows);
+		}
+		
+		#endregion
+		
 		#region Factory Delegate
 		
 		public static BackgroundBase StaggeredBackgroundFactory(RoomBase room, Int32 columns, Int32 rows, String asset, Int32 assetColumns, Int32 assetRows, Int32 tileWidth, Int32 tileHeight, Int32 horizontalScreenPadding, Int32 verticalScreenPadding)

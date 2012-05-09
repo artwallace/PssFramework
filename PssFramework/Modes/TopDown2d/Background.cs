@@ -155,8 +155,8 @@ namespace PssFramework.Modes.TopDown2d
 		
 		private void CalculateTilesNeededToFillScreen()
 		{
-			SpriteColumns = Convert.ToInt32(Mgr.ScreenWidth / AssetTileWidth) + 2;
-			SpriteRows = Convert.ToInt32(Mgr.ScreenHeight / AssetTileHeight) + 2;
+			SpriteColumns = System.Math.Min(Convert.ToInt32(Mgr.ScreenWidth / AssetTileWidth) + 2, Columns);
+			SpriteRows = System.Math.Min(Convert.ToInt32(Mgr.ScreenHeight / AssetTileHeight) + 2, Rows);
 		}
 		
 		public void AddToSpriteList(RawSpriteTile sprite)
@@ -228,6 +228,7 @@ namespace PssFramework.Modes.TopDown2d
 		
 		private void CleanupTiles()
 		{
+			Tiles = new BackgroundTile[0, 0];
 //			for (Int32 column = 0; column < Columns; column++)
 //			{
 //				for (Int32 row = 0; row < Rows; row++)

@@ -108,6 +108,7 @@
     <Compile Include="Messaging\WeakAction.cs" />
     <Compile Include="Messaging\WeakActionGeneric.cs" />
     <Compile Include="Messaging\IExecuteWithObject.cs" />
+    <Compile Include="Modes\Isometric2d\BackgroundAsset.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CyclonePhysics2d\" />
