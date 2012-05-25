@@ -67,7 +67,7 @@ namespace PssFramework.Modes.Isometric2d
 		
 		#endregion
 		
-				#region Asset
+		#region Asset
 		
 		private String Asset;// { get; set; }
 		
