@@ -31,13 +31,41 @@ namespace PssFramework.Engines.DrawEngine2d
 			InitializeGraphicsContext(graphicsContext);
 			InitializeClearColor();
 			InitializeLayers();
+			InitializeRenderRequiredFlag();
 		}
 		
 		private void Cleanup()
 		{
+			CleanupRenderRequiredFlag();
 			CleanupClearColor();
 			CleanupLayers();
 			CleanupGraphicsContext();
+		}
+		
+		#endregion
+		
+		#region Update, Render
+		
+		//TODO: Is update needed just to draw?
+		public void Update()
+		{
+			foreach(Layer layer in Layers.Values)
+				layer.Update();
+		}
+		
+		public void Render()
+		{
+			if(!RenderRequired)
+				return;
+			
+			GraphicsContext.Clear();
+			
+			foreach(Layer layer in Layers.Values)
+				layer.Render();
+			
+			GraphicsContext.SwapBuffers();
+			
+			ResetRenderRequired();
 		}
 		
 		#endregion
@@ -89,27 +117,6 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		#endregion
 		
-		#region Update, Render
-		
-		//TODO: Is update needed just to draw?
-		public void Update()
-		{
-			foreach(Layer layer in Layers.Values)
-				layer.Update();
-		}
-		
-		public void Render()
-		{
-			GraphicsContext.Clear();
-			
-			foreach(Layer layer in Layers.Values)
-				layer.Render();
-			
-			GraphicsContext.SwapBuffers();
-		}
-		
-		#endregion
-		
 		#region Layers
 		
 		private void InitializeLayers()
@@ -141,6 +148,39 @@ namespace PssFramework.Engines.DrawEngine2d
 		public void RemoveLayer(Int32 zIndex)
 		{
 			Layers.Remove(zIndex);
+		}
+		
+		public Layer GetLayer(Int32 zIndex)
+		{
+			return Layers[zIndex];
+		}
+		
+		#endregion
+		
+		#region Render Required
+		
+		//TODO: Need a better name. dirty?
+		
+		private void InitializeRenderRequiredFlag()
+		{
+			//Ensure first past is rendered.
+			RenderRequired = true;
+		}
+		
+		private void CleanupRenderRequiredFlag()
+		{
+		}
+		
+		private Boolean RenderRequired;
+		
+		private void SetRenderRequired()
+		{
+			RenderRequired = true;
+		}
+		
+		private void ResetRenderRequired()
+		{
+			RenderRequired = false;
 		}
 		
 		#endregion
