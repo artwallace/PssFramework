@@ -1,23 +1,16 @@
-using System;
 using Demo.MainMenu;
 using PssFramework;
+using PssFramework.Engines.DrawEngine2d.Support;
 using PssFramework.Modes;
-using PssFramework.Modes.FixedFront2d;
-using Sce.Pss.Core;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using PssFramework.Modes.TopDown2dAlt;
 
-namespace Demo.Fireworks
+namespace Demo.DrawEngineTest
 {
-	public class FireworksMode : FixedFront2dModeBase
+	public class DrawEngineTestMode : TopDown2dAltModeBase
 	{
-		protected override UInt32 SpritesCapacity { get { return 400; } }
-		protected override UInt32 DrawHelpersCapacity { get { return 500; } }
-		protected override Vector4 ClearColor { get { return Colors.Black; } }
-		protected override Boolean DrawDebugGrid { get { return true; } }
-		
 		#region Constructor
 		
-		public FireworksMode(AppManager mgr)
+		public DrawEngineTestMode(AppManager mgr)
 			: base(mgr)
 		{
 		}
@@ -28,7 +21,9 @@ namespace Demo.Fireworks
 		
 		protected override void Initialize()
 		{
-			EnableDebugInfo();
+			//TODO: Remove this after testing!
+			DrawEngine2d.ClearColor = Colors.Blue;
+			//EnableDebugInfo();
 		}
 		
 		protected override void Cleanup()
@@ -56,9 +51,9 @@ namespace Demo.Fireworks
 		
 		#region Mode Factory Delegate
 		
-		public static ModeBase FireworksModeFactory(AppManager mgr)
+		public static ModeBase DrawEngineTestModeFactory(AppManager mgr)
 		{
-			return new FireworksMode(mgr);
+			return new DrawEngineTestMode(mgr);
 		}
 		
 		#endregion

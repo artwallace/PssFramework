@@ -80,7 +80,6 @@
     <Compile Include="Modes\Conversation2d\Conversation2dModeBase.cs" />
     <Compile Include="Modes\SideScroller2d\SideScroller2dModeBase.cs" />
     <Compile Include="Modes\TurnBasedIsometric2d\TurnBasedIsometric2dModeBase.cs" />
-    <Compile Include="Engines\DrawEngine2d\Colors.cs" />
     <Compile Include="Engines\DrawEngine2d\Camera.cs" />
     <Compile Include="Engines\DrawEngine2d\DrawEngine2d.cs" />
     <Compile Include="Engines\DrawEngine2d\Layer.cs" />
@@ -117,6 +116,17 @@
     <Compile Include="Engines\CyclonePhysics3d\Forces\Gravity3d.cs" />
     <Compile Include="Engines\CyclonePhysics3d\Forces\Spring3d.cs" />
     <Compile Include="Engines\CyclonePhysics3d\Forces\ForceGenerator3dBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\LayerDictionary.cs" />
+    <Compile Include="Modes\DrawEngine2dModeBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\DrawItems\DrawItemBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\DrawItems\SpriteBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\DrawItems\UltraSimpleSprite.cs" />
+    <Compile Include="Engines\DrawEngine2d\DrawItems\ShapeBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\Support\Colors.cs" />
+    <Compile Include="Engines\DrawEngine2d\Support\Color.cs" />
+    <Compile Include="Engines\DrawEngine2d\Support\Coordinate2.cs" />
+    <Compile Include="Engines\DrawEngine2d\Support\Coordinate3.cs" />
+    <Compile Include="Modes\TopDown2dAlt\TopDown2dAltModeBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />
@@ -127,6 +137,8 @@
     <Folder Include="Modes\Isometric2d\" />
     <Folder Include="Engines\" />
     <Folder Include="Engines\DrawEngine2d\Support\" />
+    <Folder Include="Engines\DrawEngine2d\DrawItems\" />
+    <Folder Include="Modes\TopDown2dAlt\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\default.fcg" />

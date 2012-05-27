@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PssFramework.Engines.DrawEngine2d.Support;
 using Sce.Pss.Core.Graphics;
 
 namespace PssFramework.Engines.DrawEngine2d
@@ -13,38 +14,72 @@ namespace PssFramework.Engines.DrawEngine2d
 			if (graphicsContext == null)
 				throw new ArgumentNullException();
 			
-			GraphicsContext = graphicsContext;
-			
-			Initialize();
+			Initialize(graphicsContext);
 		}
 		
 		public void Dispose()
 		{
 			Cleanup();
-			
-			GraphicsContext = null;
 		}
 		
 		#endregion
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize()
+		private void Initialize(GraphicsContext graphicsContext)
 		{
+			InitializeGraphicsContext(graphicsContext);
+			InitializeClearColor();
 			InitializeLayers();
 		}
 		
 		private void Cleanup()
 		{
+			CleanupClearColor();
 			CleanupLayers();
+			CleanupGraphicsContext();
 		}
 		
 		#endregion
 		
 		#region GraphicsContext
 		
-		//internal GraphicsContext GraphicsContext;
+		private void InitializeGraphicsContext(GraphicsContext graphicsContext)
+		{
+			GraphicsContext = graphicsContext;
+		}
+		
+		private void CleanupGraphicsContext()
+		{
+			GraphicsContext = null;
+		}
+		
 		internal GraphicsContext GraphicsContext { get; private set; }
+		
+		#endregion
+		
+		#region ClearColor
+		
+		private void InitializeClearColor()
+		{
+			ClearColor = Colors.Black;
+		}
+		
+		private void CleanupClearColor()
+		{
+			ClearColor = Colors.Black;
+		}
+		
+		private Color _ClearColor;
+		public Color ClearColor
+		{
+			get { return _ClearColor; }
+			set
+			{
+				_ClearColor = value;
+				GraphicsContext.SetClearColor(_ClearColor.AsVector4);
+			}
+		}
 		
 		#endregion
 		
@@ -56,6 +91,7 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		#region Update, Render
 		
+		//TODO: Is update needed just to draw?
 		public void Update()
 		{
 			foreach(Layer layer in Layers.Values)
@@ -64,10 +100,12 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		public void Render()
 		{
-			//GraphicsContext.Clear();
+			GraphicsContext.Clear();
 			
 			foreach(Layer layer in Layers.Values)
 				layer.Render();
+			
+			GraphicsContext.SwapBuffers();
 		}
 		
 		#endregion
@@ -76,7 +114,7 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		private void InitializeLayers()
 		{
-			Layers = new SortedDictionary<Int32, Layer>();
+			Layers = new SortedList<Int32, Layer>();
 		}
 		
 		private void CleanupLayers()
@@ -91,7 +129,7 @@ namespace PssFramework.Engines.DrawEngine2d
 			Layers = null;
 		}
 		
-		private SortedDictionary<Int32, Layer> Layers { get; set; }
+		private SortedList<Int32, Layer> Layers { get; set; }
 		
 		public Layer CreateLayer(Int32 zIndex)
 		{
@@ -108,4 +146,3 @@ namespace PssFramework.Engines.DrawEngine2d
 		#endregion
 	}
 }
-

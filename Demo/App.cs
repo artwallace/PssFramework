@@ -54,7 +54,7 @@ namespace Demo
 		private static Int32 DebugMinScreenHeight = 480;
 		
 		private static Int32 DebugMaxScreenWidth = 1024;
-		private static Int32 DebugMaxScreenHeight = 768;
+		private static Int32 DebugMaxScreenHeight = 700;
 		
 		private static GraphicsContext GenerateGraphicsContext()
 		{

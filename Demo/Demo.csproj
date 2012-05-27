@@ -55,6 +55,7 @@
     <Compile Include="MainMenu\Assets.cs" />
     <Compile Include="TwinStickShooter\Assets.cs" />
     <Compile Include="Zombies\Assets.cs" />
+    <Compile Include="DrawEngineTest\DrawEngineTestMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Zombies\" />
@@ -62,6 +63,7 @@
     <Folder Include="TwinStickShooter\" />
     <Folder Include="MainMenu\" />
     <Folder Include="TwinStickShooter\Images\" />
+    <Folder Include="DrawEngineTest\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TwinStickShooter\Images\Background.png" />

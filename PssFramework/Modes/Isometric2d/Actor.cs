@@ -180,7 +180,7 @@ namespace PssFramework.Modes.Isometric2d
 //		
 //		public Single Mass { get; private set; }
 //		
-//		//public List<MassEffect> MassEffects  { get; private set; }
+//		//public List<MassEffect> MassEffects { get; private set; }
 //		
 //		public void InitializeMassEffects()
 //		{
@@ -239,7 +239,7 @@ namespace PssFramework.Modes.Isometric2d
 		
 //		#region Friction
 //		
-//		//public List<FrictionEffect> FrictionEffects  { get; private set; }
+//		//public List<FrictionEffect> FrictionEffects { get; private set; }
 //		
 //		public void InitializeFrictionEffects()
 //		{

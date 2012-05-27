@@ -1,4 +1,5 @@
 using System;
+using Demo.DrawEngineTest;
 using Demo.Fireworks;
 using Demo.TwinStickShooter;
 using Demo.Zombies;
@@ -42,21 +43,39 @@ namespace Demo.MainMenu
 		
 		public override void Update()
 		{
-			if (Mgr.GamePad0_Cross_Pressed && Mgr.ModeChangeAllowed)
+			CheckForModeChange();
+		}
+		
+		#endregion
+		
+		#region Change Modes
+		
+		private void CheckForModeChange()
+		{
+			if (!Mgr.ModeChangeAllowed)
+				return;
+			
+			if (Mgr.GamePad0_Cross_Pressed)
 			{
 				Mgr.GoToMode(TwinStickShooterMode.TwinStickShooterModeFactory);
 				return;
 			}
 			
-			if (Mgr.GamePad0_Triangle_Pressed && Mgr.ModeChangeAllowed)
+			if (Mgr.GamePad0_Triangle_Pressed)
 			{
 				Mgr.GoToMode(FireworksMode.FireworksModeFactory);
 				return;
 			}
 			
-			if (Mgr.GamePad0_Square_Pressed && Mgr.ModeChangeAllowed)
+			if (Mgr.GamePad0_Square_Pressed)
 			{
 				Mgr.GoToMode(ZombieMode.ZombieModeFactory);
+				return;
+			}
+			
+			if (Mgr.GamePad0_Circle_Pressed)
+			{
+				Mgr.GoToMode(DrawEngineTestMode.DrawEngineTestModeFactory);
 				return;
 			}
 		}

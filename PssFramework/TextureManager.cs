@@ -236,7 +236,7 @@ namespace PssFramework
 			TextureInfo ti = GetTextureInfo(path);//TextureAssets[path];
 			
 			SpriteTile s = new SpriteTile(ti, new Vector2i(u, v));
-			s.Quad.S =  new Vector2(ti.Texture.Width / ti.NumTiles.X, ti.Texture.Height / ti.NumTiles.Y);
+			s.Quad.S = new Vector2(ti.Texture.Width / ti.NumTiles.X, ti.Texture.Height / ti.NumTiles.Y);
 			
 			if (centerToSprite)
 				s.CenterSprite();
@@ -276,7 +276,7 @@ namespace PssFramework
 			TextureInfo ti = GetTextureInfo(path);
 			
 			RawSpriteTile s = new RawSpriteTile(trs, new Vector2i(u, v));
-			s.Quad.S =  new Vector2(ti.Texture.Width / ti.NumTiles.X, ti.Texture.Height / ti.NumTiles.Y);
+			s.Quad.S = new Vector2(ti.Texture.Width / ti.NumTiles.X, ti.Texture.Height / ti.NumTiles.Y);
 			
 			return s;
 		}
