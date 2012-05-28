@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework
+namespace PssFramework.Engines.DrawEngine2d.Support
 {
 	public struct Coordinate2
 	{

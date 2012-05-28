@@ -6,7 +6,8 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 	{
 		#region Constructor, Dispose
 		
-		public SpriteBase()
+		public SpriteBase(DrawEngine2d drawEngine2d)
+			: base(drawEngine2d)
 		{
 		}
 		

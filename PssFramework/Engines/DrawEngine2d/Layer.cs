@@ -10,10 +10,12 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		public Layer()
 		{
+			Initialize();
 		}
 		
 		public void Dispose()
 		{
+			Cleanup();
 		}
 		
 		#endregion

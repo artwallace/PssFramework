@@ -1,9 +1,8 @@
 using System;
 using PssFramework.Modes.Isometric2d;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
 using Sce.Pss.Core;
 
-namespace Demo
+namespace Demo.Zombies
 {
 	public class Level1Room1 : RoomBase
 	{

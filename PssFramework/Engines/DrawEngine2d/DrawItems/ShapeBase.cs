@@ -6,13 +6,10 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 	{
 		#region Constructor, Dispose
 		
-		public ShapeBase()
+		public ShapeBase(DrawEngine2d drawEngine2d)
+			: base(drawEngine2d)
 		{
 		}
-		
-		//public void Dispose()
-		//{
-		//}
 		
 		#endregion
 	}

@@ -2,6 +2,7 @@ using System;
 using PssFramework.Engines.DrawEngine2d.Support;
 using Sce.Pss.Core;
 using Sce.Pss.Core.Graphics;
+using PssFramework.Engines.DrawEngine2d.Shaders;
 
 namespace PssFramework.Engines.DrawEngine2d.DrawItems
 {
@@ -9,36 +10,36 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 	{
 		#region Constructor, Dispose
 		
-		//TODO: gc is temporary until we add spritelists.
-		public UltraSimpleSprite(GraphicsContext graphicsContext)
+		public UltraSimpleSprite(DrawEngine2d drawEngine2d)
+			: base(drawEngine2d)
 		{
-			Initialize(graphicsContext);
+			Initialize();
 		}
 		
 		public override void Dispose()
 		{
 			Cleanup();
+			//base.Dispose();
 		}
 		
 		#endregion
 		
 		#region Initialize, Cleanup
 		
-		public void Initialize(GraphicsContext graphicsContext)
+		private void Initialize()
 		{
 			InitializeVertices();
 			InitializeIndices();
 			InitializeTextureCoordinates();
 			InitializeColor();
 			
-			InitializeGraphicsContext(graphicsContext);
 			InitializeVertexBuffer();
 			InitializeScreenMatrix();
 			InitializeShaderProgram();
 			InitializeTexture();
 		}
 		
-		public void Cleanup()
+		private void Cleanup()
 		{
 			CleanupVertices();
 			CleanupIndices();
@@ -49,7 +50,6 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 			CleanupShaderProgram();
 			CleanupScreenMatrix();
 			CleanupVertexBuffer();
-			CleanupGraphicsContext();
 		}
 		
 		#endregion
@@ -222,8 +222,8 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		
 		private void InitializeColor()
 		{
-			Color = Colors.White;
 			VertexColors = new Single[VertexCount * 4];
+			Color = Colors.White;
 		}
 		
 		private void CleanupColor()
@@ -265,28 +265,6 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		
 		#endregion
 		
-		#region GraphicsContext
-		
-		private void InitializeGraphicsContext(GraphicsContext graphicsContext)
-		{
-			GraphicsContext = graphicsContext;
-			
-			ScreenWidth = GraphicsContext.Screen.Rectangle.Width;
-			ScreenHeight = GraphicsContext.Screen.Rectangle.Height;
-		}
-		
-		private void CleanupGraphicsContext()
-		{
-			GraphicsContext = null;
-		}
-		
-		private GraphicsContext GraphicsContext;
-		
-		private Single ScreenWidth;
-		private Single ScreenHeight;
-		
-		#endregion
-		
 		#region Vertex Buffer
 		
 		private void InitializeVertexBuffer()
@@ -298,11 +276,14 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 			VertexBuffer.SetVertices(2, VertexColors);
 			VertexBuffer.SetIndices(Indices);
 			
-			GraphicsContext.SetVertexBuffer(0, VertexBuffer);
+			//TODO: Does this need to be reset somehow?
+			DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
 		}
 		
 		private void CleanupVertexBuffer()
 		{
+			VertexBuffer.Dispose();
+			VertexBuffer = null;
 		}
 		
 		private VertexBuffer VertexBuffer;
@@ -311,14 +292,14 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		
 		#region Shader Program
 		
-		private const String ShaderPath = "/Application/Engines/DrawEngine2d/Shaders/Sprite.cgx";
+		//TODO: Path too deep?
+		//private const String ShaderPath = "Engines/DrawEngine2d/Shaders/sprite.cgx";
 		private const Int32 ShaderBindingIndex = 0;
 		private const String ShaderBindingName = "u_WorldMatrix";
 		
 		private void InitializeShaderProgram()
 		{
-			//TODO: Path too deep?
-			ShaderProgram = new ShaderProgram(ShaderPath);
+			ShaderProgram = ShaderLoader.Load(ShaderPaths.Sprite);
 			ShaderProgram.SetUniformBinding(ShaderBindingIndex, ShaderBindingName);
 		}
 		
@@ -334,23 +315,33 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		
 		#region Texture
 		
-		private void InitializeTexture()
+		//TODO: Most of this will be moved somewhere else after testing.
+		
+		private void InitializeTexture()//String path
 		{
-			texture = new Texture2D("/Application/resources/Player.png", false);
+			TexturePath = "/Application/TwinStickShooter/Images/Ship64.png";//path;
 			
-
-			Width = texture.Width;
-			Height = texture.Height;
+			Texture = new Texture2D(TexturePath, false);
+			
+			TextureWidth = Texture.Width;
+			TextureHeight = Texture.Height;
 		}
 		
 		private void CleanupTexture()
 		{
+			TexturePath = String.Empty;
+			TextureWidth = 0;
+			TextureHeight = 0;
+			Texture.Dispose();//TODO: When textures are shared, this will be BAD!
+			Texture = null;
 		}
 		
-		private Texture2D texture;
+		private Texture2D Texture;
 		
-		private Single Width;
-		private Single Height;
+		private String TexturePath;
+		
+		private Single TextureWidth;
+		private Single TextureHeight;
 		
 		#endregion
 		
@@ -360,8 +351,8 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		{
 			//TODO: I have no idea what these values represent.
 			UnitScreenMatrix = new Matrix4(
-				Width * 2.0f / ScreenWidth, 0.0f, 0.0f, 0.0f,
-				0.0f, Height * (-2.0f) / ScreenHeight, 0.0f, 0.0f,
+				TextureWidth * 2.0f / DrawEngine2d.ScreenWidth, 0.0f, 0.0f, 0.0f,
+				0.0f, TextureHeight * (-2.0f) / DrawEngine2d.ScreenHeight, 0.0f, 0.0f,
 				0.0f, 0.0f, 1.0f, 0.0f,
 				-1.0f, 1.0f, 0.0f, 1.0f
 				);

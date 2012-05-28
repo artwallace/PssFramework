@@ -3,6 +3,8 @@ using PssFramework;
 using PssFramework.Engines.DrawEngine2d.Support;
 using PssFramework.Modes;
 using PssFramework.Modes.TopDown2dAlt;
+using PssFramework.Engines.DrawEngine2d;
+using PssFramework.Engines.DrawEngine2d.DrawItems;
 
 namespace Demo.DrawEngineTest
 {
@@ -24,6 +26,12 @@ namespace Demo.DrawEngineTest
 			//TODO: Remove this after testing!
 			DrawEngine2d.ClearColor = Colors.Blue;
 			//EnableDebugInfo();
+			
+			Layer l = DrawEngine2d.CreateLayer(1);
+			
+			UltraSimpleSprite uss = new UltraSimpleSprite(DrawEngine2d);
+			
+			l.Items.Add(uss);
 		}
 		
 		protected override void Cleanup()

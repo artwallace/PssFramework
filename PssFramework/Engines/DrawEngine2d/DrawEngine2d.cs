@@ -75,14 +75,23 @@ namespace PssFramework.Engines.DrawEngine2d
 		private void InitializeGraphicsContext(GraphicsContext graphicsContext)
 		{
 			GraphicsContext = graphicsContext;
+			
+			ScreenWidth = GraphicsContext.Screen.Rectangle.Width;
+			ScreenHeight = GraphicsContext.Screen.Rectangle.Height;
 		}
 		
 		private void CleanupGraphicsContext()
 		{
 			GraphicsContext = null;
+			
+			ScreenWidth = 0;
+			ScreenHeight = 0;
 		}
 		
 		internal GraphicsContext GraphicsContext { get; private set; }
+		
+		public Single ScreenWidth { get; private set; }
+		public Single ScreenHeight { get; private set; }
 		
 		#endregion
 		
@@ -106,6 +115,7 @@ namespace PssFramework.Engines.DrawEngine2d
 			{
 				_ClearColor = value;
 				GraphicsContext.SetClearColor(_ClearColor.AsVector4);
+				SetRenderRequired();
 			}
 		}
 		
@@ -140,6 +150,8 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		public Layer CreateLayer(Int32 zIndex)
 		{
+			SetRenderRequired();
+			
 			Layer layer = new Layer();
 			Layers.Add(zIndex, layer);
 			return layer;
@@ -147,6 +159,8 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		public void RemoveLayer(Int32 zIndex)
 		{
+			SetRenderRequired();
+			
 			Layers.Remove(zIndex);
 		}
 		

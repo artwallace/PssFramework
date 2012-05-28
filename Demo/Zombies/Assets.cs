@@ -1,6 +1,6 @@
 using System;
 
-namespace Demo
+namespace Demo.Zombies
 {
 	public static class Assets
 	{
