@@ -37,8 +37,8 @@ namespace PssFramework.Engines.DrawEngine2d
 		private void Cleanup()
 		{
 			CleanupRenderRequiredFlag();
-			CleanupClearColor();
 			CleanupLayers();
+			CleanupClearColor();
 			CleanupGraphicsContext();
 		}
 		
@@ -136,8 +136,8 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		private void CleanupLayers()
 		{
-			//Int32[] layerKeys = new Int32[0];
-			//Layers.Keys.CopyTo(layerKeys, 0);
+			Int32[] layerKeys = new Int32[Layers.Keys.Count];
+			Layers.Keys.CopyTo(layerKeys, 0);
 			
 			foreach(Int32 zIndex in layerKeys)
 			{
@@ -145,7 +145,9 @@ namespace PssFramework.Engines.DrawEngine2d
 				RemoveLayer(zIndex);
 				layer.Dispose();
 			}
+			
 			Layers.Clear();
+			
 			Layers = null;
 		}
 		

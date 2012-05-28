@@ -6,13 +6,13 @@ using PssFramework.Engines.DrawEngine2d.Support;
 using PssFramework.Modes;
 using PssFramework.Modes.TopDown2dAlt;
 
-namespace Demo.DrawEngineTest
+namespace Demo.SpaceRockets
 {
-	public class DrawEngineTestMode : TopDown2dAltModeBase
+	public class SpaceRocketsMode : TopDown2dAltModeBase
 	{
 		#region Constructor
 		
-		public DrawEngineTestMode(AppManager mgr)
+		public SpaceRocketsMode(AppManager mgr)
 			: base(mgr)
 		{
 		}
@@ -28,9 +28,7 @@ namespace Demo.DrawEngineTest
 			//EnableDebugInfo();
 			
 			Layer l = DrawEngine2d.CreateLayer(1);
-			
 			UltraSimpleSprite uss = new UltraSimpleSprite(DrawEngine2d);
-			
 			l.Items.Add(uss);
 		}
 		
@@ -61,7 +59,7 @@ namespace Demo.DrawEngineTest
 		
 		public static ModeBase DrawEngineTestModeFactory(AppManager mgr)
 		{
-			return new DrawEngineTestMode(mgr);
+			return new SpaceRocketsMode(mgr);
 		}
 		
 		#endregion

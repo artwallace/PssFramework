@@ -11,11 +11,6 @@ namespace PssFramework.Modes
 		{
 		}
 		
-		public override void Dispose()
-		{
-			base.Dispose();
-		}
-		
 		#endregion
 	}
 }

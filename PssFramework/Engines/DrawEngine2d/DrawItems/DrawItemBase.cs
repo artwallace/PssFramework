@@ -9,10 +9,12 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		public DrawItemBase(DrawEngine2d drawEngine2d)
 		{
 			InitializeInternal(drawEngine2d);
+			Initialize();
 		}
 		
-		public virtual void Dispose()
+		public void Dispose()
 		{
+			Cleanup();
 			CleanupInternal();
 		}
 		
@@ -20,15 +22,27 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		
 		#region Initialize, Cleanup
 		
-		public void InitializeInternal(DrawEngine2d drawEngine2d)
+		private void InitializeInternal(DrawEngine2d drawEngine2d)
 		{
 			InitializeDrawEngine2d(drawEngine2d);
 		}
 		
-		public void CleanupInternal()
+		private void CleanupInternal()
 		{
 			CleanupDrawEngine2d();
 		}
+		
+		protected abstract void Initialize();
+		
+		protected abstract void Cleanup();
+		
+		#endregion
+		
+		#region Update, Render
+		
+		public abstract void Update();
+		
+		public abstract void Render();
 		
 		#endregion
 		

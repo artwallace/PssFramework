@@ -42,6 +42,8 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		public void Render()
 		{
+			foreach(DrawItemBase item in Items)
+				item.Render();
 		}
 		
 		#endregion

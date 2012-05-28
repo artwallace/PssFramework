@@ -4,26 +4,25 @@ namespace PssFramework.Modes
 {
 	public abstract class ModeBase : IDisposable
 	{
-		public AppManager Mgr { get; private set; }
-		
 		#region Constructor, Dispose
 		
 		protected ModeBase(AppManager mgr)
 		{
 			if (mgr == null)
 				throw new ArgumentNullException();
-			Mgr = mgr;
+			
+			InitializeAppManager(mgr);
 			
 			InitializeInternal();
 			Initialize();
 		}
 		
-		public virtual void Dispose()
+		public void Dispose()
 		{
 			Cleanup();
 			CleanupInternal();
 			
-			Mgr = null;
+			CleanupAppManager();
 		}
 		
 		#endregion
@@ -51,6 +50,22 @@ namespace PssFramework.Modes
 		protected abstract void Cleanup();
 		
 		public abstract void Update();
+		
+		#endregion
+		
+		#region App Manager
+		
+		private void InitializeAppManager(AppManager mgr)
+		{
+			Mgr = mgr;
+		}
+		
+		private void CleanupAppManager()
+		{
+			Mgr = null;
+		}
+		
+		public AppManager Mgr { get; private set; }
 		
 		#endregion
 		

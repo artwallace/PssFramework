@@ -1,5 +1,5 @@
 using System;
-using Demo.DrawEngineTest;
+using Demo.SpaceRockets;
 using Demo.Fireworks;
 using Demo.TwinStickShooter;
 using Demo.Zombies;
@@ -75,7 +75,7 @@ namespace Demo.MainMenu
 			
 			if (Mgr.GamePad0_Circle_Pressed)
 			{
-				Mgr.GoToMode(DrawEngineTestMode.DrawEngineTestModeFactory);
+				Mgr.GoToMode(SpaceRocketsMode.DrawEngineTestModeFactory);
 				return;
 			}
 		}

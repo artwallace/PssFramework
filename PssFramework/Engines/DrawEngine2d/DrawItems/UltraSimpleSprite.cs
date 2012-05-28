@@ -13,20 +13,13 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		public UltraSimpleSprite(DrawEngine2d drawEngine2d)
 			: base(drawEngine2d)
 		{
-			Initialize();
-		}
-		
-		public override void Dispose()
-		{
-			Cleanup();
-			//base.Dispose();
 		}
 		
 		#endregion
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize()
+		protected override void Initialize()
 		{
 			InitializeVertices();
 			InitializeIndices();
@@ -39,7 +32,7 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 			InitializeTexture();
 		}
 		
-		private void Cleanup()
+		protected override void Cleanup()
 		{
 			CleanupVertices();
 			CleanupIndices();
@@ -50,6 +43,23 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 			CleanupShaderProgram();
 			CleanupScreenMatrix();
 			CleanupVertexBuffer();
+		}
+		
+		#endregion
+		
+		#region Update, Render
+		
+		public override void Update()
+		{
+		}
+		
+		public override void Render()
+		{
+			DrawEngine2d.GraphicsContext.SetShaderProgram(ShaderProgram);
+			DrawEngine2d.GraphicsContext.SetTexture(0, Texture);
+			ShaderProgram.SetUniformValue(0, ref UnitScreenMatrix);
+		
+			DrawEngine2d.GraphicsContext.DrawArrays(DrawMode.TriangleStrip, 0, IndexCount);
 		}
 		
 		#endregion
