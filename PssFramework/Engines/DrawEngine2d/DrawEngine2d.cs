@@ -136,13 +136,16 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		private void CleanupLayers()
 		{
-			foreach(Int32 zIndex in Layers.Keys)
+			//Int32[] layerKeys = new Int32[0];
+			//Layers.Keys.CopyTo(layerKeys, 0);
+			
+			foreach(Int32 zIndex in layerKeys)
 			{
 				Layer layer = Layers[zIndex];
 				RemoveLayer(zIndex);
 				layer.Dispose();
 			}
-			
+			Layers.Clear();
 			Layers = null;
 		}
 		
