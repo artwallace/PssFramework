@@ -26,23 +26,23 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 			InitializeTextureCoordinates();
 			InitializeColor();
 			
+			InitializeTexture();
+			InitializeShaderProgram();
 			InitializeVertexBuffer();
 			InitializeScreenMatrix();
-			InitializeShaderProgram();
-			InitializeTexture();
 		}
 		
 		protected override void Cleanup()
 		{
-			CleanupVertices();
-			CleanupIndices();
-			CleanupTextureCoordinates();
-			CleanupColor();
-			
-			CleanupTexture();
-			CleanupShaderProgram();
 			CleanupScreenMatrix();
 			CleanupVertexBuffer();
+			CleanupShaderProgram();
+			CleanupTexture();
+			
+			CleanupColor();
+			CleanupTextureCoordinates();
+			CleanupIndices();
+			CleanupVertices();
 		}
 		
 		#endregion
@@ -90,6 +90,12 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		private void InitializeVertices()
 		{
 			Vertices = new Single[VertexCount * 3];
+			
+			//TODO: these are temporary, for testing.
+			VertexCoordinates_0_TopLeft = new Vector2(0.0f, 0.0f);
+			VertexCoordinates_1_BottomLeft = new Vector2(0.0f, 1.0f);
+			VertexCoordinates_2_TopRight = new Vector2(1.0f, 0.0f);
+			VertexCoordinates_3_BottomRight = new Vector2(1.0f, 1.0f);
 		}
 		
 		private void CleanupVertices()
@@ -107,52 +113,55 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		{
 			get
 			{
-				return new Vector2(TextureCoordinates[0], TextureCoordinates[1]);
+				return new Vector2(Vertices[0], Vertices[1]);
 			}
 			set
 			{
-				TextureCoordinates[0] = value.X;
-				TextureCoordinates[1] = value.Y;
-				TextureCoordinates[2] = VertexZ;
+				Vertices[0] = value.X;
+				Vertices[1] = value.Y;
+				Vertices[2] = VertexZ;
 			}
 		}
+		
 		private Vector2 VertexCoordinates_1_BottomLeft
 		{
 			get
 			{
-				return new Vector2(TextureCoordinates[3], TextureCoordinates[4]);
+				return new Vector2(Vertices[3], Vertices[4]);
 			}
 			set
 			{
-				TextureCoordinates[3] = value.X;
-				TextureCoordinates[4] = value.Y;
-				TextureCoordinates[5] = VertexZ;
+				Vertices[3] = value.X;
+				Vertices[4] = value.Y;
+				Vertices[5] = VertexZ;
 			}
 		}
+		
 		private Vector2 VertexCoordinates_2_TopRight
 		{
 			get
 			{
-				return new Vector2(TextureCoordinates[6], TextureCoordinates[7]);
+				return new Vector2(Vertices[6], Vertices[7]);
 			}
 			set
 			{
-				TextureCoordinates[6] = value.X;
-				TextureCoordinates[7] = value.Y;
-				TextureCoordinates[8] = VertexZ;
+				Vertices[6] = value.X;
+				Vertices[7] = value.Y;
+				Vertices[8] = VertexZ;
 			}
 		}
+		
 		private Vector2 VertexCoordinates_3_BottomRight
 		{
 			get
 			{
-				return new Vector2(TextureCoordinates[9], TextureCoordinates[10]);
+				return new Vector2(Vertices[9], Vertices[10]);
 			}
 			set
 			{
-				TextureCoordinates[9] = value.X;
-				TextureCoordinates[10] = value.Y;
-				TextureCoordinates[11] = VertexZ;
+				Vertices[9] = value.X;
+				Vertices[10] = value.Y;
+				Vertices[11] = VertexZ;
 			}
 		}
 		
@@ -164,6 +173,7 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		{
 			TextureCoordinates = new Single[4 * 2];
 			
+			//TODO: these are temporary, for testing.
 			TextureCoordinates_0_TopLeft = new Vector2(0.0f, 0.0f);
 			TextureCoordinates_1_BottomLeft = new Vector2(0.0f, 1.0f);
 			TextureCoordinates_2_TopRight = new Vector2(1.0f, 0.0f);
@@ -302,8 +312,6 @@ namespace PssFramework.Engines.DrawEngine2d.DrawItems
 		
 		#region Shader Program
 		
-		//TODO: Path too deep?
-		//private const String ShaderPath = "Engines/DrawEngine2d/Shaders/sprite.cgx";
 		private const Int32 ShaderBindingIndex = 0;
 		private const String ShaderBindingName = "u_WorldMatrix";
 		
