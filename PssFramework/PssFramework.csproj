@@ -117,20 +117,14 @@
     <Compile Include="Engines\CyclonePhysics3d\Forces\ForceGenerator3dBase.cs" />
     <Compile Include="Engines\DrawEngine2d\LayerDictionary.cs" />
     <Compile Include="Modes\DrawEngine2dModeBase.cs" />
-    <Compile Include="Engines\DrawEngine2d\DrawItems\DrawItemBase.cs" />
-    <Compile Include="Engines\DrawEngine2d\DrawItems\SpriteBase.cs" />
-    <Compile Include="Engines\DrawEngine2d\DrawItems\UltraSimpleSprite.cs" />
-    <Compile Include="Engines\DrawEngine2d\DrawItems\ShapeBase.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\Colors.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\Color.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\Coordinate2.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\Coordinate3.cs" />
     <Compile Include="Modes\TopDown2dAlt\TopDown2dAltModeBase.cs" />
-    <Compile Include="Engines\DrawEngine2d\DrawItems\IRenderable.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\ShaderPaths.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\ShaderLoader.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\DebugFont.cs" />
-    <Compile Include="Engines\DrawEngine2d\DrawItems\SuperSimpleSpriteList.cs" />
     <Compile Include="Engines\GameEngine2d\Action.cs" />
     <Compile Include="Engines\GameEngine2d\ActionManager.cs" />
     <Compile Include="Engines\GameEngine2d\Director.cs" />
@@ -178,6 +172,13 @@
     <Compile Include="Engines\GameEngine2d\base\Input2.cs" />
     <Compile Include="Engines\GameEngine2d\Plane3D.cs" />
     <Compile Include="Engines\GameEngine2d\DebugFlags.cs" />
+    <Compile Include="Engines\DrawEngine2d\Drawables\SpriteBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\Drawables\UltraSimpleSprite.cs" />
+    <Compile Include="Engines\DrawEngine2d\Drawables\ShapeBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSpriteList.cs" />
+    <Compile Include="Engines\DrawEngine2d\Drawables\DrawableBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\Drawables\IDrawable.cs" />
+    <Compile Include="Engines\GameEngine2d\Label %28Art%27s Mac mini%27s conflicted copy 2012-05-30%29.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />
@@ -188,11 +189,11 @@
     <Folder Include="Modes\Isometric2d\" />
     <Folder Include="Engines\" />
     <Folder Include="Engines\DrawEngine2d\Support\" />
-    <Folder Include="Engines\DrawEngine2d\DrawItems\" />
     <Folder Include="Modes\TopDown2dAlt\" />
     <Folder Include="Engines\GameEngine2d\" />
     <Folder Include="Engines\GameEngine2d\base\" />
     <Folder Include="Engines\GameEngine2d\shaders\" />
+    <Folder Include="Engines\DrawEngine2d\Drawables\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\default.fcg" />
@@ -235,11 +236,9 @@
     </EmbeddedShaderProgram>
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\UltraSimpleSprite.fcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\UltraSimpleSprite.vcg" />
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite.fcg">
-      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
-    </EmbeddedShaderProgram>
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite.vcg">
-      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
-    </EmbeddedShaderProgram>
+  </ItemGroup>
+  <ItemGroup>
+    <ShaderProgram Include="Engines\DrawEngine2d\Shaders\xsprite.fcg" />
+    <ShaderProgram Include="Engines\DrawEngine2d\Shaders\xsprite.vcg" />
   </ItemGroup>
 </Project>

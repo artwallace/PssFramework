@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using PssFramework.Engines.DrawEngine2d.DrawItems;
+using PssFramework.Engines.DrawEngine2d.Drawables;
 
 namespace PssFramework.Engines.DrawEngine2d
 {
@@ -42,7 +42,7 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		public void Render()
 		{
-			foreach(DrawItemBase item in Items)
+			foreach(DrawableBase item in Items)
 				item.Render();
 		}
 		
@@ -52,19 +52,19 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		private void InitializeDrawItems()
 		{
-			Items = new List<DrawItemBase>();
+			Items = new List<DrawableBase>();
 		}
 		
 		private void CleanupDrawItems()
 		{
-			foreach(DrawItemBase item in Items)
+			foreach(DrawableBase item in Items)
 				item.Dispose();
 			Items.Clear();
 			
 			Items = null;
 		}
 		
-		public List<DrawItemBase> Items { get; private set; }
+		public List<DrawableBase> Items { get; private set; }
 		
 		#endregion
 	}
