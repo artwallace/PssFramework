@@ -261,6 +261,5 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 			get { return m_instance; }
 		}
 	}
-
 } // namespace Sce.Pss.HighLevel.GameEngine2D
 

@@ -12,17 +12,19 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 {
 	public class Curves
 	{
-		static
-		Matrix4 HermiteBasis = new Matrix4( new Vector4( 2.0f,-2.0f, 1.0f, 1.0f),
-											new Vector4(-3.0f, 3.0f,-2.0f,-1.0f),
-											new Vector4( 0.0f, 0.0f, 1.0f, 0.0f),
-											new Vector4( 1.0f, 0.0f, 0.0f, 0.0f) );
+		static Matrix4 HermiteBasis = new Matrix4(
+			new Vector4( 2.0f,-2.0f, 1.0f, 1.0f),
+			new Vector4(-3.0f, 3.0f,-2.0f,-1.0f),
+			new Vector4( 0.0f, 0.0f, 1.0f, 0.0f),
+			new Vector4( 1.0f, 0.0f, 0.0f, 0.0f)
+			);
 
-		static
-		Matrix4 BezierBasis = new Matrix4( new Vector4(-1.0f, 3.0f,-3.0f, 1.0f),
-										 new Vector4( 3.0f,-6.0f, 3.0f, 0.0f),
-										 new Vector4(-3.0f, 3.0f, 0.0f, 0.0f),
-										 new Vector4( 1.0f, 0.0f, 0.0f, 0.0f) ) ;
+		static Matrix4 BezierBasis = new Matrix4(
+			new Vector4(-1.0f, 3.0f,-3.0f, 1.0f),
+			new Vector4( 3.0f,-6.0f, 3.0f, 0.0f),
+			new Vector4(-3.0f, 3.0f, 0.0f, 0.0f),
+			new Vector4( 1.0f, 0.0f, 0.0f, 0.0f)
+			) ;
 
 		/// <summary>
 		/// </summary>
@@ -34,8 +36,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// v.w = gradient at 1
 		/// </param>
 		/// <param name="u">Curve parameter in [0,1].</param>
-		public static 
-		float Hermite( float u, Vector4 v )
+		public static float Hermite( float u, Vector4 v )
 		{
 			float u_sqr = u * u;
 			return( HermiteBasis * new Vector4( u * u_sqr, u_sqr, u, 1.0f ) ).Dot( v );
@@ -50,17 +51,11 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <param name="p1">Right point.</param>
 		/// <param name="t0">Tangent at p0.</param>
 		/// <param name="t1">Tangent at p2.</param>
-		public static 
-		float Hermite( float x
-					 , Vector2 p0
-					 , Vector2 p1
-					 , float t0
-					 , float t1 )
+		public static float Hermite(float x, Vector2 p0, Vector2 p1, float t0, float t1)
 		{
 			float dx = ( p1.X - p0.X );
 			Common.Assert( dx > 0.0f );
-			return Hermite( ( x - p0.X ) / dx
-							, new Vector4( p0.Y, p1.Y, dx * t0, dx * t1 ) );
+			return Hermite( ( x - p0.X ) / dx, new Vector4( p0.Y, p1.Y, dx * t0, dx * t1 ) );
 		}
 
 		/// <summary>
@@ -82,9 +77,11 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			Common.Assert( p01.X > p0.X );
 			Common.Assert( p21.X > p2.X );
 
-			return Hermite( x, p0, p2 
-							, ( p01.Y - p0.Y ) / ( p01.X - p0.X ) 
-							, ( p21.Y - p2.Y ) / ( p21.X - p2.X ) );
+			return Hermite(
+				x, p0, p2,
+				( p01.Y - p0.Y ) / ( p01.X - p0.X ),
+				( p21.Y - p2.Y ) / ( p21.X - p2.X )
+				);
 		}
 
 		/// <summary>Cubic bezier, Vector2 control points.</summary>

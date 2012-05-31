@@ -203,6 +203,14 @@
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\particles.vcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite_directional_fade.fcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite_directional_fade.vcg" />
+    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\xsprite.vcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\xsprite.fcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.fcg" />
+    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.vcg" />
     <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\default.fcg">
       <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
     </EmbeddedShaderProgram>
@@ -231,14 +239,6 @@
       <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
     </EmbeddedShaderProgram>
     <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\sprite_directional_fade.vcg">
-      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
-    </EmbeddedShaderProgram>
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\UltraSimpleSprite.fcg" />
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\UltraSimpleSprite.vcg" />
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite.fcg">
-      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
-    </EmbeddedShaderProgram>
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite.vcg">
       <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
     </EmbeddedShaderProgram>
   </ItemGroup>

@@ -1,14 +1,16 @@
 void main(
-	float4 in a_Position : POSITION,
-	float2 in a_TexCoord : TEXCOORD0,
-	float4 in a_VertexColor : COLOR0,
-	float4 out v_Position : POSITION,
-	float2 out v_TexCoord : TEXCOORD0,
-	float4 out v_Color : COLOR0,
-	uniform float4x4 u_WorldMatrix
+	uniform float4x4 MVP
+	, uniform float4 Color
+	, uniform float4 UVTransform // mostly for y flip control from C#
+	, in float4 vin_data : POSITION
+	, out float2 vout_tex : TEXCOORD0
+	, out float4 vout_color : TEXCOORD1
+	, out float4 pp : POSITION
 	)
 {
-	v_Position = mul(a_Position, u_WorldMatrix);
-	v_TexCoord = a_TexCoord;
-	v_Color = a_VertexColor;
+	pp = mul( float4(vin_data.xy,0,1), MVP );
+	vout_tex = vin_data.zw;
+	vout_tex = UVTransform.xy + vout_tex * UVTransform.zw;
+	vout_color = Color;
 }
+

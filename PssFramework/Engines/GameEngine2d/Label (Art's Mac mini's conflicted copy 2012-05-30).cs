@@ -88,5 +88,6 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 			else return Director.Instance.SpriteRenderer.DrawTextWithFontMap( Text, GameEngine2D.Base.Math._00, CharWorldHeight, false, FontMap, Shader );
 		}
 	}
+
 } // namespace Sce.Pss.HighLevel.GameEngine2D
 
