@@ -238,7 +238,7 @@
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\UltraSimpleSprite.vcg" />
   </ItemGroup>
   <ItemGroup>
-    <ShaderProgram Include="Engines\DrawEngine2d\Shaders\xsprite.fcg" />
-    <ShaderProgram Include="Engines\DrawEngine2d\Shaders\xsprite.vcg" />
+    <ShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite.fcg" />
+    <ShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite.vcg" />
   </ItemGroup>
 </Project>
