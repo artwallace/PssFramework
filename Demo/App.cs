@@ -58,6 +58,7 @@ namespace Demo
 		
 		private static GraphicsContext GenerateGraphicsContext()
 		{
+			//Return a normal GC if not debugging.
 			if (!Debugger.IsAttached)
 				return new GraphicsContext();
 			

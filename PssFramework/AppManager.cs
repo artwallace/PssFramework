@@ -716,8 +716,8 @@ namespace PssFramework
 			PreviousMode = null;
 			
 			//TODO: Re-enable this after Node finalizer is fixed!!!
-			if (!Debugger.IsAttached)
-				GC.Collect();
+			//if (!Debugger.IsAttached)
+			GC.Collect();
 		}
 		
 		#endregion

@@ -129,8 +129,8 @@ namespace PssFramework.Modes.TopDown2d
 			PreviousRoom = null;
 			
 			//TODO: Re-enable this after Node finalizer is fixed!!!
-			if (!Debugger.IsAttached)
-				GC.Collect();
+			//if (!Debugger.IsAttached)
+			GC.Collect();
 		}
 		
 		protected Boolean ReadyToAdvanceToNextRoom = false;

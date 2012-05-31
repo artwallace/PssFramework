@@ -32,6 +32,7 @@ namespace PssFramework.Engines.DrawEngine2d
 			InitializeClearColor();
 			InitializeLayers();
 			InitializeRenderRequiredFlag();
+			InitializeDebugRuler();
 		}
 		
 		private void Cleanup()
@@ -40,6 +41,7 @@ namespace PssFramework.Engines.DrawEngine2d
 			CleanupLayers();
 			CleanupClearColor();
 			CleanupGraphicsContext();
+			CleanupDebugRuler();
 		}
 		
 		#endregion
@@ -200,6 +202,67 @@ namespace PssFramework.Engines.DrawEngine2d
 		private void ResetRenderRequired()
 		{
 			RenderRequired = false;
+		}
+		
+		#endregion
+		
+		#region Debug Ruler
+		
+		private void InitializeDebugRuler()
+		{
+			EnableDebugRuler = false;
+			DebugRulerAxisColor = Colors.Black;
+			DebugRulerAxisThickness = 1.0f;
+			DebugRulerGridColor = Colors.Grey60;
+			DebugRulerGridThickness = 1.0f;
+		}
+		
+		private void CleanupDebugRuler()
+		{
+		}
+		
+		private Boolean _EnableDebugRuler;
+		public Boolean EnableDebugRuler
+		{
+			get { return _EnableDebugRuler; }
+			set
+			{
+				_EnableDebugRuler = value;
+				SetRenderRequired();
+			}
+		}
+		
+		private Color _DebugRulerAxisColor;
+		public Color DebugRulerAxisColor
+		{
+			get { return _DebugRulerAxisColor; }
+			set
+			{
+				_DebugRulerAxisColor = value;
+				SetRenderRequired();
+			}
+		}
+		
+		private Single DebugRulerAxisThickness;
+		
+		public Color _DebugRulerGridColor;
+		public Color DebugRulerGridColor
+		{
+			get { return _DebugRulerGridColor; }
+			set
+			{
+				_DebugRulerGridColor = value;
+				SetRenderRequired();
+			}
+		}
+		
+		private Single DebugRulerGridThickness;
+		
+		private void DrawDebugRulers()
+		{
+			//GraphicsContext.SetLineWidth(DebugRulerAxisThickness);
+			
+			//GraphicsContext.SetLineWidth(1.0f);
 		}
 		
 		#endregion

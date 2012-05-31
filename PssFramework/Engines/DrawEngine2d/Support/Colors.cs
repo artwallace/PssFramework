@@ -19,14 +19,14 @@ namespace PssFramework.Engines.DrawEngine2d.Support
 		public static Color Magenta = new Color(1.0f, 0.0f, 1.0f, 1.0f);
 		public static Color Cyan = new Color(0.0f, 1.0f, 1.0f, 1.0f);
 		public static Color White = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
+		
 		public static Color Lime = new Color(0.5f, 1.0f, 0.0f, 1.0f);
 		public static Color LightBlue = new Color(0.0f, 0.5f, 1.0f, 1.0f);
 		public static Color Pink = new Color(1.0f, 0.0f, 0.5f, 1.0f);
 		public static Color Orange = new Color(1.0f, 0.5f, 0.0f, 1.0f);
 		public static Color LightCyan = new Color(0.0f, 1.0f, 0.5f, 1.0f);
 		public static Color Purple = new Color(0.5f, 0.0f, 1.0f, 1.0f);
-
+		
 		public static Color Grey05 = new Color(0.05f, 0.05f, 0.05f, 1.0f);
 		public static Color Grey10 = new Color(0.1f, 0.1f, 0.1f, 1.0f);
 		public static Color Grey20 = new Color(0.2f, 0.2f, 0.2f, 1.0f);

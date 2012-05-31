@@ -37,7 +37,6 @@
     <Reference Include="Sce.Pss.Core" />
     <Reference Include="Sce.Pss.HighLevel.UI" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Sce.Pss.HighLevel.GameEngine2D" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Sce\Sce.Pss.CSharp.targets" />
   <ItemGroup>
@@ -130,6 +129,48 @@
     <Compile Include="Engines\DrawEngine2d\DrawItems\IRenderable.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\ShaderPaths.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\ShaderLoader.cs" />
+    <Compile Include="Engines\DrawEngine2d\Support\DebugFont.cs" />
+    <Compile Include="Engines\DrawEngine2d\DrawItems\SuperSimpleSpriteList.cs" />
+    <Compile Include="Engines\GameEngine2d\Action.cs" />
+    <Compile Include="Engines\GameEngine2d\ActionManager.cs" />
+    <Compile Include="Engines\GameEngine2d\Director.cs" />
+    <Compile Include="Engines\GameEngine2d\Label.cs" />
+    <Compile Include="Engines\GameEngine2d\Node.cs" />
+    <Compile Include="Engines\GameEngine2d\ParticleSystem.cs" />
+    <Compile Include="Engines\GameEngine2d\Scene.cs" />
+    <Compile Include="Engines\GameEngine2d\Scheduler.cs" />
+    <Compile Include="Engines\GameEngine2d\Sprite.cs" />
+    <Compile Include="Engines\GameEngine2d\TransitionScene.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Camera2D.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Camera3D.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Common.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Curves.cs" />
+    <Compile Include="Engines\GameEngine2d\base\DrawHelpers.cs" />
+    <Compile Include="Engines\GameEngine2d\base\EmbeddedDebugFont.cs" />
+    <Compile Include="Engines\GameEngine2d\base\FontMap.cs" />
+    <Compile Include="Engines\GameEngine2d\base\GraphicsContextAlpha.cs" />
+    <Compile Include="Engines\GameEngine2d\base\ICamera.cs" />
+    <Compile Include="Engines\GameEngine2d\base\ImmediateMode.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Input.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Math.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Matrix3.cs" />
+    <Compile Include="Engines\GameEngine2d\base\MatrixStack.cs" />
+    <Compile Include="Engines\GameEngine2d\base\PitchRoll.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Profiler.cs" />
+    <Compile Include="Engines\GameEngine2d\base\SpriteRenderer.cs" />
+    <Compile Include="Engines\GameEngine2d\base\TextureInfo.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Timer.cs" />
+    <Compile Include="Engines\GameEngine2d\base\TRS.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Vector2i.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Vector3i.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Bounds2.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Plane2.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Sphere2.cs" />
+    <Compile Include="Engines\GameEngine2d\base\ConvexPoly2.cs" />
+    <Compile Include="Engines\GameEngine2d\base\Bounds2i.cs" />
+    <Compile Include="Engines\GameEngine2d\base\ICollisionBasics.cs" />
+    <Compile Include="Engines\GameEngine2d\base\ImmediateModeQuads.cs" />
+    <Compile Include="Engines\GameEngine2d\base\VertexBufferPool.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />
@@ -142,6 +183,9 @@
     <Folder Include="Engines\DrawEngine2d\Support\" />
     <Folder Include="Engines\DrawEngine2d\DrawItems\" />
     <Folder Include="Modes\TopDown2dAlt\" />
+    <Folder Include="Engines\GameEngine2d\" />
+    <Folder Include="Engines\GameEngine2d\base\" />
+    <Folder Include="Engines\GameEngine2d\shaders\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\default.fcg" />
@@ -160,5 +204,35 @@
     </EmbeddedShaderProgram>
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.fcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.vcg" />
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\default.fcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\default.vcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\font.fcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\font.vcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\particles.fcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\particles.vcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\sprite.fcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\sprite.vcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\sprite_directional_fade.fcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
+    <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\sprite_directional_fade.vcg">
+      <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
+    </EmbeddedShaderProgram>
   </ItemGroup>
 </Project>

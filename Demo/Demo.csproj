@@ -36,7 +36,6 @@
     <Reference Include="System.Core" />
     <Reference Include="Sce.Pss.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Sce.Pss.HighLevel.GameEngine2D" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Sce\Sce.Pss.CSharp.targets" />
   <ItemGroup>
