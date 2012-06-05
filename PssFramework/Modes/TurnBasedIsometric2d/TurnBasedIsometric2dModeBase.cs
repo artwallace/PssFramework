@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework.Modes.TurnBasedIsometric2d
+namespace PsmFramework.Modes.TurnBasedIsometric2d
 {
 	public abstract class TurnBasedIsometric2dModeBase : GameEngine2dModeBase
 	{

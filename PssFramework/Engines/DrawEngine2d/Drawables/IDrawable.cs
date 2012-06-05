@@ -1,9 +1,10 @@
 using System;
 
-namespace PssFramework.Engines.DrawEngine2d.Drawables
+namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
 	public interface IDrawable
 	{
+		void Render();
 	}
 }
 

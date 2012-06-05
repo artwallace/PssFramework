@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework.Modes
+namespace PsmFramework.Modes
 {
 	public abstract class ModeBase : IDisposable
 	{

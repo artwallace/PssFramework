@@ -1,7 +1,7 @@
 using System;
 using Sce.Pss.Core;
 
-namespace PssFramework.Modes.Isometric2d
+namespace PsmFramework.Modes.Isometric2d
 {
 	public class DiamondBackground : BackgroundBase
 	{

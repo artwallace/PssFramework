@@ -5,7 +5,7 @@ using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 
-namespace PssFramework.Modes
+namespace PsmFramework.Modes
 {
 	public abstract class GameEngine2dModeBase : ModeBase
 	{

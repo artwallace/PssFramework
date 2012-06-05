@@ -13,7 +13,7 @@
 // </license>
 // ****************************************************************************
 
-namespace PssFramework.Engines.Messaging
+namespace PsmFramework.Engines.Messaging
 {
 	/// <summary>
 	/// Passes a generic value (Content) to a recipient.

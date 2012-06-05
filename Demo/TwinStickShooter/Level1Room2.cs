@@ -1,5 +1,5 @@
 using System;
-using PssFramework.Modes.TopDown2d;
+using PsmFramework.Modes.TopDown2d;
 
 namespace Demo.TwinStickShooter
 {

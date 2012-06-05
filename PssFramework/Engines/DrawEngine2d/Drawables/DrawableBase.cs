@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework.Engines.DrawEngine2d.Drawables
+namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
 	public abstract class DrawableBase : IDisposable
 	{
@@ -40,6 +40,7 @@ namespace PssFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Update, Render
 		
+		//TODO: Update() probably isn't necessary but we'll leave it for now.
 		public abstract void Update();
 		
 		public abstract void Render();

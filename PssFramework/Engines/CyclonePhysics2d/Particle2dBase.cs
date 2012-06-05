@@ -9,7 +9,7 @@ using System;
 using Sce.Pss.Core;
 using PssMath = Sce.Pss.HighLevel.GameEngine2D.Base.Math;
 
-namespace PssFramework.Engines.CyclonePhysics2d
+namespace PsmFramework.Engines.CyclonePhysics2d
 {
 	public abstract class Particle2dBase
 	{

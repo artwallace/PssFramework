@@ -1,8 +1,7 @@
 using System;
-using Sce.Pss.Core;
 using Sce.Pss.Core.Graphics;
 
-namespace PssFramework.Engines.DrawEngine2d.Support
+namespace PsmFramework.Engines.DrawEngine2d.Support
 {
 	internal class DebugFont
 	{

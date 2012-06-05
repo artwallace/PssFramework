@@ -1,7 +1,7 @@
 using System;
 using Sce.Pss.Core;
 
-namespace PssFramework.Modes.TopDown2d
+namespace PsmFramework.Modes.TopDown2d
 {
 	public class PlayerInputMovementStrategy : MovementStrategyBase
 	{

@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework.Modes.Isometric2d
+namespace PsmFramework.Modes.Isometric2d
 {
 	public struct BackgroundAsset
 	{

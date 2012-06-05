@@ -7,7 +7,7 @@
 
 using System;
 
-namespace PssFramework.Engines.CyclonePhysics3d.Forces
+namespace PsmFramework.Engines.CyclonePhysics3d.Forces
 {
 	public abstract class ForceGenerator3dBase
 	{

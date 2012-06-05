@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 
-namespace PssFramework
+namespace PsmFramework
 {
 	public class TextureUsers : IDisposable
 	{

@@ -6,7 +6,7 @@ using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 
-namespace PssFramework.Modes.Isometric2d
+namespace PsmFramework.Modes.Isometric2d
 {
 	//TODO: Add Tile visibility to support fog of war
 	//TODO: Set camera to a specified point when entering room.

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using PssFramework.Engines.DrawEngine2d.Drawables;
+using PsmFramework.Engines.DrawEngine2d.Drawables;
 
-namespace PssFramework.Engines.DrawEngine2d
+namespace PsmFramework.Engines.DrawEngine2d
 {
 	public class Layer : IDisposable
 	{
@@ -24,12 +24,12 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		private void Initialize()
 		{
-			InitializeDrawItems();
+			InitializeDrawables();
 		}
 		
 		private void Cleanup()
 		{
-			CleanupDrawItems();
+			CleanupDrawables();
 		}
 		
 		#endregion
@@ -48,14 +48,14 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		#endregion
 		
-		#region DrawItems
+		#region Drawables
 		
-		private void InitializeDrawItems()
+		private void InitializeDrawables()
 		{
-			Items = new List<DrawableBase>();
+			Items = new List<IDrawable>();
 		}
 		
-		private void CleanupDrawItems()
+		private void CleanupDrawables()
 		{
 			foreach(DrawableBase item in Items)
 				item.Dispose();
@@ -64,7 +64,7 @@ namespace PssFramework.Engines.DrawEngine2d
 			Items = null;
 		}
 		
-		public List<DrawableBase> Items { get; private set; }
+		public List<IDrawable> Items { get; private set; }
 		
 		#endregion
 	}

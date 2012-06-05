@@ -15,7 +15,7 @@
 
 ////using GalaSoft.Utilities.Attributes;
 
-namespace PssFramework.Engines.Messaging
+namespace PsmFramework.Engines.Messaging
 {
 	/// <summary>
 	/// Passes a string message (Notification) and a generic value (Content) to a recipient.

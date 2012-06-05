@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using PssFramework.Engines.CyclonePhysics3d.Forces;
+using PsmFramework.Engines.CyclonePhysics3d.Forces;
 
-namespace PssFramework.Engines.CyclonePhysics3d
+namespace PsmFramework.Engines.CyclonePhysics3d
 {
 	public class ParticleWorld3dBase
 	{

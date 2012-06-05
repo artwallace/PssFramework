@@ -1,6 +1,6 @@
-using PssFramework;
+using PsmFramework;
 
-namespace PssFramework.Modes.TopDown2d
+namespace PsmFramework.Modes.TopDown2d
 {
 	public abstract class TopDown2dModeBase : GameEngine2dModeBase
 	{

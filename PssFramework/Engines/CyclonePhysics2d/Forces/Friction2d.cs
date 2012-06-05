@@ -3,7 +3,7 @@
 using System;
 using Sce.Pss.Core;
 
-namespace PssFramework.Engines.CyclonePhysics2d.Forces
+namespace PsmFramework.Engines.CyclonePhysics2d.Forces
 {
 	//TODO: This isn't how friction is supposed to work in Cyclone but I'm not coding collisions.
 	public class Friction2d : ForceGenerator2dBase

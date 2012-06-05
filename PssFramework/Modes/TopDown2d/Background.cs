@@ -4,7 +4,7 @@ using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 
-namespace PssFramework.Modes.TopDown2d
+namespace PsmFramework.Modes.TopDown2d
 {
 	public sealed class Background : IDisposable
 	{

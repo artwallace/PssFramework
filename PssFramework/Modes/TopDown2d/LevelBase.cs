@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace PssFramework.Modes.TopDown2d
+namespace PsmFramework.Modes.TopDown2d
 {
 	public abstract class LevelBase : IDisposable
 	{

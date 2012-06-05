@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{E8D9504A-2F91-4805-9957-10355E5F0A98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PssFramework", "PssFramework\PssFramework.csproj", "{65029D47-2B20-4C35-AE69-FD843F373A38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsmFramework", "PssFramework\PsmFramework.csproj", "{65029D47-2B20-4C35-AE69-FD843F373A38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,5 +26,12 @@ Global
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = None
 		$1.ResourceNamePolicy = FileFormatDefault
+		$0.VersionControlPolicy = $2
+		$2.inheritsSet = Mono
+		$0.ChangeLogPolicy = $3
+		$3.UpdateMode = None
+		$3.MessageStyle = $4
+		$4.LineAlign = 0
+		$3.inheritsSet = Mono
 	EndGlobalSection
 EndGlobal

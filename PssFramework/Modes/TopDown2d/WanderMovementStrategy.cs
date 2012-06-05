@@ -3,7 +3,7 @@ using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 using PssMath = Sce.Pss.HighLevel.GameEngine2D.Base.Math;
 
-namespace PssFramework.Modes.TopDown2d
+namespace PsmFramework.Modes.TopDown2d
 {
 	public class WanderMovementStrategy : MovementStrategyBase
 	{

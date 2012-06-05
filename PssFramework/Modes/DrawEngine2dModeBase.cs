@@ -1,7 +1,7 @@
 using System;
-using PssFramework.Engines.DrawEngine2d;
+using PsmFramework.Engines.DrawEngine2d;
 
-namespace PssFramework.Modes
+namespace PsmFramework.Modes
 {
 	public abstract class DrawEngine2dModeBase : ModeBase
 	{

@@ -14,7 +14,7 @@
 // ****************************************************************************
 using System;
 
-namespace PssFramework.Engines.Messaging
+namespace PsmFramework.Engines.Messaging
 {
 	/// <summary>
 	/// Provides a message class with a built-in callback. When the recipient

@@ -1,8 +1,8 @@
 using System;
 using Demo.MainMenu;
-using PssFramework;
-using PssFramework.Modes;
-using PssFramework.Modes.FixedFront2d;
+using PsmFramework;
+using PsmFramework.Modes;
+using PsmFramework.Modes.FixedFront2d;
 using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 

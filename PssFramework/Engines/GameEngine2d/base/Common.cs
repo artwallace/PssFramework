@@ -102,7 +102,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			System.Reflection.Assembly resource_assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
 			//embedded filenames are prefixed with namespace and have / replaced to . apparently
-			string embedded_filename = "PssFramework.Engines.GameEngine2d.shaders." + filename.Replace("/", ".");
+			string embedded_filename = "PsmFramework.Engines.GameEngine2d.shaders." + filename.Replace("/", ".");
 			if ( resource_assembly.GetManifestResourceInfo( embedded_filename ) == null )
 			{
 				// didn't find an embedded version of the file

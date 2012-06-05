@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using PssFramework.Modes;
+using PsmFramework.Modes;
 using Sce.Pss.Core.Environment;
 using Sce.Pss.Core.Graphics;
 using Sce.Pss.Core.Imaging;
@@ -10,7 +10,7 @@ using Sce.Pss.Core.Input;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 using PssMath = Sce.Pss.HighLevel.GameEngine2D.Base.Math;
 
-namespace PssFramework
+namespace PsmFramework
 {
 	public sealed class AppManager
 	{

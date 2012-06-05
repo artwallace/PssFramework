@@ -1,6 +1,6 @@
-using PssFramework;
+using PsmFramework;
 
-namespace PssFramework.Modes.Isometric2d
+namespace PsmFramework.Modes.Isometric2d
 {
 	public abstract class Isometric2dModeBase : GameEngine2dModeBase
 	{

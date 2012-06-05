@@ -1,7 +1,7 @@
 using System;
-using PssFramework;
-using PssFramework.Modes;
-using PssFramework.Modes.Isometric2d;
+using PsmFramework;
+using PsmFramework.Modes;
+using PsmFramework.Modes.Isometric2d;
 using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 using Demo.MainMenu;

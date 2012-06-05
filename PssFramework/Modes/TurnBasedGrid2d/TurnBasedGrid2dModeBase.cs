@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework.Modes.TurnBasedGrid2d
+namespace PsmFramework.Modes.TurnBasedGrid2d
 {
 	public abstract class TurnBasedGrid2dModeBase : GameEngine2dModeBase
 	{

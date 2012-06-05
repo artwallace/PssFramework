@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PssFramework.Engines.CyclonePhysics2d;
+using PsmFramework.Engines.CyclonePhysics2d;
 using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 
-namespace PssFramework.Modes.TopDown2d
+namespace PsmFramework.Modes.TopDown2d
 {
 	//TODO: Bad guys radio for help.
 	//TODO: Add enemy perception zones with differenct sensitivities, such as blind from rear unless attacked.

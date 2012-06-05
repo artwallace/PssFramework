@@ -5,7 +5,7 @@ using Sce.Pss.Core.Graphics;
 using Sce.Pss.HighLevel.GameEngine2D;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 
-namespace PssFramework
+namespace PsmFramework
 {
 	public class TextureManager : IDisposable
 	{

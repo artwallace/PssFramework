@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using PssFramework.Engines.DrawEngine2d.Support;
+using PsmFramework.Engines.DrawEngine2d.Support;
 using Sce.Pss.Core.Graphics;
+using PsmFramework.Engines.DrawEngine2d.Drawables;
 
-namespace PssFramework.Engines.DrawEngine2d
+namespace PsmFramework.Engines.DrawEngine2d
 {
 	public class DrawEngine2d : IDisposable
 	{
@@ -32,16 +33,18 @@ namespace PssFramework.Engines.DrawEngine2d
 			InitializeClearColor();
 			InitializeLayers();
 			InitializeRenderRequiredFlag();
+			InitializeTiledTextureManager();
 			InitializeDebugRuler();
 		}
 		
 		private void Cleanup()
 		{
+			CleanupDebugRuler();
+			CleanupTiledTextureManager();
 			CleanupRenderRequiredFlag();
 			CleanupLayers();
 			CleanupClearColor();
 			CleanupGraphicsContext();
-			CleanupDebugRuler();
 		}
 		
 		#endregion
@@ -97,7 +100,7 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		#endregion
 		
-		#region ClearColor
+		#region Clear Color
 		
 		private void InitializeClearColor()
 		{
@@ -210,59 +213,260 @@ namespace PssFramework.Engines.DrawEngine2d
 		
 		private void InitializeDebugRuler()
 		{
-			EnableDebugRuler = false;
-			DebugRulerAxisColor = Colors.Black;
-			DebugRulerAxisThickness = 1.0f;
-			DebugRulerGridColor = Colors.Grey60;
-			DebugRulerGridThickness = 1.0f;
+//			EnableDebugRuler = false;
+//			DebugRulerAxisColor = Colors.Black;
+//			DebugRulerAxisThickness = 1.0f;
+//			DebugRulerGridColor = Colors.Grey60;
+//			DebugRulerGridThickness = 1.0f;
 		}
 		
 		private void CleanupDebugRuler()
 		{
 		}
 		
-		private Boolean _EnableDebugRuler;
-		public Boolean EnableDebugRuler
+//		private Boolean _EnableDebugRuler;
+//		public Boolean EnableDebugRuler
+//		{
+//			get { return _EnableDebugRuler; }
+//			set
+//			{
+//				_EnableDebugRuler = value;
+//				SetRenderRequired();
+//			}
+//		}
+//		
+//		private Color _DebugRulerAxisColor;
+//		public Color DebugRulerAxisColor
+//		{
+//			get { return _DebugRulerAxisColor; }
+//			set
+//			{
+//				_DebugRulerAxisColor = value;
+//				SetRenderRequired();
+//			}
+//		}
+//		
+//		private Single DebugRulerAxisThickness;
+//		
+//		public Color _DebugRulerGridColor;
+//		public Color DebugRulerGridColor
+//		{
+//			get { return _DebugRulerGridColor; }
+//			set
+//			{
+//				_DebugRulerGridColor = value;
+//				SetRenderRequired();
+//			}
+//		}
+//		
+//		private Single DebugRulerGridThickness;
+//		
+//		private void DrawDebugRulers()
+//		{
+//			//GraphicsContext.SetLineWidth(DebugRulerAxisThickness);
+//			
+//			//GraphicsContext.SetLineWidth(1.0f);
+//		}
+		
+		#endregion
+		
+		#region TiledTexture Manager
+		
+		private void InitializeTiledTextureManager()
 		{
-			get { return _EnableDebugRuler; }
-			set
-			{
-				_EnableDebugRuler = value;
-				SetRenderRequired();
-			}
+			TiledTextureList = new List<TiledTexture>();
+			TiledTextureUsers = new Dictionary<DrawableBase, TiledTexture>();
 		}
 		
-		private Color _DebugRulerAxisColor;
-		public Color DebugRulerAxisColor
+		private void CleanupTiledTextureManager()
 		{
-			get { return _DebugRulerAxisColor; }
-			set
-			{
-				_DebugRulerAxisColor = value;
-				SetRenderRequired();
-			}
-		}
-		
-		private Single DebugRulerAxisThickness;
-		
-		public Color _DebugRulerGridColor;
-		public Color DebugRulerGridColor
-		{
-			get { return _DebugRulerGridColor; }
-			set
-			{
-				_DebugRulerGridColor = value;
-				SetRenderRequired();
-			}
-		}
-		
-		private Single DebugRulerGridThickness;
-		
-		private void DrawDebugRulers()
-		{
-			//GraphicsContext.SetLineWidth(DebugRulerAxisThickness);
+			TiledTextureUsers.Clear();
+			TiledTextureUsers = null;
 			
-			//GraphicsContext.SetLineWidth(1.0f);
+			foreach(TiledTexture t in TiledTextureList)
+				t.Dispose();
+			TiledTextureList.Clear();
+			TiledTextureList = null;
+		}
+		
+		private List<TiledTexture> TiledTextureList;
+		
+		private Dictionary<DrawableBase, TiledTexture> TiledTextureUsers;
+		
+		public TiledTexture GetOrCreateTiledTexture(DrawableBase user, String path, Int32 columns = 1, Int32 rows = 1)
+		{
+			return GetOrCreateTiledTextureHelper(user, path, columns, rows, RectangularArea2i.Zero);
+		}
+		
+		public TiledTexture GetOrCreateTiledTexture(DrawableBase user, String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
+		{
+			return GetOrCreateTiledTextureHelper(user, path, columns, rows, sourceArea);
+		}
+		
+		private TiledTexture GetOrCreateTiledTextureHelper(DrawableBase user, String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
+		{
+			if(user == null)
+				throw new ArgumentNullException();
+			
+			if(String.IsNullOrWhiteSpace(path))
+				throw new ArgumentException();
+			
+			if(columns < 1 || rows < 1)
+				throw new ArgumentException();
+			
+			foreach(TiledTexture t in TiledTextureList)
+			{
+				if(
+					t.Path == path &&
+					t.Columns == columns &&
+					t.Rows == rows &&
+					t.SourceArea == sourceArea
+					)
+				{
+					RegisterTiledTextureUser(user, t);
+					return t;
+				}
+			}
+			
+			TiledTexture tt = new TiledTexture(this, path, columns, rows, sourceArea);
+			RegisterTiledTextureUser(user, tt);
+			return tt;
+		}
+		
+		public void RemoveTiledTexture(DrawableBase user, TiledTexture tiledTexture)
+		{
+			if(user == null)
+				throw new ArgumentNullException();
+			
+			if(tiledTexture == null)
+				throw new ArgumentNullException();
+			
+			UnregisterTiledTextureUser(user, tiledTexture);
+		}
+		
+		private void RegisterTiledTextureUser(DrawableBase user, TiledTexture tiledTexture)
+		{
+			if(user == null)
+				throw new ArgumentNullException();
+			
+			if(tiledTexture == null)
+				throw new ArgumentNullException();
+			
+			//If user is unregistered, add is as a user of this texture.
+			if(!TiledTextureUsers.ContainsKey(user))
+			{
+				TiledTextureUsers.Add(user, tiledTexture);
+				return;
+			}
+			//If the user is already registered, ensure the path is what was requested.
+			else if(TiledTextureUsers[user] == tiledTexture)
+			{
+				//Everything is OK, exit.
+				return;
+			}
+			else
+			{
+				//User is registered with another texture, this is an error.
+				throw new NotSupportedException();
+			}
+		}
+		
+		private void UnregisterTiledTextureUser(DrawableBase user, TiledTexture tiledTexture)
+		{
+			throw new NotImplementedException();
+		}
+		
+		#endregion
+		
+		#region Texture2D Manager
+		
+		private void InitializeTexture2DManager()
+		{
+			Texture2DList = new Dictionary<String,Texture2D>();
+			Texture2DUsers = new Dictionary<TiledTexture, String>();
+		}
+		
+		private void CleanupTexture2DManager()
+		{
+			Texture2DUsers.Clear();
+			Texture2DUsers = null;
+			
+			foreach(Texture2D t in Texture2DList.Values)
+				t.Dispose();
+			Texture2DList.Clear();
+			Texture2DList = null;
+		}
+		
+		private Dictionary<String,Texture2D> Texture2DList;
+		
+		private Dictionary<TiledTexture, String> Texture2DUsers;
+		
+		internal Texture2D GetOrCreateTexture2D(TiledTexture user, String path)
+		{
+			if(user == null)
+				throw new ArgumentNullException();
+			
+			if(String.IsNullOrWhiteSpace(path))
+				throw new ArgumentException();
+			
+			//Ensure this user is registered.
+			RegisterTexture2DUser(user, path);
+			
+			//Check if texture already exists and return it.
+			if(Texture2DList.ContainsKey(path))
+			{
+				return Texture2DList[path];
+			}
+			else
+			{
+				//Otherwise, create the new texture.
+				Texture2D t = new Texture2D(path, false);
+				Texture2DList.Add(path, t);
+				return t;
+			}
+		}
+		
+		internal void RemoveTexture2D(TiledTexture user, String path)
+		{
+			if(user == null)
+				throw new ArgumentNullException();
+			
+			if(String.IsNullOrWhiteSpace(path))
+				throw new ArgumentException();
+			
+			UnregisterTexture2DUser(user, path);
+		}
+		
+		private void RegisterTexture2DUser(TiledTexture user, String path)
+		{
+			if(user == null)
+				throw new ArgumentNullException();
+			
+			if(String.IsNullOrWhiteSpace(path))
+				throw new ArgumentException();
+			
+			//If user is unregistered, add is as a user of this texture.
+			if(!Texture2DUsers.ContainsKey(user))
+			{
+				Texture2DUsers.Add(user, path);
+				return;
+			}
+			//If the user is already registered, ensure the path is what was requested.
+			else if(Texture2DUsers[user] == path)
+			{
+				//Everything is OK, exit.
+				return;
+			}
+			else
+			{
+				//User is registered with another texture, this is an error.
+				throw new NotSupportedException();
+			}
+		}
+		
+		private void UnregisterTexture2DUser(TiledTexture user, String path)
+		{
+			throw new NotImplementedException();
 		}
 		
 		#endregion

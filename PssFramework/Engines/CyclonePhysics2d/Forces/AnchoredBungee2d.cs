@@ -8,7 +8,7 @@
 using System;
 using Sce.Pss.Core;
 
-namespace PssFramework.Engines.CyclonePhysics2d.Forces
+namespace PsmFramework.Engines.CyclonePhysics2d.Forces
 {
 	public class AnchoredBungee2d : AnchoredSpring2d
 	{

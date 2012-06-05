@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework.Modes.TopDown2d
+namespace PsmFramework.Modes.TopDown2d
 {
 	public struct BackgroundTileData
 	{

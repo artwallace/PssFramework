@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PssFramework.Engines.CyclonePhysics2d;
+using PsmFramework.Engines.CyclonePhysics2d;
 using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 
-namespace PssFramework.Modes.Isometric2d
+namespace PsmFramework.Modes.Isometric2d
 {
 	//TODO: Add time effects, so that unit experiences time at different rate than rest of game. ticksSinceLastUpdate * timeRate
 	public class Actor : IDisposable

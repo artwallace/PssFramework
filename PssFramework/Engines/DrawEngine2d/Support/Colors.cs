@@ -7,7 +7,7 @@
 using System;
 using Sce.Pss.Core;
 
-namespace PssFramework.Engines.DrawEngine2d.Support
+namespace PsmFramework.Engines.DrawEngine2d.Support
 {
 	public static class Colors
 	{

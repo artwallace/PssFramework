@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework
+namespace PsmFramework
 {
 	public enum FpsPresets
 	{

@@ -8,7 +8,7 @@
 using System;
 using Sce.Pss.Core;
 
-namespace PssFramework.Engines.CyclonePhysics2d.Forces
+namespace PsmFramework.Engines.CyclonePhysics2d.Forces
 {
 	public class Buoyancy2d : ForceGenerator2dBase
 	{

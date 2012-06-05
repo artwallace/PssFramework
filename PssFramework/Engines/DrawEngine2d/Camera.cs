@@ -1,7 +1,7 @@
 using System;
 using Sce.Pss.Core;
 
-namespace PssFramework.Engines.DrawEngine2d
+namespace PsmFramework.Engines.DrawEngine2d
 {
 	public class Camera
 	{

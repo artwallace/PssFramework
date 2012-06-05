@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework.Modes.FixedFront2d
+namespace PsmFramework.Modes.FixedFront2d
 {
 	public abstract class FixedFront2dModeBase : GameEngine2dModeBase
 	{

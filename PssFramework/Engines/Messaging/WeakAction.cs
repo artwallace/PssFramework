@@ -14,7 +14,7 @@
 // ****************************************************************************
 using System;
 
-namespace PssFramework.Engines.Messaging
+namespace PsmFramework.Engines.Messaging
 {
 	/// <summary>
 	/// Stores an <see cref="Action" /> without causing a hard reference

@@ -1,5 +1,5 @@
 using Demo.MainMenu;
-using PssFramework;
+using PsmFramework;
 using Sce.Pss.Core.Environment;
 using Sce.Pss.Core.Graphics;
 using System;

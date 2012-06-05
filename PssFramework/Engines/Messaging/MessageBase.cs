@@ -13,7 +13,7 @@
 // </license>
 // ****************************************************************************
 
-namespace PssFramework.Engines.Messaging
+namespace PsmFramework.Engines.Messaging
 {
 	/// <summary>
 	/// Base class for all messages broadcasted by the Messenger.

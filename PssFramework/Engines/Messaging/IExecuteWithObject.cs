@@ -13,7 +13,7 @@
 // </license>
 // ****************************************************************************
 
-namespace PssFramework.Engines.Messaging
+namespace PsmFramework.Engines.Messaging
 {
 	/// <summary>
 	/// This interface is meant for the <see cref="WeakAction{T}" /> class and can be 

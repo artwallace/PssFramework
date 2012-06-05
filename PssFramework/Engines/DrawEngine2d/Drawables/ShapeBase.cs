@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework.Engines.DrawEngine2d.Drawables
+namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
 	public abstract class ShapeBase : DrawableBase
 	{

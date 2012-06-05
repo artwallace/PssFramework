@@ -1,10 +1,10 @@
 using System;
-using PssFramework;
+using PsmFramework;
 using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
 
-namespace PssFramework.Modes.Isometric2d
+namespace PsmFramework.Modes.Isometric2d
 {
 	public struct BackgroundTile
 	{

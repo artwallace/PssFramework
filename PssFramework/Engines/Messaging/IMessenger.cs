@@ -15,7 +15,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace PssFramework.Engines.Messaging
+namespace PsmFramework.Engines.Messaging
 {
 	/// <summary>
 	/// The Messenger is a class allowing objects to exchange messages.

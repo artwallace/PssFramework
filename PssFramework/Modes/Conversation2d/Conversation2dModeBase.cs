@@ -1,6 +1,6 @@
 using System;
 
-namespace PssFramework.Modes.Conversation2d
+namespace PsmFramework.Modes.Conversation2d
 {
 	public abstract class Conversation2dModeBase : GameEngine2dModeBase
 	{

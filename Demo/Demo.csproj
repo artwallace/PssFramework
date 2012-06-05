@@ -79,9 +79,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PssFramework\PssFramework.csproj">
+    <ProjectReference Include="..\PssFramework\PsmFramework.csproj">
       <Project>{65029D47-2B20-4C35-AE69-FD843F373A38}</Project>
-      <Name>PssFramework</Name>
+      <Name>PsmFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using Sce.Pss.Core.Graphics;
 
-namespace PssFramework.Engines.DrawEngine2d.Shaders
+namespace PsmFramework.Engines.DrawEngine2d.Shaders
 {
 	internal static class ShaderLoader
 	{

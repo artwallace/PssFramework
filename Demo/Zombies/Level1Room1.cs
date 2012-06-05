@@ -1,5 +1,5 @@
 using System;
-using PssFramework.Modes.Isometric2d;
+using PsmFramework.Modes.Isometric2d;
 using Sce.Pss.Core;
 
 namespace Demo.Zombies
