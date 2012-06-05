@@ -33,5 +33,8 @@ Global
 		$3.MessageStyle = $4
 		$4.LineAlign = 0
 		$3.inheritsSet = Mono
+		$0.StandardHeader = $5
+		$5.Text = 
+		$5.IncludeInNewFiles = True
 	EndGlobalSection
 EndGlobal

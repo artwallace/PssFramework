@@ -27,8 +27,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			) ;
 
 		/// <summary>
-		/// Hermite spline evaluation given 2 scalar and 2 gradients. Parameter u is in [0,1].
 		/// </summary>
+		/// Hermite spline evaluation given 2 scalar and 2 gradients. Parameter u is in [0,1].
 		/// <param name="v">
 		/// v.x = value at 0
 		/// v.y = value at 1
@@ -59,14 +59,19 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>
-		/// Hermite spline evaluation, given 4 points in xy.
 		/// </summary>
+		/// Hermite spline evaluation, given 4 points in xy.
 		/// <param name="x">Eval parameter.</param>
 		/// <param name="p0">Start point.</param>
 		/// <param name="p2">End point.</param>
 		/// <param name="p01">Vector p0,p01 defines the tangent at p0 (lenght matters).</param>
 		/// <param name="p21">Vector p2,p21 defines the tangent at p2 (lenght matters).</param>
-		public static float Hermite(float x, Vector2 p0, Vector2 p2, Vector2 p01, Vector2 p21)
+		public static
+		float Hermite( float x
+					 , Vector2 p0
+					 , Vector2 p2
+					 , Vector2 p01
+					 , Vector2 p21 )
 		{
 			Common.Assert( p2.X > p0.X );
 			Common.Assert( p01.X > p0.X );
@@ -80,7 +85,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>Cubic bezier, Vector2 control points.</summary>
-		public static Vector2 Bezier( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
+		public static
+		Vector2 Bezier( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
 		{
 			float t_c = 1.0f-t; 
 			return( t_c * t_c ) * ( p0 * t_c + p1 * 3.0f * t )
@@ -88,7 +94,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>Cubic bezier, Vector3 control points.</summary>
-		public static Vector3 Bezier( float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3 )
+		public static
+		Vector3 Bezier( float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3 )
 		{
 			float t_c = 1.0f-t; 
 			return( t_c * t_c ) * ( p0 * t_c + p1 * 3.0f * t )
@@ -96,7 +103,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>Cubic bezier, Vector4 control points.</summary>
-		public static Vector4 Bezier( float t, Vector4 p0, Vector4 p1, Vector4 p2, Vector4 p3 )
+		public static
+		Vector4 Bezier( float t, Vector4 p0, Vector4 p1, Vector4 p2, Vector4 p3 )
 		{
 			float t_c = 1.0f-t; 
 			return( t_c * t_c ) * ( p0 * t_c + p1 * 3.0f * t )
@@ -104,7 +112,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>Catmull-Rom, Vector2 control points.</summary>
-		public static Vector2 CatmullRom( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
+		public static
+		Vector2 CatmullRom( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
 		{
 			float t2 = t * t;
 			float t3 = t2 * t;
@@ -115,7 +124,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>Catmull-Rom, Vector3 control points.</summary>
-		public static Vector3 CatmullRom( float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3 )
+		public static
+		Vector3 CatmullRom( float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3 )
 		{
 			float t2 = t * t;
 			float t3 = t2 * t;
@@ -126,7 +136,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>Catmull-Rom, Vector4 control points.</summary>
-		public static Vector4 CatmullRom( float t, Vector4 p0, Vector4 p1, Vector4 p2, Vector4 p3 )
+		public static
+		Vector4 CatmullRom( float t, Vector4 p0, Vector4 p1, Vector4 p2, Vector4 p3 )
 		{
 			float t2 = t * t;
 			float t3 = t2 * t;
@@ -140,7 +151,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// Catmull-Rom curve evaluation for 4 Vector2 control points.
 		/// Return a Vector4 with position in xy and tangent in zw. Just apply Math.Perp to the tangent to get the normal vector.
 		/// </summary>
-		public static Vector4 CatmullRomAndDerivative( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
+		public static
+		Vector4 CatmullRomAndDerivative( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
 		{
 			Vector4 c;
 			c.X = 1.0f;
@@ -176,7 +188,9 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <param name="p2">Control point 2.</param>
 		/// <param name="p3">Control point 3.</param>
 		/// <param name="r">Tangent control.</param>
-		public static Vector2 BezierAuto( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, float r = 1.0f/3.0f )
+		public static
+		Vector2 BezierAuto( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3
+							, float r = 1.0f/3.0f )
 		{
 			float len = ( p2 -p1 ).Length();
 
@@ -186,17 +200,17 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			return Bezier( t, p1, P11, P22, p2 );
 		}
 
-		static Matrix4 UniformCubicBspline = new Matrix4(
-			new Vector4( -1.0f,3.0f, -3.0f, 1.0f) / 6.0f,
-			new Vector4( 3.0f,-6.0f,3.0f,0.0f) / 6.0f,
-			new Vector4( -3.0f, 0.0f, 3.0f, 0.0f) / 6.0f,
-			new Vector4( 1.0f, 4.0f, 1.0f, 0.0f) / 6.0f
-			);
+		static 
+		Matrix4 UniformCubicBspline = new Matrix4( new Vector4( -1.0f,3.0f, -3.0f, 1.0f) / 6.0f,
+												 new Vector4( 3.0f,-6.0f,3.0f,0.0f) / 6.0f,
+												 new Vector4( -3.0f, 0.0f, 3.0f, 0.0f) / 6.0f,
+												 new Vector4( 1.0f, 4.0f, 1.0f, 0.0f) / 6.0f );
 
 		/// <summary>
 		/// B-Spline curve evaluation for 4 Vector2 control points.
 		/// </summary>
-		public static Vector2 Bspline( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
+		public static 
+		Vector2 Bspline( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
 		{
 			float t2 = t * t;
 			Matrix4 m = new Matrix4( p0.Xy01, p1.Xy01, p2.Xy01, p3.Xy01 );
@@ -206,7 +220,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <summary>
 		/// B-Spline curve evaluation for 4 Vector4 control points.
 		/// </summary>
-		public static Vector4 Bspline( float t, Vector4 p0, Vector4 p1, Vector4 p2, Vector4 p3 )
+		public static 
+		Vector4 Bspline( float t, Vector4 p0, Vector4 p1, Vector4 p2, Vector4 p3 )
 		{
 			float t2 = t * t;
 			Matrix4 m = new Matrix4( p0, p1, p2, p3 );
@@ -217,7 +232,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// B-Spline curve evaluation for 4 Vector2 control points.
 		/// Return a Vector4 with position in xy and tangent in zw. Just apply Math.Perp to the tangent to get the normal vector.
 		/// </summary>
-		public static Vector4 BsplineAndDerivative( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
+		public static 
+		Vector4 BsplineAndDerivative( float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3 )
 		{
 			float t2 = t * t;
 			Matrix4 m = new Matrix4( p0.Xy01, p1.Xy01, p2.Xy01, p3.Xy01 );
@@ -249,7 +265,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <summary>
 		/// Catmull-Rom curve evaluation for n Vector2 control points (position only).
 		/// </summary>
-		public static Vector2 CatmullRom( float t, List<Vector2> points, bool loop )
+		public static 
+		Vector2 CatmullRom( float t, List<Vector2> points, bool loop )
 		{
 			int n = points.Count;
 
@@ -272,7 +289,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// Catmull-Rom curve evaluation (with derivative) for n Vector2 control points (position only).
 		/// Return position in xy, tangent in zw. Just apply Math.Perp to the tangent to get the normal.
 		/// </summary>
-		public static Vector4 CatmullRomAndDerivative( float t, List<Vector2> points, bool loop )
+		public static 
+		Vector4 CatmullRomAndDerivative( float t, List<Vector2> points, bool loop )
 		{
 			int n = points.Count;
 
@@ -294,7 +312,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <summary>
 		/// Bspline curve evaluation for n Vector2 control points (position only).
 		/// </summary>
-		public static Vector2 Bspline( float t, List<Vector2> points, bool loop )
+		public static 
+		Vector2 Bspline( float t, List<Vector2> points, bool loop )
 		{
 			int n = points.Count;
 
@@ -317,7 +336,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// Bspline curve evaluation (with derivative) for n Vector2 control points.
 		/// Return position in xy, tangent in zw. Just apply Math.Perp to the tangent to get the normal.
 		/// </summary>
-		public static Vector4 BsplineAndDerivative( float t, List<Vector2> points, bool loop )
+		public static 
+		Vector4 BsplineAndDerivative( float t, List<Vector2> points, bool loop )
 		{
 			int n = points.Count;
 
