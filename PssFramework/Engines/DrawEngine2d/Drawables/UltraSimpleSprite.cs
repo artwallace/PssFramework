@@ -6,21 +6,28 @@ using Sce.Pss.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
-	public class UltraSimpleSprite : DrawableBase, IDrawable
+	public class UltraSimpleSprite : IDrawable, IDisposable
 	{
 		#region Constructor, Dispose
 		
-		public UltraSimpleSprite(DrawEngine2d drawEngine2d)
-			: base(drawEngine2d)
+		public UltraSimpleSprite(Layer layer)
 		{
+			Initialize(layer);
+		}
+		
+		public void Dispose()
+		{
+			Cleanup();
 		}
 		
 		#endregion
 		
 		#region Initialize, Cleanup
 		
-		protected override void Initialize()
+		private void Initialize(Layer layer)
 		{
+			InitializeLayer(layer);
+			
 			InitializeVertices();
 			InitializeIndices();
 			InitializeTextureCoordinates();
@@ -32,7 +39,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			InitializeScreenMatrix();
 		}
 		
-		protected override void Cleanup()
+		private void Cleanup()
 		{
 			CleanupScreenMatrix();
 			CleanupVertexBuffer();
@@ -43,24 +50,40 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			CleanupTextureCoordinates();
 			CleanupIndices();
 			CleanupVertices();
+			
+			CleanupLayer();
 		}
 		
 		#endregion
 		
-		#region Update, Render
+		#region Render
 		
-		public override void Update()
+		public void Render()
 		{
-		}
-		
-		public override void Render()
-		{
-			DrawEngine2d.GraphicsContext.SetShaderProgram(ShaderProgram);
-			DrawEngine2d.GraphicsContext.SetTexture(0, Texture);
+			Layer.DrawEngine2d.GraphicsContext.SetShaderProgram(ShaderProgram);
+			Layer.DrawEngine2d.GraphicsContext.SetTexture(0, Texture);
 			ShaderProgram.SetUniformValue(0, ref UnitScreenMatrix);
 		
-			DrawEngine2d.GraphicsContext.DrawArrays(DrawMode.TriangleStrip, 0, IndexCount);
+			Layer.DrawEngine2d.GraphicsContext.DrawArrays(DrawMode.TriangleStrip, 0, IndexCount);
 		}
+		
+		#endregion
+		
+		#region Layer
+		
+		private void InitializeLayer(Layer layer)
+		{
+			Layer = layer;
+			Layer.Items.Add(this);
+		}
+		
+		private void CleanupLayer()
+		{
+			Layer.Items.Remove(this);
+			Layer = null;
+		}
+		
+		protected Layer Layer;
 		
 		#endregion
 		
@@ -297,7 +320,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			VertexBuffer.SetIndices(Indices);
 			
 			//TODO: Does this need to be reset somehow?
-			DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
+			Layer.DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
 		}
 		
 		private void CleanupVertexBuffer()
@@ -369,8 +392,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		{
 			//TODO: I have no idea what these values represent.
 			UnitScreenMatrix = new Matrix4(
-				TextureWidth * 2.0f / DrawEngine2d.ScreenWidth, 0.0f, 0.0f, 0.0f,
-				0.0f, TextureHeight * (-2.0f) / DrawEngine2d.ScreenHeight, 0.0f, 0.0f,
+				TextureWidth * 2.0f / Layer.DrawEngine2d.ScreenWidth, 0.0f, 0.0f, 0.0f,
+				0.0f, TextureHeight * (-2.0f) / Layer.DrawEngine2d.ScreenHeight, 0.0f, 0.0f,
 				0.0f, 0.0f, 1.0f, 0.0f,
 				-1.0f, 1.0f, 0.0f, 1.0f
 				);

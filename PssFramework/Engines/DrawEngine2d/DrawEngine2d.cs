@@ -51,11 +51,10 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		#region Update, Render
 		
-		//TODO: Is update needed just to draw?
 		public void Update()
 		{
-			foreach(Layer layer in Layers.Values)
-				layer.Update();
+			//foreach(Layer layer in Layers.Values)
+				//layer.Update();
 		}
 		
 		public void Render()
@@ -141,16 +140,11 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private void CleanupLayers()
 		{
-			Int32[] layerKeys = new Int32[Layers.Keys.Count];
-			Layers.Keys.CopyTo(layerKeys, 0);
+			Layer[] layers = new Layer[Layers.Values.Count];
+			Layers.Values.CopyTo(layers, 0);
 			
-			foreach(Int32 zIndex in layerKeys)
-			{
-				Layer layer = Layers[zIndex];
-				RemoveLayer(zIndex);
+			foreach(Layer layer in layers)
 				layer.Dispose();
-			}
-			
 			Layers.Clear();
 			
 			Layers = null;
@@ -158,19 +152,23 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private SortedList<Int32, Layer> Layers { get; set; }
 		
-		public Layer CreateLayer(Int32 zIndex)
+		public void AddLayer(Layer layer, Int32 zIndex)
 		{
-			SetRenderRequired();
+			if(Layers.ContainsValue(layer))
+				throw new ArgumentException("Duplicate layer added to DrawEngine2d.");
 			
-			Layer layer = new Layer();
+			SetRenderRequired();
 			Layers.Add(zIndex, layer);
-			return layer;
 		}
 		
-		public void RemoveLayer(Int32 zIndex)
+		public void RemoveLayer(Layer layer)
 		{
-			SetRenderRequired();
+			if(Layers.ContainsValue(layer))
+				throw new ArgumentException("Unknown layer removal requested from DrawEngine2d.");
 			
+			SetRenderRequired();
+			Int32 valueLocation = Layers.IndexOfValue(layer);
+			Int32 zIndex = Layers.Keys[valueLocation];
 			Layers.Remove(zIndex);
 		}
 		
@@ -197,7 +195,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private Boolean RenderRequired;
 		
-		private void SetRenderRequired()
+		public void SetRenderRequired()
 		{
 			RenderRequired = true;
 		}
@@ -275,7 +273,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		private void InitializeTiledTextureManager()
 		{
 			TiledTextureList = new List<TiledTexture>();
-			TiledTextureUsers = new Dictionary<DrawableBase, TiledTexture>();
+			TiledTextureUsers = new Dictionary<IDrawable, TiledTexture>();
 		}
 		
 		private void CleanupTiledTextureManager()
@@ -291,19 +289,19 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private List<TiledTexture> TiledTextureList;
 		
-		private Dictionary<DrawableBase, TiledTexture> TiledTextureUsers;
+		private Dictionary<IDrawable, TiledTexture> TiledTextureUsers;
 		
-		public TiledTexture GetOrCreateTiledTexture(DrawableBase user, String path, Int32 columns = 1, Int32 rows = 1)
+		public TiledTexture GetOrCreateTiledTexture(IDrawable user, String path, Int32 columns = 1, Int32 rows = 1)
 		{
 			return GetOrCreateTiledTextureHelper(user, path, columns, rows, RectangularArea2i.Zero);
 		}
 		
-		public TiledTexture GetOrCreateTiledTexture(DrawableBase user, String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
+		public TiledTexture GetOrCreateTiledTexture(IDrawable user, String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
 		{
 			return GetOrCreateTiledTextureHelper(user, path, columns, rows, sourceArea);
 		}
 		
-		private TiledTexture GetOrCreateTiledTextureHelper(DrawableBase user, String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
+		private TiledTexture GetOrCreateTiledTextureHelper(IDrawable user, String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
 		{
 			if(user == null)
 				throw new ArgumentNullException();
@@ -333,7 +331,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			return tt;
 		}
 		
-		public void RemoveTiledTexture(DrawableBase user, TiledTexture tiledTexture)
+		public void RemoveTiledTexture(IDrawable user, TiledTexture tiledTexture)
 		{
 			if(user == null)
 				throw new ArgumentNullException();
@@ -344,7 +342,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			UnregisterTiledTextureUser(user, tiledTexture);
 		}
 		
-		private void RegisterTiledTextureUser(DrawableBase user, TiledTexture tiledTexture)
+		private void RegisterTiledTextureUser(IDrawable user, TiledTexture tiledTexture)
 		{
 			if(user == null)
 				throw new ArgumentNullException();
@@ -371,7 +369,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			}
 		}
 		
-		private void UnregisterTiledTextureUser(DrawableBase user, TiledTexture tiledTexture)
+		private void UnregisterTiledTextureUser(IDrawable user, TiledTexture tiledTexture)
 		{
 			throw new NotImplementedException();
 		}

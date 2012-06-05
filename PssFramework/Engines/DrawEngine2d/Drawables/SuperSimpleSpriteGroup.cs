@@ -10,9 +10,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 	{
 		#region Constructor, Dispose
 		
-		public SuperSimpleSpriteGroup()
+		public SuperSimpleSpriteGroup(Layer layer)
 		{
-			Initialize();
+			Initialize(layer);
 		}
 		
 		public void Dispose()
@@ -24,21 +24,21 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize()
+		private void Initialize(Layer layer)
 		{
+			InitializeLayer(layer);
+			InitializeTiledTexture();
 		}
 		
 		private void Cleanup()
 		{
+			CleanupTiledTexture();
+			CleanupLayer();
 		}
 		
 		#endregion
 		
-		#region Update, Render
-		
-		public void Update()
-		{
-		}
+		#region Render
 		
 		public void Render()
 		{
@@ -46,7 +46,33 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#endregion
 		
-		#region Texture
+		#region Layer
+		
+		private void InitializeLayer(Layer layer)
+		{
+			Layer = layer;
+			Layer.Items.Add(this);
+		}
+		
+		private void CleanupLayer()
+		{
+			Layer.Items.Remove(this);
+			Layer = null;
+		}
+		
+		protected Layer Layer;
+		
+		#endregion
+		
+		#region TiledTexture
+		
+		private void InitializeTiledTexture()
+		{
+		}
+		
+		private void CleanupTiledTexture()
+		{
+		}
 		
 		#endregion
 		
@@ -54,6 +80,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		#endregion
 		
 		#region Blend Mode
+		#endregion
+		
+		#region Drawables
 		#endregion
 	}
 }

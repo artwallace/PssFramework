@@ -1,11 +1,8 @@
 using System;
-using PsmFramework.Engines.DrawEngine2d.Shaders;
-using PsmFramework.Engines.DrawEngine2d.Support;
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
+	//This is not a Drawable, the group is.
 	public class SuperSimpleSprite : IDisposable
 	{
 		#region Constructor, Dispose

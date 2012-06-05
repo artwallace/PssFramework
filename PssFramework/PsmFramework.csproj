@@ -172,7 +172,6 @@
     <Compile Include="Engines\GameEngine2d\DebugFlags.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\UltraSimpleSprite.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\ShapeBase.cs" />
-    <Compile Include="Engines\DrawEngine2d\Drawables\DrawableBase.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\IDrawable.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSpriteGroup.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSprite.cs" />
