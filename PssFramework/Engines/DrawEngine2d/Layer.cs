@@ -91,14 +91,40 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private void CleanupDrawables()
 		{
-			foreach(IDrawable item in Items)
+			IDrawable[] items = Items.ToArray();
+			
+			foreach(IDrawable item in items)
 				item.Dispose();
 			Items.Clear();
 			
 			Items = null;
 		}
 		
-		public List<IDrawable> Items { get; private set; }
+		private List<IDrawable> Items { get; set; }
+		
+		public void AddDrawable(IDrawable item)
+		{
+			if(item == null)
+				throw new ArgumentNullException();
+			
+			if(Items.Contains(item))
+				throw new ArgumentException();
+			
+			Items.Add(item);
+			DrawEngine2d.SetRenderRequired();
+		}
+		
+		public void RemoveDrawable(IDrawable item)
+		{
+			if(item == null)
+				throw new ArgumentNullException();
+			
+			if(!Items.Contains(item))
+				throw new ArgumentException();
+			
+			Items.Remove(item);
+			DrawEngine2d.SetRenderRequired();
+		}
 		
 		#endregion
 	}

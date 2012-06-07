@@ -74,12 +74,12 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		private void InitializeLayer(Layer layer)
 		{
 			Layer = layer;
-			Layer.Items.Add(this);
+			Layer.AddDrawable(this);
 		}
 		
 		private void CleanupLayer()
 		{
-			Layer.Items.Remove(this);
+			Layer.RemoveDrawable(this);
 			Layer = null;
 		}
 		

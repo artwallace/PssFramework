@@ -163,7 +163,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		public void RemoveLayer(Layer layer)
 		{
-			if(Layers.ContainsValue(layer))
+			if(!Layers.ContainsValue(layer))
 				throw new ArgumentException("Unknown layer removal requested from DrawEngine2d.");
 			
 			SetRenderRequired();

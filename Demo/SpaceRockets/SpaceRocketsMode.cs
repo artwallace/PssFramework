@@ -29,7 +29,6 @@ namespace Demo.SpaceRockets
 			
 			Layer l = new Layer(DrawEngine2d, 1);
 			UltraSimpleSprite uss = new UltraSimpleSprite(l);
-			l.Items.Add(uss);
 		}
 		
 		protected override void Cleanup()
