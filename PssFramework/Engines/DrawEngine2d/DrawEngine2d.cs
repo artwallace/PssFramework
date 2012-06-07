@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using PsmFramework.Engines.DrawEngine2d.Drawables;
 using PsmFramework.Engines.DrawEngine2d.Support;
 using Sce.Pss.Core.Graphics;
-using PsmFramework.Engines.DrawEngine2d.Drawables;
 
 namespace PsmFramework.Engines.DrawEngine2d
 {
@@ -151,6 +151,11 @@ namespace PsmFramework.Engines.DrawEngine2d
 		}
 		
 		private SortedList<Int32, Layer> Layers { get; set; }
+		
+		public Layer CreateLayer(Int32 zIndex)
+		{
+			return new Layer(this, zIndex);
+		}
 		
 		public void AddLayer(Layer layer, Int32 zIndex)
 		{

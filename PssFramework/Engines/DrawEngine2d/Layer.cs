@@ -4,7 +4,6 @@ using PsmFramework.Engines.DrawEngine2d.Drawables;
 
 namespace PsmFramework.Engines.DrawEngine2d
 {
-	//TODO: Should layer be responsible for registering/unregistering itself with the DrawEngine?
 	public class Layer : IDisposable
 	{
 		#region Constructor, Dispose

@@ -27,7 +27,7 @@ namespace Demo.SpaceRockets
 			DrawEngine2d.ClearColor = Colors.Blue;
 			//EnableDebugInfo();
 			
-			Layer l = new Layer(DrawEngine2d, 1);
+			Layer l = DrawEngine2d.CreateLayer(1);
 			UltraSimpleSprite uss = new UltraSimpleSprite(l);
 		}
 		
