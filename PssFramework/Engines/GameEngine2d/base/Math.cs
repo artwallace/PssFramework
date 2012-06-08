@@ -21,13 +21,11 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		public static float HalfPi { get { return 1.570796327f;}}
 
 		/// <summary>Wrap System.Random and extand with vector random generation.</summary>
-		public 
-		class RandGenerator
+		public class RandGenerator
 		{
 			/// <summary>The raw random generator.</summary>
 			public System.Random Random;
 			
-	
 			public RandGenerator( int seed = 0 )
 			{
 				Random = new System.Random( seed );

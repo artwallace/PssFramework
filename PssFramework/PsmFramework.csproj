@@ -182,6 +182,10 @@
     <Compile Include="Engines\DrawEngine2d\Support\RectangularArea2i.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\Area2i.cs" />
     <Compile Include="Engines\RawSpriteTileArray.cs" />
+    <Compile Include="Engines\PadServer\GamepadReader.cs" />
+    <Compile Include="Engines\PadServer\ChannelStates.cs" />
+    <Compile Include="Engines\PadServer\ControllerTypes.cs" />
+    <Compile Include="RandomGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />
@@ -197,6 +201,7 @@
     <Folder Include="Engines\GameEngine2d\base\" />
     <Folder Include="Engines\GameEngine2d\shaders\" />
     <Folder Include="Engines\DrawEngine2d\Drawables\" />
+    <Folder Include="Engines\PadServer\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\default.fcg" />

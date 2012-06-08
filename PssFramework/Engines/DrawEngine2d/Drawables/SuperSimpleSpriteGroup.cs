@@ -1,18 +1,15 @@
 using System;
-using PsmFramework.Engines.DrawEngine2d.Shaders;
-using PsmFramework.Engines.DrawEngine2d.Support;
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics;
+using System.Collections.Generic;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
-	public class SuperSimpleSpriteGroup : IDisposable, IDrawable
+	public sealed class SuperSimpleSpriteGroup : IDisposable, IDrawable
 	{
 		#region Constructor, Dispose
 		
-		public SuperSimpleSpriteGroup(Layer layer)
+		public SuperSimpleSpriteGroup(Layer layer, TiledTexture tiledTexture)
 		{
-			Initialize(layer);
+			Initialize(layer, tiledTexture);
 		}
 		
 		public void Dispose()
@@ -24,10 +21,10 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize(Layer layer)
+		private void Initialize(Layer layer, TiledTexture tiledTexture)
 		{
 			InitializeLayer(layer);
-			InitializeTiledTexture();
+			InitializeTiledTexture(tiledTexture);
 		}
 		
 		private void Cleanup()
@@ -60,19 +57,26 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			Layer = null;
 		}
 		
-		protected Layer Layer;
+		private Layer Layer;
 		
 		#endregion
 		
 		#region TiledTexture
 		
-		private void InitializeTiledTexture()
+		private void InitializeTiledTexture(TiledTexture tiledTexture)
 		{
+			if(tiledTexture == null)
+				throw new ArgumentNullException();
+			
+			TiledTexture = tiledTexture;
 		}
 		
 		private void CleanupTiledTexture()
 		{
+			
 		}
+		
+		private TiledTexture TiledTexture;
 		
 		#endregion
 		
@@ -82,7 +86,50 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		#region Blend Mode
 		#endregion
 		
-		#region Drawables
+		#region Sprites
+		
+		private void InitializeSprites()
+		{
+			Sprites = new List<SuperSimpleSprite>();
+		}
+		
+		private void CleanupSprites()
+		{
+			SuperSimpleSprite[] sprites = Sprites.ToArray();
+			
+			foreach(SuperSimpleSprite sprite in sprites)
+				sprite.Dispose();
+			Sprites.Clear();
+			
+			Sprites = null;
+		}
+		
+		private List<SuperSimpleSprite> Sprites;
+		
+		internal void AddSprite(SuperSimpleSprite sprite)
+		{
+			if(sprite == null)
+				throw new ArgumentNullException();
+			
+			if(Sprites.Contains(sprite))
+				throw new ArgumentException();
+			
+			Sprites.Add(sprite);
+			Layer.DrawEngine2d.SetRenderRequired();
+		}
+		
+		internal void RemoveSprite(SuperSimpleSprite sprite)
+		{
+			if(sprite == null)
+				throw new ArgumentNullException();
+			
+			if(!Sprites.Contains(sprite))
+				throw new ArgumentException();
+			
+			Sprites.Remove(sprite);
+			Layer.DrawEngine2d.SetRenderRequired();
+		}
+		
 		#endregion
 	}
 }

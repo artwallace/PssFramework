@@ -5,6 +5,8 @@ using PsmFramework.Modes;
 using PsmFramework.Modes.FixedFront2d;
 using Sce.Pss.Core;
 using Sce.Pss.HighLevel.GameEngine2D.Base;
+using PsmFramework.Engines.PadServer;
+using Sce.Pss.Core.Input;
 
 namespace Demo.Fireworks
 {
@@ -29,10 +31,17 @@ namespace Demo.Fireworks
 		protected override void Initialize()
 		{
 			EnableDebugInfo();
+			
+			//TODO: For testing PadServer. Remove later.
+			gpadReader = new GamepadReader(ControllerTypes.SonySixaxis);
+			gpadReader.OpenChannel();
 		}
 		
 		protected override void Cleanup()
 		{
+			//TODO: For testing PadServer. Remove later.
+			gpadReader.CloseChannel();
+			gpadReader.Dispose();
 		}
 		
 		public override void Update()
@@ -50,7 +59,13 @@ namespace Demo.Fireworks
 				else
 					Mgr.SetRunStateToRunning();
 			}
+			
+			//TODO: For testing PadServer. Remove later.
+			GamePadData data = gpadReader.GetData();
 		}
+		
+		//TODO: For testing PadServer. Remove later.
+		private GamepadReader gpadReader;
 		
 		#endregion
 		

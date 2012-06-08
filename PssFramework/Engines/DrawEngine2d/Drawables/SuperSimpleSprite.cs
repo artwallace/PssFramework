@@ -3,13 +3,13 @@ using System;
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
 	//This is not a Drawable, the group is.
-	public class SuperSimpleSprite : IDisposable
+	public sealed class SuperSimpleSprite : IDisposable
 	{
 		#region Constructor, Dispose
 		
-		public SuperSimpleSprite()
+		public SuperSimpleSprite(SuperSimpleSpriteGroup spriteGroup)
 		{
-			Initialize();
+			Initialize(spriteGroup);
 		}
 		
 		public void Dispose()
@@ -21,8 +21,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize()
+		private void Initialize(SuperSimpleSpriteGroup spriteGroup)
 		{
+			InitializeSpriteGroup(spriteGroup);
 		}
 		
 		private void Cleanup()
@@ -41,6 +42,27 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		{
 		}
 		
+		#endregion
+		
+		#region SpriteGroup
+		
+		private void InitializeSpriteGroup(SuperSimpleSpriteGroup spriteGroup)
+		{
+			SpriteGroup = spriteGroup;
+			SpriteGroup.AddSprite(this);
+		}
+		
+		private void CleanupSpriteGroup()
+		{
+			SpriteGroup = null;
+			SpriteGroup.RemoveSprite(this);
+		}
+		
+		private SuperSimpleSpriteGroup SpriteGroup;
+		
+		#endregion
+		
+		#region Position
 		#endregion
 	}
 }

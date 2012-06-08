@@ -149,7 +149,7 @@ namespace PsmFramework.Modes.TopDown2d
 		
 		public void GenerateRandomHeading()
 		{
-			SetHeading(new Vector2(Mgr.RandomGenerator.NextFloat(-1f, 1f), Mgr.RandomGenerator.NextFloat(-1f, 1f)));
+			SetHeading(Mgr.RandomGenerator.NextVector2(-1f, 1f));
 		}
 		
 		public void AddRotationToHeading(Single rotation)

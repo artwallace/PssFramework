@@ -7,8 +7,6 @@ using Sce.Pss.Core.Environment;
 using Sce.Pss.Core.Graphics;
 using Sce.Pss.Core.Imaging;
 using Sce.Pss.Core.Input;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
-using PssMath = Sce.Pss.HighLevel.GameEngine2D.Base.Math;
 
 namespace PsmFramework
 {
@@ -741,8 +739,8 @@ namespace PsmFramework
 		
 		#region Random Numbers
 		
-		private PssMath.RandGenerator _RandomGenerator = new PssMath.RandGenerator(System.Environment.TickCount);
-		public PssMath.RandGenerator RandomGenerator { get { return _RandomGenerator; } }
+		private RandomGenerator _RandomGenerator = new RandomGenerator(System.Environment.TickCount);
+		public RandomGenerator RandomGenerator { get { return _RandomGenerator; } }
 		
 		#endregion
 	}

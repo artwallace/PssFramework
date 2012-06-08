@@ -4,7 +4,7 @@ using PsmFramework.Engines.DrawEngine2d.Drawables;
 
 namespace PsmFramework.Engines.DrawEngine2d
 {
-	public class Layer : IDisposable
+	public sealed class Layer : IDisposable
 	{
 		#region Constructor, Dispose
 		
@@ -77,7 +77,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			DrawEngine2d = null;
 		}
 		
-		public DrawEngine2d DrawEngine2d;
+		internal DrawEngine2d DrawEngine2d;
 		
 		#endregion
 		
@@ -101,7 +101,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private List<IDrawable> Items { get; set; }
 		
-		public void AddDrawable(IDrawable item)
+		internal void AddDrawable(IDrawable item)
 		{
 			if(item == null)
 				throw new ArgumentNullException();
@@ -113,7 +113,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			DrawEngine2d.SetRenderRequired();
 		}
 		
-		public void RemoveDrawable(IDrawable item)
+		internal void RemoveDrawable(IDrawable item)
 		{
 			if(item == null)
 				throw new ArgumentNullException();

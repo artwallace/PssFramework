@@ -64,7 +64,7 @@ namespace PsmFramework.Modes.TopDown2d
 			if (needNewHeading)
 				Actor.GenerateRandomHeading();
 			if (needNewDuration)
-				DurationInTicks = Mgr.RandomGenerator.Random.Next(MinDuration, MaxDuration + 1);
+				DurationInTicks = Mgr.RandomGenerator.RandomBase.Next(MinDuration, MaxDuration + 1);
 			
 			//TODO: Add Impulse!!!!
 			

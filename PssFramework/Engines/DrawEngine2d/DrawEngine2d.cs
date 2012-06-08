@@ -6,7 +6,7 @@ using Sce.Pss.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d
 {
-	public class DrawEngine2d : IDisposable
+	public sealed class DrawEngine2d : IDisposable
 	{
 		#region Constructor, Dispose
 		
@@ -152,13 +152,19 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private SortedList<Int32, Layer> Layers { get; set; }
 		
-		public Layer CreateLayer(Int32 zIndex)
+		public Layer GetOrCreateLayer(Int32 zIndex)
 		{
-			return new Layer(this, zIndex);
+			if(Layers.ContainsKey(zIndex))
+				return Layers[zIndex];
+			else
+				return new Layer(this, zIndex);
 		}
 		
-		public void AddLayer(Layer layer, Int32 zIndex)
+		internal void AddLayer(Layer layer, Int32 zIndex)
 		{
+			if(layer == null)
+				throw new ArgumentNullException();
+			
 			if(Layers.ContainsValue(layer))
 				throw new ArgumentException("Duplicate layer added to DrawEngine2d.");
 			
@@ -168,6 +174,9 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		public void RemoveLayer(Layer layer)
 		{
+			if(layer == null)
+				throw new ArgumentNullException();
+			
 			if(!Layers.ContainsValue(layer))
 				throw new ArgumentException("Unknown layer removal requested from DrawEngine2d.");
 			
@@ -177,9 +186,9 @@ namespace PsmFramework.Engines.DrawEngine2d
 			Layers.Remove(zIndex);
 		}
 		
-		public Layer GetLayer(Int32 zIndex)
+		public Boolean CheckIfLayerExists(Int32 zIndex)
 		{
-			return Layers[zIndex];
+			return Layers.ContainsKey(zIndex);
 		}
 		
 		#endregion
