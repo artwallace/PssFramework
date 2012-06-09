@@ -183,13 +183,13 @@ namespace PsmFramework.Engines.PadServer
 			{
 			case ControllerTypes.SonySixaxis:
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Triangle;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Triangle;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Circle;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Circle;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Cross;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Cross;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Square;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Square;
 				if(ReadNextRawButtonValue())
 				{
 					//L2, do nothing.
@@ -197,16 +197,15 @@ namespace PsmFramework.Engines.PadServer
 				if(ReadNextRawButtonValue())
 				{
 					//R2, do nothing.
-					throw new InvalidOperationException();
 				}
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.L;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.L;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.R;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.R;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Start;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Start;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Select;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Select;
 				if(ReadNextRawButtonValue())
 				{
 					//L3, do nothing.
@@ -216,24 +215,24 @@ namespace PsmFramework.Engines.PadServer
 					//R3, do nothing.
 				}
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Left;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Left;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Right;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Right;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Up;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Up;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Down;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Down;
 				break;
 				
 			case ControllerTypes.MotionInJoy:
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Triangle;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Triangle;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Circle;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Circle;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Cross;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Cross;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Square;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Square;
 				if(ReadNextRawButtonValue())
 				{
 					//L2, do nothing.
@@ -241,16 +240,15 @@ namespace PsmFramework.Engines.PadServer
 				if(ReadNextRawButtonValue())
 				{
 					//R2, do nothing.
-					throw new InvalidOperationException();
 				}
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.L;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.L;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.R;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.R;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Select;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Select;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Start;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Start;
 				if(ReadNextRawButtonValue())
 				{
 					//L3, do nothing.
@@ -260,13 +258,13 @@ namespace PsmFramework.Engines.PadServer
 					//R3, do nothing.
 				}
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Left;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Left;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Right;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Right;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Up;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Up;
 				if(ReadNextRawButtonValue())
-					gpd.Buttons = GamePadButtons.Down;
+					gpd.Buttons = gpd.Buttons | GamePadButtons.Down;
 				break;
 			
 			default:
