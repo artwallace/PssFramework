@@ -70,18 +70,19 @@ namespace PsmFramework.Engines.DrawEngine2d
 				throw new ArgumentException();
 			
 			Path = path;
-			DrawEngine2d.GetOrCreateTexture2D(this, Path);
+			Texture = DrawEngine2d.GetOrCreateTexture2D(this, Path);
 		}
 		
 		private void CleanupTexture2D()
 		{
 			DrawEngine2d.RemoveTexture2D(this, Path);
 			Texture = null;
+			Path = null;
 		}
 		
 		public String Path { get; private set; }
 		
-		private Texture2D Texture;
+		public Texture2D Texture { get; private set; }
 		
 		#endregion
 		
@@ -158,6 +159,9 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		public Boolean Equals(TiledTexture o)
 		{
+			if(o == null)
+				return false;
+			
 			return
 				(Path == o.Path) &&
 				(Columns == o.Columns) &&
@@ -173,12 +177,18 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		public static Boolean operator ==(TiledTexture o1, TiledTexture o2)
 		{
+			if (Object.ReferenceEquals(o1, o2))
+				return true;
+			
+			if (((Object)o1 == null) || ((Object)o2 == null))
+				return false;
+			
 			return o1.Equals(o2);
 		}
 		
 		public static Boolean operator !=(TiledTexture o1, TiledTexture o2)
 		{
-			return !(o1.Equals(o2));
+			return !(o1 == o2);
 		}
 		
 		#endregion

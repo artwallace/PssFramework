@@ -167,7 +167,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>
-		/// Calculate the camera transform marix (positioning matrix), as a Matrix4.
+		/// Calculate the camera transform matrix (positioning matrix), as a Matrix4.
 		/// GetTransform().InverseOrthonormal() is what you push on the view matrix stack.
 		/// Return an orthonormal matrix.
 		/// </summary>

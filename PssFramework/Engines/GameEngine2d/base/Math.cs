@@ -138,8 +138,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>Fast build of a Matrix3 TRS matrix.</summary>
-		public static void TranslationRotationScale( ref Matrix3 ret
-													 , Vector2 translation, Vector2 rotation, Vector2 scale )
+		public static void TranslationRotationScale( ref Matrix3 ret, Vector2 translation, Vector2 rotation, Vector2 scale )
 		{
 			ret.X = new Vector3( rotation.X * scale.X, rotation.Y * scale.X, 0.0f );
 			ret.Y = new Vector3( -rotation.Y * scale.Y, rotation.X * scale.Y, 0.0f );

@@ -1,9 +1,12 @@
 using System;
-using Sce.Pss.Core;
 
 namespace PsmFramework.Engines.DrawEngine2d
 {
-	public class Camera
+	public enum RenderMode
 	{
+		All,
+		OnlyOnScreen,
+		OnlyChanged
 	}
 }
+

@@ -35,7 +35,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		/// </summary>
 		public TextureInfo TextureInfo;
 		/// <summary>The shader.</summary>
-		public SpriteRenderer.ISpriteShader Shader = (SpriteRenderer.ISpriteShader)Director.Instance.SpriteRenderer.DefaultShader;
+		public ISpriteShader Shader = (ISpriteShader)Director.Instance.SpriteRenderer.DefaultShader;
 		/// <summary>Return the dimensions of this sprite in pixels.</summary>
 		abstract public Vector2 CalcSizeInPixels();
 
@@ -56,7 +56,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 			Common.Assert( TextureInfo != null, "Sprite's TextureInfo is null" );
 			Common.Assert( Shader != null, "Sprite's Shader is null" );
 
-//			base.Draw(); // AdHocDraw
+			//base.Draw(); // AdHocDraw
 
 			////Common.Profiler.Push("SpriteBase.Draw");
 

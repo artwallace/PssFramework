@@ -38,7 +38,6 @@ namespace PsmFramework
 			InitializePerformance();
 			InitializeTimers();
 			InitializeFpsGovernor(maxFps);
-			//InitializeTextures();
 			InitializeModes();
 			InitializeInput();
 		}
@@ -49,7 +48,6 @@ namespace PsmFramework
 			CleanupOptions();
 			CleanupPerformance();
 			CleanupModes();
-			//CleanupTextures();
 			CleanupGraphics();
 		}
 		
@@ -164,11 +162,6 @@ namespace PsmFramework
 		
 		#region Graphics
 		
-		public GraphicsContext GraphicsContext { get; private set; }
-		public Single ScreenWidth { get; private set; }
-		public Single ScreenHeight { get; private set; }
-		public ImageRect ScreenRectangle { get; private set; }
-		
 		private void InitializeGraphics(GraphicsContext gc)
 		{
 			GraphicsContext = gc;
@@ -183,19 +176,14 @@ namespace PsmFramework
 			GraphicsContext = null;
 		}
 		
+		public GraphicsContext GraphicsContext { get; private set; }
+		public Single ScreenWidth { get; private set; }
+		public Single ScreenHeight { get; private set; }
+		public ImageRect ScreenRectangle { get; private set; }
+		
 		#endregion
 		
 		#region Performance
-		
-		private Stopwatch PerformanceTimer;
-		
-		public Int64 UpdateTicks { get; private set; }
-		public Int64 RenderTicks { get; private set; }
-		
-		private Int32 CurrentSec;
-		private Int32 LastSecTracked;
-		private Int32 CurrentAppLoopsPerSec;
-		public Int32 AppLoopsPerSec { get; private set; }
 		
 		private void InitializePerformance()
 		{
@@ -216,6 +204,16 @@ namespace PsmFramework
 			PerformanceTimer = null;
 		}
 		
+		private Stopwatch PerformanceTimer;
+		
+		public Int64 UpdateTicks { get; private set; }
+		public Int64 RenderTicks { get; private set; }
+		
+		private Int32 CurrentSec;
+		private Int32 LastSecTracked;
+		private Int32 CurrentAppLoopsPerSec;
+		public Int32 AppLoopsPerSec { get; private set; }
+		
 		private void CountFps()
 		{
 			CurrentSec = DateTime.Now.Second;
@@ -232,11 +230,6 @@ namespace PsmFramework
 		#endregion
 		
 		#region Fps Governor
-		
-		private FpsPresets DefaultFpsLimit;
-		private FpsPresets PausedFpsLimit;
-		private FpsPresets CurrentFpsLimit;
-		private Int32 NextUpdate;
 		
 		public void InitializeFpsGovernor(FpsPresets defaultFpsLimit)
 		{
@@ -261,19 +254,14 @@ namespace PsmFramework
 			}
 		}
 		
+		private FpsPresets DefaultFpsLimit;
+		private FpsPresets PausedFpsLimit;
+		private FpsPresets CurrentFpsLimit;
+		private Int32 NextUpdate;
+		
 		#endregion
 		
 		#region Timers
-		
-		//should be same as since LastUpdate except when paused.
-		private Int32 LastLoopPass;
-		public Int32 TicksSinceLastLoopPass { get; private set; }
-		
-		private Int32 LastUpdate;
-		public Int32 TicksSinceLastUpdate { get; private set; }
-		public Single TicksSinceLastUpdateF { get { return (Single)TicksSinceLastUpdate; } }
-		
-		private Int32 PauseLength;
 		
 		public void InitializeTimers()
 		{
@@ -285,6 +273,16 @@ namespace PsmFramework
 			
 			PauseLength = 0;
 		}
+		
+		//should be same as since LastUpdate except when paused.
+		private Int32 LastLoopPass;
+		public Int32 TicksSinceLastLoopPass { get; private set; }
+		
+		private Int32 LastUpdate;
+		public Int32 TicksSinceLastUpdate { get; private set; }
+		public Single TicksSinceLastUpdateF { get { return (Single)TicksSinceLastUpdate; } }
+		
+		private Int32 PauseLength;
 		
 		public void RecalcTimers()
 		{
@@ -623,17 +621,6 @@ namespace PsmFramework
 		
 		#region Modes
 		
-		public delegate ModeBase CreateModeDelegate(AppManager mgr);
-		
-		private CreateModeDelegate NextModeFactory;
-		
-		private const Int32 cMinTicksBetweenModeChanges = 100;
-		private Int32 LastModeChange;
-		
-		public ModeBase PreviousMode { get; private set; }
-		public ModeBase CurrentMode { get; private set; }
-		public ModeBase ReturnMode { get; private set; }
-		
 		private void InitializeModes()
 		{
 			PreviousMode = null;
@@ -661,6 +648,17 @@ namespace PsmFramework
 				ReturnMode = null;
 			}
 		}
+		
+		public delegate ModeBase CreateModeDelegate(AppManager mgr);
+		
+		private CreateModeDelegate NextModeFactory;
+		
+		private const Int32 cMinTicksBetweenModeChanges = 100;
+		private Int32 LastModeChange;
+		
+		public ModeBase PreviousMode { get; private set; }
+		public ModeBase CurrentMode { get; private set; }
+		public ModeBase ReturnMode { get; private set; }
 		
 		public Boolean ModeChangeAllowed
 		{
@@ -722,8 +720,6 @@ namespace PsmFramework
 		
 		#region Options
 		
-		public AppOptionsBase Options { get; private set; }
-		
 		private void InitializeOptions(AppOptionsBase options)
 		{
 			Options = options;
@@ -734,6 +730,8 @@ namespace PsmFramework
 			Options.Dispose();
 			Options = null;
 		}
+		
+		public AppOptionsBase Options { get; private set; }
 		
 		#endregion
 		

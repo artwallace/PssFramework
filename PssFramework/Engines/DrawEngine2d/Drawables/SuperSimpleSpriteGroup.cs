@@ -1,10 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using PsmFramework.Engines.DrawEngine2d.Shaders;
+using PsmFramework.Engines.DrawEngine2d.Support;
+using Sce.Pss.Core;
+using Sce.Pss.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
 	public sealed class SuperSimpleSpriteGroup : IDisposable, IDrawable
 	{
+		//This class is a mess, just used for testing and learning OpenGL.
+		//Eventually, a barebones spritegroup that doesn't support rotation or scaling
+		// will be added for background tiles and simple sprites. Will allow for faster
+		// culling calcs and less matrix calcs.
+		//This class will evolve into a more advanced sprite class with more
+		// complicated culling due to rotation and scaling.
+		//A lot of the calcs need to be moved to the sprite class and only recalced
+		// when the props change.
+		
 		#region Constructor, Dispose
 		
 		public SuperSimpleSpriteGroup(Layer layer, TiledTexture tiledTexture)
@@ -24,12 +38,36 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		private void Initialize(Layer layer, TiledTexture tiledTexture)
 		{
 			InitializeLayer(layer);
+			InitializeSprites();
 			InitializeTiledTexture(tiledTexture);
+			
+			InitializeVertices();
+			InitializeIndices();
+			InitializeTextureCoordinates();
+			InitializeColor();
+			InitializeShaderProgram();
+			InitializeVertexBuffer();
+			
+			InitializeScalingMatrixCache();
+			InitializeRotationMatrixCache();
+			InitializeTransformationMatrixCache();
 		}
 		
 		private void Cleanup()
 		{
+			CleanupScalingMatrixCache();
+			CleanupRotationMatrixCache();
+			CleanupTransformationMatrixCache();
+			
+			CleanupVertexBuffer();
+			CleanupShaderProgram();
+			CleanupColor();
+			CleanupTextureCoordinates();
+			CleanupIndices();
+			CleanupVertices();
+			
 			CleanupTiledTexture();
+			CleanupSprites();
 			CleanupLayer();
 		}
 		
@@ -37,8 +75,41 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Render
 		
+		private Stopwatch TestTimer = new Stopwatch();
+		
 		public void Render()
 		{
+			//Need to test how caching matrix calcs affects performance.
+			//Could be a waste of time.
+			//Could be better to recalc matrix in sprite when
+			// position, angle and scale are changed and store it there.
+			TestTimer.Start();
+			
+			//Set up the drawing
+			
+			//TODO: These need to be changed as little as possible, as seen in GOSLlib.
+			Layer.DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
+			Layer.DrawEngine2d.GraphicsContext.SetShaderProgram(ShaderProgram);
+			Layer.DrawEngine2d.GraphicsContext.SetTexture(0, TiledTexture.Texture);
+			
+			foreach(SuperSimpleSprite sprite in Sprites)
+			{
+				Matrix4 scaleMatrix = GetScalingMatrix(sprite.Scale);
+				Matrix4 rotMatrix = GetRotationMatrix(sprite.Rotation);
+				Matrix4 transMatrix = GetTranslationMatrix(sprite.Position.X, sprite.Position.Y, sprite.Scale, sprite.Rotation);
+				Matrix4 modelMatrix = transMatrix * rotMatrix * scaleMatrix;
+				Matrix4 worldViewProj = Layer.DrawEngine2d.ProjectionMatrix * Layer.DrawEngine2d.ModelViewMatrix * modelMatrix;
+				
+				ShaderProgram.SetUniformValue(0, ref worldViewProj);
+				
+				//TODO: this needs to be changed to be an array of VBOs, like ge2d.
+				Layer.DrawEngine2d.GraphicsContext.DrawArrays(DrawMode.TriangleStrip, 0, IndexCount);
+			}
+			
+			//Clean up the drawing
+			//
+			
+			TestTimer.Stop();
 		}
 		
 		#endregion
@@ -59,31 +130,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private Layer Layer;
 		
-		#endregion
-		
-		#region TiledTexture
-		
-		private void InitializeTiledTexture(TiledTexture tiledTexture)
-		{
-			if(tiledTexture == null)
-				throw new ArgumentNullException();
-			
-			TiledTexture = tiledTexture;
-		}
-		
-		private void CleanupTiledTexture()
-		{
-			
-		}
-		
-		private TiledTexture TiledTexture;
-		
-		#endregion
-		
-		#region Color
-		#endregion
-		
-		#region Blend Mode
 		#endregion
 		
 		#region Sprites
@@ -128,6 +174,532 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			
 			Sprites.Remove(sprite);
 			Layer.DrawEngine2d.SetRenderRequired();
+		}
+		
+		#endregion
+		
+		#region TiledTexture
+		
+		private void InitializeTiledTexture(TiledTexture tiledTexture)
+		{
+			if(tiledTexture == null)
+				throw new ArgumentNullException();
+			
+			TiledTexture = tiledTexture;
+			
+			Layer.DrawEngine2d.RegisterTiledTextureUser(this, TiledTexture);
+		}
+		
+		private void CleanupTiledTexture()
+		{
+			Layer.DrawEngine2d.UnregisterTiledTextureUser(this, TiledTexture);
+		}
+		
+		private TiledTexture TiledTexture;
+		
+		#endregion
+		
+		#region Color
+		
+		#endregion
+		
+		#region Blend Mode
+		
+		#endregion
+		
+		#region Vertex Rendering Order Indices
+		
+		private void InitializeIndices()
+		{
+			Indices = new UInt16[4];
+			Indices[0] = 0;
+			Indices[1] = 1;
+			Indices[2] = 2;
+			Indices[3] = 3;
+		}
+		
+		private void CleanupIndices()
+		{
+			Indices = new UInt16[0];
+		}
+		
+		private const Int32 IndexCount = 4;
+		private UInt16[] Indices;
+		
+		#endregion
+		
+		#region Vertex Coordinates
+		
+		private void InitializeVertices()
+		{
+			Vertices = new Single[VertexCount * 3];
+			
+			//TODO: these are temporary, for testing.
+			VertexCoordinates_0_TopLeft = new Vector2(0.0f, 0.0f);
+			VertexCoordinates_1_BottomLeft = new Vector2(0.0f, 1.0f);
+			VertexCoordinates_2_TopRight = new Vector2(1.0f, 0.0f);
+			VertexCoordinates_3_BottomRight = new Vector2(1.0f, 1.0f);
+		}
+		
+		private void CleanupVertices()
+		{
+			Vertices = new Single[0];
+		}
+		
+		private Single[] Vertices;
+		
+		private const Int32 VertexCount = 4;
+		
+		private const Single VertexZ = 0.0f;
+		
+		private Vector2 VertexCoordinates_0_TopLeft
+		{
+			get
+			{
+				return new Vector2(Vertices[0], Vertices[1]);
+			}
+			set
+			{
+				Vertices[0] = value.X;
+				Vertices[1] = value.Y;
+				Vertices[2] = VertexZ;
+			}
+		}
+		
+		private Vector2 VertexCoordinates_1_BottomLeft
+		{
+			get
+			{
+				return new Vector2(Vertices[3], Vertices[4]);
+			}
+			set
+			{
+				Vertices[3] = value.X;
+				Vertices[4] = value.Y;
+				Vertices[5] = VertexZ;
+			}
+		}
+		
+		private Vector2 VertexCoordinates_2_TopRight
+		{
+			get
+			{
+				return new Vector2(Vertices[6], Vertices[7]);
+			}
+			set
+			{
+				Vertices[6] = value.X;
+				Vertices[7] = value.Y;
+				Vertices[8] = VertexZ;
+			}
+		}
+		
+		private Vector2 VertexCoordinates_3_BottomRight
+		{
+			get
+			{
+				return new Vector2(Vertices[9], Vertices[10]);
+			}
+			set
+			{
+				Vertices[9] = value.X;
+				Vertices[10] = value.Y;
+				Vertices[11] = VertexZ;
+			}
+		}
+		
+		#endregion
+		
+		#region Texture Coordinates
+		
+		private void InitializeTextureCoordinates()
+		{
+			TextureCoordinates = new Single[4 * 2];
+			
+			//TODO: these are temporary, for testing.
+			TextureCoordinates_0_TopLeft = new Vector2(0.0f, 0.0f);
+			TextureCoordinates_1_BottomLeft = new Vector2(0.0f, 1.0f);
+			TextureCoordinates_2_TopRight = new Vector2(1.0f, 0.0f);
+			TextureCoordinates_3_BottomRight = new Vector2(1.0f, 1.0f);
+		}
+		
+		private void CleanupTextureCoordinates()
+		{
+			TextureCoordinates = new Single[0];
+		}
+		
+		private Single[] TextureCoordinates;
+		
+		private Vector2 TextureCoordinates_0_TopLeft
+		{
+			get
+			{
+				return new Vector2(TextureCoordinates[0], TextureCoordinates[1]);
+			}
+			set
+			{
+				TextureCoordinates[0] = value.X;
+				TextureCoordinates[1] = value.Y;
+			}
+		}
+		private Vector2 TextureCoordinates_1_BottomLeft
+		{
+			get
+			{
+				return new Vector2(TextureCoordinates[2], TextureCoordinates[3]);
+			}
+			set
+			{
+				TextureCoordinates[2] = value.X;
+				TextureCoordinates[3] = value.Y;
+			}
+		}
+		private Vector2 TextureCoordinates_2_TopRight
+		{
+			get
+			{
+				return new Vector2(TextureCoordinates[4], TextureCoordinates[5]);
+			}
+			set
+			{
+				TextureCoordinates[4] = value.X;
+				TextureCoordinates[5] = value.Y;
+			}
+		}
+		private Vector2 TextureCoordinates_3_BottomRight
+		{
+			get
+			{
+				return new Vector2(TextureCoordinates[6], TextureCoordinates[7]);
+			}
+			set
+			{
+				TextureCoordinates[6] = value.X;
+				TextureCoordinates[7] = value.Y;
+			}
+		}
+		
+		#endregion
+		
+		#region Color
+		
+		private void InitializeColor()
+		{
+			VertexColors = new Single[VertexCount * 4];
+			Color = Colors.White;
+		}
+		
+		private void CleanupColor()
+		{
+			VertexColors = new Single[0];
+		}
+		
+		private Single[] VertexColors;
+		
+		private Color _Color;
+		private Color Color
+		{
+			get { return _Color; }
+			set
+			{
+				_Color = value;
+				
+				VertexColors[0] = _Color.R;
+				VertexColors[1] = _Color.G;
+				VertexColors[2] = _Color.B;
+				VertexColors[3] = _Color.A;
+				
+				VertexColors[4] = _Color.R;
+				VertexColors[5] = _Color.G;
+				VertexColors[6] = _Color.B;
+				VertexColors[7] = _Color.A;
+				
+				VertexColors[8] = _Color.R;
+				VertexColors[9] = _Color.G;
+				VertexColors[10] = _Color.B;
+				VertexColors[11] = _Color.A;
+				
+				VertexColors[12] = _Color.R;
+				VertexColors[13] = _Color.G;
+				VertexColors[14] = _Color.B;
+				VertexColors[15] = _Color.A;
+			}
+		}
+		
+		#endregion
+		
+		#region Vertex Buffer
+		
+		private void InitializeVertexBuffer()
+		{
+			VertexBuffer = new VertexBuffer(VertexCount, IndexCount, VertexFormat.Float3, VertexFormat.Float2, VertexFormat.Float4);
+			
+			VertexBuffer.SetVertices(0, Vertices);
+			VertexBuffer.SetVertices(1, TextureCoordinates);
+			VertexBuffer.SetVertices(2, VertexColors);
+			VertexBuffer.SetIndices(Indices);
+		}
+		
+		private void CleanupVertexBuffer()
+		{
+			VertexBuffer.Dispose();
+			VertexBuffer = null;
+		}
+		
+		private VertexBuffer VertexBuffer;
+		
+		#endregion
+		
+		#region Shader Program
+		
+		private void InitializeShaderProgram()
+		{
+			ShaderProgram = ShaderLoader.Load(ShaderPaths.Sprite);
+			ShaderProgram.SetUniformBinding(ShaderBindingIndex, ShaderBindingName);
+		}
+		
+		private void CleanupShaderProgram()
+		{
+			ShaderProgram.Dispose();
+			ShaderProgram = null;
+		}
+		
+		private ShaderProgram ShaderProgram;
+		
+		private const Int32 ShaderBindingIndex = 0;
+		private const String ShaderBindingName = "u_WorldMatrix";
+		
+		#endregion
+		
+		#region Scaling Matrix Cache
+		
+		private void InitializeScalingMatrixCache()
+		{
+			ScalingMatrixCacheIndex = new Queue<Single>();
+			
+			ScalingMatrixCache = new Dictionary<Single, Matrix4>();
+			
+			ScalingMatrixCacheLimitFactor = 1;
+		}
+		
+		private void CleanupScalingMatrixCache()
+		{
+			ScalingMatrixCacheIndex.Clear();
+			ScalingMatrixCacheIndex = null;
+			
+			ScalingMatrixCache.Clear();
+			ScalingMatrixCache = null;
+		}
+		
+		private Queue<Single> ScalingMatrixCacheIndex;
+		private Dictionary<Single, Matrix4> ScalingMatrixCache;
+		
+		private Int32 _ScalingMatrixCacheLimitFactor;
+		public Int32 ScalingMatrixCacheLimitFactor
+		{
+			get { return _ScalingMatrixCacheLimitFactor; }
+			set
+			{
+				if(value < 1)
+					throw new ArgumentOutOfRangeException();
+				_ScalingMatrixCacheLimitFactor = value;
+			}
+		}
+		
+		public Matrix4 GetScalingMatrix(Single scale)
+		{
+			if(!ScalingMatrixCache.ContainsKey(scale))
+				GenerateScalingMatrix(scale);
+			return ScalingMatrixCache[scale];
+		}
+		
+		private void GenerateScalingMatrix(Single scale)
+		{
+			Single scaleX = TiledTexture.TileWidth * scale;
+			Single scaleY = TiledTexture.TileHeight * scale;
+			Single scaleZ = 1.0f;
+			
+			Vector3 scaleV = new Vector3(scaleX, scaleY, scaleZ);
+			
+			Matrix4 m = Matrix4.Scale(scaleV);
+			
+			//Add to cache
+			ScalingMatrixCacheIndex.Enqueue(scale);
+			ScalingMatrixCache.Add(scale, m);
+			
+			//Remove extra from cache
+			Int32 limit = GetScalingMatrixLimit();
+			while(ScalingMatrixCache.Count > limit)
+			{
+				Single old = ScalingMatrixCacheIndex.Dequeue();
+				ScalingMatrixCache.Remove(old);
+			}
+		}
+		
+		private Int32 GetScalingMatrixLimit()
+		{
+			return Sprites.Count * ScalingMatrixCacheLimitFactor;
+		}
+		
+		#endregion
+		
+		#region Rotation Matrix Cache
+		
+		private void InitializeRotationMatrixCache()
+		{
+			RotationMatrixCacheIndex = new Queue<Single>();
+			
+			RotationMatrixCache = new Dictionary<Single, Matrix4>();
+			
+			RotationMatrixCacheLimitFactor = 1;
+		}
+		
+		private void CleanupRotationMatrixCache()
+		{
+			RotationMatrixCacheIndex.Clear();
+			RotationMatrixCacheIndex = null;
+			
+			RotationMatrixCache.Clear();
+			RotationMatrixCache = null;
+		}
+		
+		private Queue<Single> RotationMatrixCacheIndex;
+		private Dictionary<Single, Matrix4> RotationMatrixCache;
+		
+		private Int32 _RotationMatrixCacheLimitFactor;
+		public Int32 RotationMatrixCacheLimitFactor
+		{
+			get { return _RotationMatrixCacheLimitFactor; }
+			set
+			{
+				if(value < 1)
+					throw new ArgumentOutOfRangeException();
+				_RotationMatrixCacheLimitFactor = value;
+			}
+		}
+		
+		public Matrix4 GetRotationMatrix(Single angle)
+		{
+			if(!RotationMatrixCache.ContainsKey(angle))
+				GenerateRotationMatrix(angle);
+			return RotationMatrixCache[angle];
+		}
+		
+		private void GenerateRotationMatrix(Single angle)
+		{
+			Single RadianAngle = DegreeToRadian(angle);
+			Matrix4 m = Matrix4.RotationZ(RadianAngle);
+			
+			//Add to cache
+			RotationMatrixCacheIndex.Enqueue(angle);
+			RotationMatrixCache.Add(angle, m);
+			
+			//Remove extra from cache
+			Int32 limit = GetRotationMatrixCacheLimit();
+			while(RotationMatrixCache.Count > limit)
+			{
+				Single old = RotationMatrixCacheIndex.Dequeue();
+				RotationMatrixCache.Remove(old);
+			}
+		}
+		
+		private Int32 GetRotationMatrixCacheLimit()
+		{
+			return Sprites.Count * RotationMatrixCacheLimitFactor;
+		}
+		
+		#endregion
+		
+		#region Transformation Matrix Cache
+		
+		//TODO: This especially seems like it should be moved to the sprite.
+		// There shouldn't be much if any benefit to a shared cache.
+		// Should just cache it in each sprite.
+		
+		private void InitializeTransformationMatrixCache()
+		{
+			TranslationMatrixCacheIndex = new Queue<SuperSimpleSpriteTranslationKey>();
+			
+			TranslationMatrixCache = new Dictionary<SuperSimpleSpriteTranslationKey, Matrix4>();
+			
+			TranslationMatrixCacheLimitFactor = 1;
+		}
+		
+		private void CleanupTransformationMatrixCache()
+		{
+			TranslationMatrixCacheIndex.Clear();
+			TranslationMatrixCacheIndex = null;
+			
+			TranslationMatrixCache.Clear();
+			TranslationMatrixCache = null;
+		}
+		
+		private Queue<SuperSimpleSpriteTranslationKey> TranslationMatrixCacheIndex;
+		private Dictionary<SuperSimpleSpriteTranslationKey, Matrix4> TranslationMatrixCache;
+		
+		private Int32 _TranslationMatrixCacheLimitFactor;
+		public Int32 TranslationMatrixCacheLimitFactor
+		{
+			get { return _TranslationMatrixCacheLimitFactor; }
+			set
+			{
+				if(value < 1)
+					throw new ArgumentOutOfRangeException();
+				_TranslationMatrixCacheLimitFactor = value;
+			}
+		}
+		
+		public Matrix4 GetTranslationMatrix(Single x, Single y, Single scale, Single angle)
+		{
+			SuperSimpleSpriteTranslationKey key = new SuperSimpleSpriteTranslationKey(x, y, scale, angle);
+			
+			if(!TranslationMatrixCache.ContainsKey(key))
+				GenerateTranslationMatrix(key);
+			return TranslationMatrixCache[key];
+		}
+		
+		private void GenerateTranslationMatrix(SuperSimpleSpriteTranslationKey key)
+		{
+			Single RadianAngle = DegreeToRadian(key.Angle);
+			
+			//TODO: Verify that these formulas are correct.
+			Single x = key.X + (key.Scale * (FMath.Sin(RadianAngle) - FMath.Cos(RadianAngle)));
+			Single y = key.Y + (key.Scale * (FMath.Cos(RadianAngle) + FMath.Sin(RadianAngle)));
+			Single z = 0.0f;
+			
+			Vector3 transV = new Vector3(x, y, z);
+			
+			Matrix4 m = Matrix4.Translation(transV);
+			
+			//Add to cache
+			TranslationMatrixCacheIndex.Enqueue(key);
+			TranslationMatrixCache.Add(key, m);
+			
+			//Remove extra from cache
+			Int32 limit = GetTranslationMatrixCacheLimit();
+			while(TranslationMatrixCache.Count > limit)
+			{
+				SuperSimpleSpriteTranslationKey old = TranslationMatrixCacheIndex.Dequeue();
+				TranslationMatrixCache.Remove(old);
+			}
+		}
+		
+		private Int32 GetTranslationMatrixCacheLimit()
+		{
+			return Sprites.Count * TranslationMatrixCacheLimitFactor;
+		}
+		
+		#endregion
+		
+		#region Angle utilities
+		
+		//TODO: Move to a generic math class.
+		
+		//TODO: Verify that this formula is correct.
+		private static Single DegreeToRadianValue = (Single)(Math.PI / 180D);
+		private static Single DegreeToRadian(Single angle)
+		{
+			return angle * DegreeToRadianValue;
 		}
 		
 		#endregion

@@ -171,15 +171,13 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		}
 	}
 
-	/// <summary></summary>
 	public delegate float DTween( float t );
 
 	/// <summary>
 	/// TransitionSolidFade fades the current scene to black before fading the
 	/// next scene in.
 	/// </summary>
-	public class TransitionSolidFade
-	: TransitionFadeBase
+	public class TransitionSolidFade : TransitionFadeBase
 	{
 //		public Vector4 Color = Colors.Black; // fixme: need lerp shader, not just mul
 
@@ -285,7 +283,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		/// <summary></summary>
 		public DTween Tween = ( x ) => GameEngine2D.Base.Math.PowEaseOut( x, 4.0f );
 
-		public class SpriteShaderDirFade : SpriteRenderer.ISpriteShader, System.IDisposable
+		public class SpriteShaderDirFade : ISpriteShader, System.IDisposable
 		{
 			public ShaderProgram m_shader_program;
 
@@ -383,7 +381,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 				Vector4 plane = new Vector4( GameEngine2D.Base.Math.Lerp( plane_start, plane_end, alpha ), plane_normal );
 				m_shader.SetPlane( ref plane );
 				m_shader.SetOffsetRcp( 1.0f / Width );
-				Director.Instance.SpriteRenderer.BeginSprites( m_previous_scene_render, (SpriteRenderer.ISpriteShader)m_shader, 1 );
+				Director.Instance.SpriteRenderer.BeginSprites( m_previous_scene_render, (ISpriteShader)m_shader, 1 );
 				Director.Instance.SpriteRenderer.AddSprite( ref pos, ref uv );
 				Director.Instance.SpriteRenderer.EndSprites();
 			}

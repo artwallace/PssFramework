@@ -42,7 +42,8 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			#if IMMEDIATE_MODE_QUADS_USES_INDEXING
 			{
 				int p = Math.Log2( (int)max_quads * 4 );
-				if ( ( 1 << p ) < max_quads * 4 ) ++p;
+				if ( ( 1 << p ) < max_quads * 4 )
+					++p;
 				max_quads = (uint)( ( 1 << p ) / 4 );
 			}
 			#else // #if IMMEDIATE_MODE_QUADS_USES_INDEXING
@@ -102,12 +103,13 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <param name="num_quads">The maximum number of quads you intend to add.</param>
 		public void ImmBeginQuads( uint num_quads )
 		{
-			m_imm.ImmBegin( DrawMode.Triangles, 
-							#if IMMEDIATE_MODE_QUADS_USES_INDEXING
-							(uint)(num_quads * 4) );
-							#else // #if IMMEDIATE_MODE_QUADS_USES_INDEXING
-							(uint)(num_quads * 6) );
-							#endif // #if IMMEDIATE_MODE_QUADS_USES_INDEXING
+			m_imm.ImmBegin(
+				DrawMode.Triangles, 
+				#if IMMEDIATE_MODE_QUADS_USES_INDEXING
+				(uint)(num_quads * 4) );
+				#else // #if IMMEDIATE_MODE_QUADS_USES_INDEXING
+				(uint)(num_quads * 6) );
+				#endif // #if IMMEDIATE_MODE_QUADS_USES_INDEXING
 		}
 
 		/// <summary>

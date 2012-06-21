@@ -8,37 +8,10 @@ using System;
 
 using Sce.Pss.Core;
 using Sce.Pss.Core.Graphics; // BlendMode
-using Sce.Pss.Core.Imaging;	// Font
+using Sce.Pss.Core.Imaging; // Font
 
 namespace Sce.Pss.HighLevel.GameEngine2D.Base
 {
-	/// <summary>
-	/// BlendMode wraps the blend state (BlendFunc+'enabled' bool) and provides some human friendly blend mode names.
-	/// </summary>
-	public struct BlendMode 
-	{
-		/// <summary>Blend enabled flag.</summary>
-		public bool Enabled;
-		/// <summary>Blend function.</summary>
-		public BlendFunc BlendFunc;
-		/// <summary></summary>
-		public BlendMode( bool enabled, BlendFunc blend_func )
-		{
-			Enabled = enabled;
-			BlendFunc = blend_func;
-		}
-		/// <summary>No alpha blend: dst = src</summary>
-		public static BlendMode None = new BlendMode( false, new BlendFunc( BlendFuncMode.Add, BlendFuncFactor.One, BlendFuncFactor.One ) );
-		/// <summary>Normal alpha blend: dst = lerp( dst, src, src.a )</summary>
-		public static BlendMode Normal = new BlendMode( true, new BlendFunc( BlendFuncMode.Add, BlendFuncFactor.SrcAlpha, BlendFuncFactor.OneMinusSrcAlpha ) );
-		/// <summary>Additive alpha blend: dst = dst + src</summary>
-		public static BlendMode Additive = new BlendMode( true, new BlendFunc( BlendFuncMode.Add, BlendFuncFactor.One, BlendFuncFactor.One ) );
-		/// <summary>Multiplicative alpha blend: dst = dst * src</summary>
-		public static BlendMode Multiplicative = new BlendMode( true, new BlendFunc( BlendFuncMode.Add, BlendFuncFactor.DstColor, BlendFuncFactor.Zero ) );
-		/// <summary>Premultiplied alpha blend: dst = dst * (1-src.a ) + src</summary>
-		public static BlendMode PremultipliedAlpha = new BlendMode( true, new BlendFunc( BlendFuncMode.Add, BlendFuncFactor.One, BlendFuncFactor.OneMinusSrcAlpha ) );
-	}
-
 	/// <summary>
 	/// Augment Sce.Pss.Core.Graphics.GraphicsContext with a matrix stack and a couple of other functions.
 	/// </summary>
@@ -183,9 +156,10 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		public Bounds2 GetViewportf()
 		{
 			ImageRect r = Context.GetViewport();
-			return new Bounds2( new Vector2( r.X, r.Y ) ,
-								new Vector2( r.X + r.Width ,
-											 r.Y + r.Height ) );
+			return new Bounds2(
+				new Vector2( r.X, r.Y ) ,
+				new Vector2( r.X + r.Width, r.Y + r.Height )
+				);
 		}
 
 		/// <summary>
@@ -259,62 +233,4 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			return texture;
 		}
 	}
-
-	/// <summary>
-	/// Some named colored constants.
-	/// </summary>
-	public static class Colors
-	{
-		/// <summary>0,0,0,1</summary>
-		public static Vector4 Black = new Vector4(0,0,0,1);
-		/// <summary>1,0,0,1</summary>
-		public static Vector4 Red = new Vector4(1,0,0,1);
-		/// <summary>0,1,0,1</summary>
-		public static Vector4 Green = new Vector4(0,1,0,1);
-		/// <summary>1,1,0,1</summary>
-		public static Vector4 Yellow = new Vector4(1,1,0,1);
-		/// <summary>0,0,1,1</summary>
-		public static Vector4 Blue = new Vector4(0,0,1,1);
-		/// <summary>1,0,1,1</summary>
-		public static Vector4 Magenta = new Vector4(1,0,1,1);
-		/// <summary>0,1,1,1</summary>
-		public static Vector4 Cyan = new Vector4(0,1,1,1);
-		/// <summary>1,1,1,1</summary>
-		public static Vector4 White = new Vector4(1,1,1,1);
-
-		/// <summary>0.5,1,0,1</summary>
-		public static Vector4 Lime = new Vector4(0.5f,1.0f,0.0f,1.0f);
-		/// <summary>0,0.5,1,1</summary>
-		public static Vector4 LightBlue = new Vector4(0.0f,0.5f,1.0f,1.0f);
-		/// <summary>1,0,0.5,1</summary>
-		public static Vector4 Pink = new Vector4(1.0f,0.0f,0.5f,1.0f);
-		/// <summary>1,0.5,0,1</summary>
-		public static Vector4 Orange = new Vector4(1.0f,0.5f,0.0f,1.0f);
-		/// <summary>0,1,0.5,1</summary>
-		public static Vector4 LightCyan = new Vector4(0.0f,1.0f,0.5f,1.0f);
-		/// <summary>0.5,0,1,1</summary>
-		public static Vector4 Purple = new Vector4(0.5f,0.0f,1.0f,1.0f);
-
-		/// <summary>0.05,0.05,0.05,1</summary>
-		public static Vector4 Grey05 = new Vector4(0.05f,0.05f,0.05f,1.0f);
-		/// <summary>0.1,0.1,0.1,1</summary>
-		public static Vector4 Grey10 = new Vector4(0.1f,0.1f,0.1f,1.0f);
-		/// <summary>0.2,0.2,0.2,1</summary>
-		public static Vector4 Grey20 = new Vector4(0.2f,0.2f,0.2f,1.0f);
-		/// <summary>0.3,0.3,0.3,1</summary>
-		public static Vector4 Grey30 = new Vector4(0.3f,0.3f,0.3f,1.0f);
-		/// <summary>0.4,0.4,0.4,1</summary>
-		public static Vector4 Grey40 = new Vector4(0.4f,0.4f,0.4f,1.0f);
-		/// <summary>0.5,0.5,0.5,1</summary>
-		public static Vector4 Grey50 = new Vector4(0.5f,0.5f,0.5f,1.0f);
-		/// <summary>0.6,0.6,0.6,1</summary>
-		public static Vector4 Grey60 = new Vector4(0.6f,0.6f,0.6f,1.0f);
-		/// <summary>0.7,0.7,0.7,1</summary>
-		public static Vector4 Grey70 = new Vector4(0.7f,0.7f,0.7f,1.0f);
-		/// <summary>0.8,0.8,0.8,1</summary>
-		public static Vector4 Grey80 = new Vector4(0.8f,0.8f,0.8f,1.0f);
-		/// <summary>0.9,0.9,0.9,1</summary>
-		public static Vector4 Grey90 = new Vector4(0.9f,0.9f,0.9f,1.0f);
-	}
 }
-

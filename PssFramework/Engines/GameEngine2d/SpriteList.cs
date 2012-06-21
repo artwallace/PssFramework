@@ -38,7 +38,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		/// <summary>The TextureInfo object that will be used for all sprites in the Children list.</summary>
 		public TextureInfo TextureInfo; 
 		/// <summary>The shader that will be used for all sprites in the Children list.</summary>
-		public SpriteRenderer.ISpriteShader Shader = (SpriteRenderer.ISpriteShader)Director.Instance.SpriteRenderer.DefaultShader;
+		public ISpriteShader Shader = (ISpriteShader)Director.Instance.SpriteRenderer.DefaultShader;
 
 		/// <summary>
 		/// SpriteList constructor.

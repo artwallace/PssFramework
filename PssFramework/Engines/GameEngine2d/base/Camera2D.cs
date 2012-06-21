@@ -61,15 +61,15 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			m_data.m_aspect = 1.0f;
 			m_data.m_znear = -1.0f;
 			m_data.m_zfar = 1.0f;
-
+			
 			m_push_depth = 0;
-
+			
 			m_prev_touch_state = false;
 			m_touch_state = false;
 			m_drag_mode = 0;
 			m_drag_start_pos = GameEngine2D.Base.Math._00;
 		}
-
+		
 		/// <summary>
 		/// Define 2D view by specifying a view center and the X support vector that determines scale and rotation.
 		/// The X support vector is the vector going from the center of the screen to the middle of the right

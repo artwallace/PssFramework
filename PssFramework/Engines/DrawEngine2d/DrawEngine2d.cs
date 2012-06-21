@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using PsmFramework.Engines.DrawEngine2d.Drawables;
 using PsmFramework.Engines.DrawEngine2d.Support;
+using Sce.Pss.Core;
 using Sce.Pss.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d
@@ -30,9 +31,12 @@ namespace PsmFramework.Engines.DrawEngine2d
 		private void Initialize(GraphicsContext graphicsContext)
 		{
 			InitializeGraphicsContext(graphicsContext);
+			InitializeGraphics();
 			InitializeClearColor();
+			InitializeCamera();
 			InitializeLayers();
 			InitializeRenderRequiredFlag();
+			InitializeTexture2DManager();
 			InitializeTiledTextureManager();
 			InitializeDebugRuler();
 		}
@@ -41,9 +45,12 @@ namespace PsmFramework.Engines.DrawEngine2d
 		{
 			CleanupDebugRuler();
 			CleanupTiledTextureManager();
+			CleanupTexture2DManager();
 			CleanupRenderRequiredFlag();
 			CleanupLayers();
+			CleanupCamera();
 			CleanupClearColor();
+			CleanupGraphics();
 			CleanupGraphicsContext();
 		}
 		
@@ -51,6 +58,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		#region Update, Render
 		
+		//TODO: Does DrawEngine2d really need an Update method?
 		public void Update()
 		{
 			//foreach(Layer layer in Layers.Values)
@@ -61,6 +69,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		{
 			if(!RenderRequired)
 				return;
+			ResetRenderRequired();
 			
 			GraphicsContext.Clear();
 			
@@ -68,8 +77,6 @@ namespace PsmFramework.Engines.DrawEngine2d
 				layer.Render();
 			
 			GraphicsContext.SwapBuffers();
-			
-			ResetRenderRequired();
 		}
 		
 		#endregion
@@ -92,7 +99,9 @@ namespace PsmFramework.Engines.DrawEngine2d
 			ScreenHeight = 0;
 		}
 		
-		internal GraphicsContext GraphicsContext { get; private set; }
+		//TODO: Make this private with wrappers for common functions.
+		//Prevent drawables from doing crazy stuff.
+		internal GraphicsContext GraphicsContext;
 		
 		public Single ScreenWidth { get; private set; }
 		public Single ScreenHeight { get; private set; }
@@ -122,12 +131,6 @@ namespace PsmFramework.Engines.DrawEngine2d
 				SetRenderRequired();
 			}
 		}
-		
-		#endregion
-		
-		#region Camera
-		
-		public Camera Camera { get; private set; }
 		
 		#endregion
 		
@@ -305,21 +308,18 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private Dictionary<IDrawable, TiledTexture> TiledTextureUsers;
 		
-		public TiledTexture GetOrCreateTiledTexture(IDrawable user, String path, Int32 columns = 1, Int32 rows = 1)
+		public TiledTexture GetOrCreateTiledTexture(String path, Int32 columns = 1, Int32 rows = 1)
 		{
-			return GetOrCreateTiledTextureHelper(user, path, columns, rows, RectangularArea2i.Zero);
+			return GetOrCreateTiledTextureHelper(path, columns, rows, RectangularArea2i.Zero);
 		}
 		
-		public TiledTexture GetOrCreateTiledTexture(IDrawable user, String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
+		public TiledTexture GetOrCreateTiledTexture(String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
 		{
-			return GetOrCreateTiledTextureHelper(user, path, columns, rows, sourceArea);
+			return GetOrCreateTiledTextureHelper(path, columns, rows, sourceArea);
 		}
 		
-		private TiledTexture GetOrCreateTiledTextureHelper(IDrawable user, String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
+		private TiledTexture GetOrCreateTiledTextureHelper(String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
 		{
-			if(user == null)
-				throw new ArgumentNullException();
-			
 			if(String.IsNullOrWhiteSpace(path))
 				throw new ArgumentException();
 			
@@ -335,28 +335,26 @@ namespace PsmFramework.Engines.DrawEngine2d
 					t.SourceArea == sourceArea
 					)
 				{
-					RegisterTiledTextureUser(user, t);
 					return t;
 				}
 			}
 			
 			TiledTexture tt = new TiledTexture(this, path, columns, rows, sourceArea);
-			RegisterTiledTextureUser(user, tt);
 			return tt;
 		}
 		
-		public void RemoveTiledTexture(IDrawable user, TiledTexture tiledTexture)
-		{
-			if(user == null)
-				throw new ArgumentNullException();
-			
-			if(tiledTexture == null)
-				throw new ArgumentNullException();
-			
-			UnregisterTiledTextureUser(user, tiledTexture);
-		}
+//		public void RemoveTiledTexture(IDrawable user, TiledTexture tiledTexture)
+//		{
+//			if(user == null)
+//				throw new ArgumentNullException();
+//			
+//			if(tiledTexture == null)
+//				throw new ArgumentNullException();
+//			
+//			UnregisterTiledTextureUser(user, tiledTexture);
+//		}
 		
-		private void RegisterTiledTextureUser(IDrawable user, TiledTexture tiledTexture)
+		internal void RegisterTiledTextureUser(IDrawable user, TiledTexture tiledTexture)
 		{
 			if(user == null)
 				throw new ArgumentNullException();
@@ -383,7 +381,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			}
 		}
 		
-		private void UnregisterTiledTextureUser(IDrawable user, TiledTexture tiledTexture)
+		internal void UnregisterTiledTextureUser(IDrawable user, TiledTexture tiledTexture)
 		{
 			throw new NotImplementedException();
 		}
@@ -480,6 +478,141 @@ namespace PsmFramework.Engines.DrawEngine2d
 		{
 			throw new NotImplementedException();
 		}
+		
+		#endregion
+		
+		#region OpenGL Stuff
+		
+		//http://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_2D
+		
+		//Most OpenGL programs tend to use a perspective projection matrix
+		// to transform the model-space coordinates of a cartesian model into
+		// the "view coordinate" space of the screen.
+		
+		//One of the most common matrices used for orthographic projection
+		// can be defined by a 6-tuple, (left, right, bottom, top, near, far),
+		// which defines the clipping planes. These planes form a box with
+		// the minimum corner at (left, bottom, near) and the maximum
+		// corner at (right, top, far).
+		//The box is translated so that its center is at the origin, then it is
+		// scaled to the unit cube which is defined by having a minimum corner
+		// at (-1,-1,-1) and a maximum corner at (1,1,1).
+		
+		//OpenGL has a special rule to draw fragments at the center of screen pixels,
+		// called "diamond rule" [2] [3]. Consequently, it is recommended to add a
+		// small translation in X,Y before drawing 2D sprite.
+		// glm::translate(glm::mat4(1), glm::vec3(0.375, 0.375, 0.));
+		//or
+		// glMatrixMode (GL_MODELVIEW);
+		// glLoadIdentity ();
+		// glTranslatef (0.375, 0.375, 0.);
+		
+		//http://www.opengl.org/archives/resources/faq/technical/transformations.htm#tran0030
+		
+		//OpenGL works in the following way: You start of a local coordinate system
+		// (of arbitrary units). This coordinate system is transformed to so called
+		// eye space coordinates by the modelview matrix (it is called modelview
+		// matrix, because it combinnes model and view transformations).
+		//The eye space is then transformed to clip space by the projection matrix,
+		// immediately followed by the perspective divide to obtain normalized
+		// device coordinates ( NDC{x,y,z} = Clip{x,y,z}/Clip_w ).
+		// The range [-1,1]^3 in NDC space is mapped to the viewport (x and y)
+		// and the set depth range (z).
+		//So if you leave your transformation matrices (modelview and projection)
+		// identity, then indeed the coordinate ranges [-1,1] will map to the viewport.
+		// However by choosing apropriate transformation and projection you can map
+		// from modelspace units to viewport units arbitrarily.
+		
+		//Essentially, a projection matrix is matrix that projects a vertex on a 2D space.
+		
+		private void InitializeGraphics()
+		{
+			FrameBufferWidth = GraphicsContext.GetFrameBuffer().Width;
+			FrameBufferWidthAsSingle = (Single)FrameBufferWidth;
+			FrameBufferHeight = GraphicsContext.GetFrameBuffer().Height;
+			FrameBufferHeightAsSingle = (Single)FrameBufferHeight;
+			
+			ProjectionMatrixLeft = 0.0f;
+			ProjectionMatrixRight = FrameBufferWidthAsSingle;
+			ProjectionMatrixBottom = 0.0f;
+			ProjectionMatrixTop = FrameBufferHeightAsSingle;
+			ProjectionMatrixNear = -1.0f;
+			ProjectionMatrixFar = 1.0f;
+			
+			ViewMatrixEye = new Vector3(0.0f, FrameBufferHeightAsSingle, 0.0f);
+			ViewMatrixCenter = new Vector3(0.0f, FrameBufferHeightAsSingle, 1.0f);
+			ViewMatrixUp = new Vector3(0.0f, -1.0f, 0.0f);
+			
+			ProjectionMatrix = Matrix4.Ortho(
+				ProjectionMatrixLeft,
+				ProjectionMatrixRight,
+				ProjectionMatrixBottom,
+				ProjectionMatrixTop,
+				ProjectionMatrixNear,
+				ProjectionMatrixFar
+				);
+			
+			ModelViewMatrix = Matrix4.LookAt(
+				ViewMatrixEye,
+				ViewMatrixCenter,
+				ViewMatrixUp
+				);
+		}
+		
+		private void CleanupGraphics()
+		{
+		}
+		
+		public Matrix4 ProjectionMatrix { get; private set; }
+		public Matrix4 ModelViewMatrix { get; private set; }
+		
+		private Int32 FrameBufferWidth;
+		private Int32 FrameBufferHeight;
+		
+		private Single FrameBufferWidthAsSingle;
+		private Single FrameBufferHeightAsSingle;
+		
+		private Single ProjectionMatrixLeft;
+		private Single ProjectionMatrixRight;
+		private Single ProjectionMatrixBottom;
+		private Single ProjectionMatrixTop;
+		private Single ProjectionMatrixNear;
+		private Single ProjectionMatrixFar;
+		
+		private Vector3 ViewMatrixEye;
+		private Vector3 ViewMatrixCenter;
+		private Vector3 ViewMatrixUp;
+		
+		#endregion
+		
+		#region Camera
+		
+		private void InitializeCamera()
+		{
+		}
+		
+		private void CleanupCamera()
+		{
+		}
+		
+		private Coordinate2i CameraPosition;
+		
+		public void SetCameraPosition()
+		{
+		}
+		
+		//Switch to an enum instead of separate methods?
+		public void SetCameraPositionFromBottomLeft()
+		{
+		}
+		
+		public void SetCameraPositionFromTopLeft()
+		{
+		}
+		
+		private Single CameraZoom;
+		
+		private Single CameraRotation;
 		
 		#endregion
 	}

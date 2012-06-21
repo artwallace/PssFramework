@@ -36,5 +36,32 @@ Global
 		$0.StandardHeader = $5
 		$5.Text = 
 		$5.IncludeInNewFiles = True
+		$0.TextStylePolicy = $6
+		$6.inheritsSet = null
+		$6.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $7
+		$7.StatementBraceStyle = NextLine
+		$7.PlaceElseOnNewLine = True
+		$7.PlaceCatchOnNewLine = True
+		$7.PlaceFinallyOnNewLine = True
+		$7.BeforeMethodDeclarationParentheses = False
+		$7.BeforeMethodCallParentheses = False
+		$7.BeforeConstructorDeclarationParentheses = False
+		$7.BeforeIndexerDeclarationBracket = False
+		$7.BeforeDelegateDeclarationParentheses = False
+		$7.AfterDelegateDeclarationParameterComma = True
+		$7.NewParentheses = False
+		$7.IfParentheses = False
+		$7.WhileParentheses = False
+		$7.ForParentheses = False
+		$7.ForeachParentheses = False
+		$7.CatchParentheses = False
+		$7.SwitchParentheses = False
+		$7.LockParentheses = False
+		$7.UsingParentheses = False
+		$7.SpacesBeforeBrackets = False
+		$7.inheritsSet = Mono
+		$7.inheritsScope = text/x-csharp
+		$7.scope = text/x-csharp
 	EndGlobalSection
 EndGlobal

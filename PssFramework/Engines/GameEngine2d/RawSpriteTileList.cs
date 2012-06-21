@@ -19,15 +19,19 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 	public class RawSpriteTileList : Node
 	{
 		/// <summary>The list of RawSpriteTile objects to render.</summary>
-		public List< RawSpriteTile > Sprites = new List< RawSpriteTile >();
+		public List<RawSpriteTile> Sprites = new List<RawSpriteTile>();
+		
 		/// <summary>The color that will be used for all sprites in the Children list.</summary>
 		public Vector4 Color = Colors.White;
+		
 		/// <summary>The blend mode that will be used for all sprites in the Children list.</summary>
 		public BlendMode BlendMode = BlendMode.Normal;
+		
 		/// <summary>The TextureInfo object that will be used for all sprites in the Children list.</summary>
-		public TextureInfo TextureInfo; 
+		public TextureInfo TextureInfo;
+		
 		/// <summary>The shader that will be used for all sprites in the Children list.</summary>
-		public SpriteRenderer.ISpriteShader Shader = (SpriteRenderer.ISpriteShader)Director.Instance.SpriteRenderer.DefaultShader;
+		public ISpriteShader Shader = (ISpriteShader)Director.Instance.SpriteRenderer.DefaultShader;
 
 		/// <summary>
 		/// RawSpriteTileList constructor.
@@ -46,7 +50,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 			Shader.SetUVTransform( ref Math.UV_TransformFlipV );
 			Director.Instance.SpriteRenderer.BeginSprites( TextureInfo, Shader, Sprites.Count );
 
-//			System.Console.WriteLine( Sprites.Count );
+			//System.Console.WriteLine( Sprites.Count );
 
 			foreach ( RawSpriteTile sprite in Sprites )
 			{

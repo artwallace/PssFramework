@@ -71,6 +71,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		public Boolean Equals(RectangularArea2i o)
 		{
+			if(o == null)
+				return false;
+			
 			return
 				(Left == o.Left) &&
 				(Top == o.Top) &&
@@ -86,12 +89,18 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		public static Boolean operator ==(RectangularArea2i o1, RectangularArea2i o2)
 		{
+			if (Object.ReferenceEquals(o1, o2))
+				return true;
+			
+			if (((Object)o1 == null) || ((Object)o2 == null))
+				return false;
+			
 			return o1.Equals(o2);
 		}
 		
 		public static Boolean operator !=(RectangularArea2i o1, RectangularArea2i o2)
 		{
-			return !(o1.Equals(o2));
+			return !(o1 == o2);
 		}
 		
 		#endregion

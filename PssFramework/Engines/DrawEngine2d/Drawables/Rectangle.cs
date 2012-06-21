@@ -2,11 +2,11 @@ using System;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
-	public abstract class ShapeBase : IDrawable, IDisposable
+	public class Rectangle : IDrawable, IDisposable
 	{
 		#region Constructor, Dispose
 		
-		public ShapeBase(Layer layer)
+		public Rectangle(Layer layer)
 		{
 		}
 		

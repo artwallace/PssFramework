@@ -60,10 +60,12 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		public void Render()
 		{
+			Layer.DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
+			
 			Layer.DrawEngine2d.GraphicsContext.SetShaderProgram(ShaderProgram);
 			Layer.DrawEngine2d.GraphicsContext.SetTexture(0, Texture);
 			ShaderProgram.SetUniformValue(0, ref UnitScreenMatrix);
-		
+			
 			Layer.DrawEngine2d.GraphicsContext.DrawArrays(DrawMode.TriangleStrip, 0, IndexCount);
 		}
 		
@@ -318,9 +320,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			VertexBuffer.SetVertices(1, TextureCoordinates);
 			VertexBuffer.SetVertices(2, VertexColors);
 			VertexBuffer.SetIndices(Indices);
-			
-			//TODO: Does this need to be reset somehow?
-			Layer.DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
 		}
 		
 		private void CleanupVertexBuffer()
@@ -335,9 +334,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Shader Program
 		
-		private const Int32 ShaderBindingIndex = 0;
-		private const String ShaderBindingName = "u_WorldMatrix";
-		
 		private void InitializeShaderProgram()
 		{
 			ShaderProgram = ShaderLoader.Load(ShaderPaths.Sprite);
@@ -351,6 +347,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		}
 		
 		private ShaderProgram ShaderProgram;
+		
+		private const Int32 ShaderBindingIndex = 0;
+		private const String ShaderBindingName = "u_WorldMatrix";
 		
 		#endregion
 		
@@ -391,11 +390,41 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		private void InitializeScreenMatrix()
 		{
 			//TODO: I have no idea what these values represent.
+			//TODO: What makes "* 2.0f" necessary?
+			
+			UnitScreenMatrixX = new Vector4(
+				TextureWidth * 2.0f / Layer.DrawEngine2d.ScreenWidth,
+				0.0f,
+				0.0f,
+				0.0f
+				);
+			
+			UnitScreenMatrixY = new Vector4(
+				0.0f,
+				TextureHeight * (-2.0f) / Layer.DrawEngine2d.ScreenHeight,
+				0.0f,
+				0.0f
+				);
+			
+			UnitScreenMatrixZ = new Vector4(
+				0.0f,
+				0.0f,
+				1.0f,
+				0.0f
+				);
+			
+			UnitScreenMatrixW = new Vector4(
+				-1.0f,
+				1.0f,
+				0.0f,
+				1.0f
+				);
+			
 			UnitScreenMatrix = new Matrix4(
-				TextureWidth * 2.0f / Layer.DrawEngine2d.ScreenWidth, 0.0f, 0.0f, 0.0f,
-				0.0f, TextureHeight * (-2.0f) / Layer.DrawEngine2d.ScreenHeight, 0.0f, 0.0f,
-				0.0f, 0.0f, 1.0f, 0.0f,
-				-1.0f, 1.0f, 0.0f, 1.0f
+				UnitScreenMatrixX,
+				UnitScreenMatrixY,
+				UnitScreenMatrixZ,
+				UnitScreenMatrixW
 				);
 		}
 		
@@ -404,6 +433,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		}
 		
 		private Matrix4 UnitScreenMatrix;
+		
+		private Vector4 UnitScreenMatrixX;
+		private Vector4 UnitScreenMatrixY;
+		private Vector4 UnitScreenMatrixZ;
+		private Vector4 UnitScreenMatrixW;
 		
 		#endregion
 	}

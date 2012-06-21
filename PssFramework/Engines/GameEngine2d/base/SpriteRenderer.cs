@@ -18,7 +18,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 	public class SpriteRenderer : System.IDisposable
 	{
 		GraphicsContextAlpha GL;
-		ImmediateModeQuads< Vector4 > m_imm_quads; // V2F_T2F 
+		ImmediateModeQuads<Vector4> m_imm_quads; // V2F_T2F 
 		Vector4 m_v0;
 		Vector4 m_v1;
 		Vector4 m_v2;
@@ -35,30 +35,6 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// Flag that will swap the V coordinates (vertically) of all rendered sprites/quads.
 		/// </summary>
 		public bool FlipV = false;
-
-		/// <summary>
-		/// That's all the interface we require from the shaders set by user.
-		/// </summary>
-		public interface ISpriteShader
-		{
-			/// <summary>
-			/// The Projection * View * Model matrix.
-			/// </summary>
-			void SetMVP( ref Matrix4 value );
-			/// <summary>
-			/// Global color.
-			/// </summary>
-			void SetColor( ref Vector4 value );
-			/// <summary>
-			/// Set the uv transform: offset in Xy and scale in Zw, (0,0,1,1) means UV is unchanged.
-			/// Shader code example: transformed_uv = UVTransform.xy + uv * UVTransform.zw
-			/// </summary>
-			void SetUVTransform( ref Vector4 value );
-			/// <summary>
-			/// Get the ShaderProgram object.
-			/// </summary>
-			ShaderProgram GetShaderProgram();
-		}
 
 		/// <summary>
 		/// Sprites's default shader: texture modulated by a color.
@@ -165,7 +141,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		public bool Disposed { get { return m_disposed; } }
 
 		/// <summary>SpriteRenderer constructor.</summary>
-		public SpriteRenderer( GraphicsContextAlpha gl, uint max_sprites )
+		public SpriteRenderer(GraphicsContextAlpha gl, uint max_sprites)
 		{
 			GL = gl;
 
@@ -219,9 +195,13 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <param name="draw">If false, don't draw anything, just return the Bounds2 used by the text.</param>
 		/// <param name="shader">If no shader is specified, DefaultFontShader is used.</param>
 		/// <returns>The rectangle area covered by rendered text (call with draw=false when you want to know the covered area before actually drawing it).</returns>
-		public Bounds2 DrawTextDebug( string str, Vector2 bottom_left_start_pos, float char_height
-									 , bool draw = true
-									 , ISpriteShader shader = null )
+		public Bounds2 DrawTextDebug(
+			string str,
+			Vector2 bottom_left_start_pos,
+			float char_height,
+			bool draw = true,
+			ISpriteShader shader = null
+			)
 		{
 			if ( null == shader ) shader = (ISpriteShader)m_default_font_shader;
 
@@ -284,8 +264,14 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <param name="draw">If false, don't draw anything, just return the Bounds2 used by the text.</param>
 		/// <param name="fontmap">the fontmap object (that holds the texture).</param>
 		/// <param name="shader">The shader defaults to SpriteRenderer.DefaultFontShader.</param>
-		public Bounds2 DrawTextWithFontMap( string str, Vector2 bottom_left_start_pos, float char_height
-											, bool draw, FontMap fontmap, ISpriteShader shader )
+		public Bounds2 DrawTextWithFontMap(
+			string str,
+			Vector2 bottom_left_start_pos,
+			float char_height,
+			bool draw,
+			FontMap fontmap,
+			ISpriteShader shader
+			)
 		{
 			float scale = ( char_height / fontmap.CharPixelHeight );
 
@@ -339,11 +325,22 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <param name="char_height">The character height in world space/units.</param>
 		/// <param name="draw">If false, don't draw anything, just return the Bounds2 used by the text.</param>
 		/// <param name="fontmap">the fontmap object (that holds the texture).</param>
-		public Bounds2 DrawTextWithFontMap( string str, Vector2 bottom_left_start_pos, float char_height
-											, bool draw, FontMap fontmap )
+		public Bounds2 DrawTextWithFontMap(
+			string str,
+			Vector2 bottom_left_start_pos,
+			float char_height,
+			bool draw,
+			FontMap fontmap
+			)
 		{
-			return DrawTextWithFontMap( str, bottom_left_start_pos, char_height, draw, fontmap
-										, (ISpriteShader)DefaultFontShader );
+			return DrawTextWithFontMap(
+				str,
+				bottom_left_start_pos,
+				char_height,
+				draw,
+				fontmap,
+				(ISpriteShader)DefaultFontShader
+				);
 		}
 
 		/// <summary>Start batch rendering of sprites.</summary>

@@ -1,9 +1,9 @@
+using System;
+using System.Diagnostics;
 using Demo.MainMenu;
 using PsmFramework;
 using Sce.Pss.Core.Environment;
 using Sce.Pss.Core.Graphics;
-using System;
-using System.Diagnostics;
 
 namespace Demo
 {

@@ -30,7 +30,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		/// User can set an external shader. 
 		/// The Label class won't dispose of shaders set by user.
 		/// </summary>
-		public SpriteRenderer.ISpriteShader Shader = (SpriteRenderer.ISpriteShader)Director.Instance.SpriteRenderer.DefaultFontShader;
+		public ISpriteShader Shader = (ISpriteShader)Director.Instance.SpriteRenderer.DefaultFontShader;
 
 		/// <summary>The font character height in pixels.</summary>
 		float FontHeight
