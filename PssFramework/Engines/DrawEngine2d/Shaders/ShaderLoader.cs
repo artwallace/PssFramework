@@ -5,6 +5,7 @@ using Sce.Pss.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Shaders
 {
+	//TODO: Delete this class after UltraSimpleSprite drawable is deleted.
 	internal static class ShaderLoader
 	{
 		private static Assembly ResourceAssembly = Assembly.GetExecutingAssembly();

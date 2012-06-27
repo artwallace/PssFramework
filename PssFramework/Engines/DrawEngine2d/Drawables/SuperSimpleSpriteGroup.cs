@@ -89,7 +89,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			
 			//TODO: These need to be changed as little as possible, as seen in GOSLlib.
 			Layer.DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
-			Layer.DrawEngine2d.GraphicsContext.SetShaderProgram(ShaderProgram);
+			Layer.DrawEngine2d.GraphicsContext.SetShaderProgram(Shader.ShaderProgram);
 			Layer.DrawEngine2d.GraphicsContext.SetTexture(0, TiledTexture.Texture);
 			
 			foreach(SuperSimpleSprite sprite in Sprites)
@@ -100,7 +100,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				Matrix4 modelMatrix = transMatrix * rotMatrix * scaleMatrix;
 				Matrix4 worldViewProj = Layer.DrawEngine2d.ProjectionMatrix * Layer.DrawEngine2d.ModelViewMatrix * modelMatrix;
 				
-				ShaderProgram.SetUniformValue(0, ref worldViewProj);
+				Shader.ShaderProgram.SetUniformValue(0, ref worldViewProj);
 				
 				//TODO: this needs to be changed to be an array of VBOs, like ge2d.
 				Layer.DrawEngine2d.GraphicsContext.DrawArrays(DrawMode.TriangleStrip, 0, IndexCount);
@@ -454,20 +454,16 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void InitializeShaderProgram()
 		{
-			ShaderProgram = ShaderLoader.Load(ShaderPaths.Sprite);
-			ShaderProgram.SetUniformBinding(ShaderBindingIndex, ShaderBindingName);
+			Shader = new UltraSimpleSpriteShader(Layer.DrawEngine2d);
 		}
 		
 		private void CleanupShaderProgram()
 		{
-			ShaderProgram.Dispose();
-			ShaderProgram = null;
+			Shader.Dispose();
+			Shader = null;
 		}
 		
-		private ShaderProgram ShaderProgram;
-		
-		private const Int32 ShaderBindingIndex = 0;
-		private const String ShaderBindingName = "u_WorldMatrix";
+		private UltraSimpleSpriteShader Shader;
 		
 		#endregion
 		

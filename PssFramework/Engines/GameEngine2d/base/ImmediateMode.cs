@@ -222,7 +222,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		public void ImmEndIndexing()
 		{
 			////Common.Profiler.Push("ImmediateMode<T>.ImmEnd");
-
+			
 			#if DEBUG
 			Common.Assert( ( ( m_pos - m_prim_start ) / m_vertices_per_primitive ) * m_vertices_per_primitive == ( m_pos - m_prim_start ) );
 			Common.Assert( ( ( m_prim_start ) / m_vertices_per_primitive ) * m_vertices_per_primitive == m_prim_start );
@@ -230,8 +230,11 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 
 			imm_end_prelude();
 
-			GL.Context.DrawArrays( m_prim, ((int)m_prim_start/m_vertices_per_primitive)*m_indices_per_primitive
-							 ,((int)(m_pos-m_prim_start)/m_vertices_per_primitive)*m_indices_per_primitive );
+			GL.Context.DrawArrays(
+				m_prim,
+				((int)m_prim_start / m_vertices_per_primitive) * m_indices_per_primitive,
+				((int)(m_pos-m_prim_start) / m_vertices_per_primitive) * m_indices_per_primitive
+				);
 
 			GL.DebugStats.OnDrawArray(); // count the number of DrawArrays per frame
 

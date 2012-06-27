@@ -54,18 +54,18 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			}
 			#endif // #if IMMEDIATE_MODE_QUADS_USES_INDEXING
 			#endif
-
+			
 			m_max_quads = max_quads;
-
+			
 			ushort[] indices = null;
-
+			
 			#if IMMEDIATE_MODE_QUADS_USES_INDEXING
-
+			
 			// note: the lack of a sharable IndexBuffer objects forces us to copy indices for all VertexBuffers here
-
+			
 			indices = new ushort[ m_max_quads * 6 ];
 			ushort[] quad_indices = new ushort[6] { 0,1,3,0,3,2};
-
+			
 			// manually repeat quad indexes for now
 
 			for ( int q=0,i=0; q < (int)max_quads; ++q )

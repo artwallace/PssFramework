@@ -39,10 +39,12 @@ namespace PsmFramework.Engines.DrawEngine2d
 			InitializeTexture2DManager();
 			InitializeTiledTextureManager();
 			InitializeDebugRuler();
+			InitializeDebugFont();
 		}
 		
 		private void Cleanup()
 		{
+			CleanupDebugFont();
 			CleanupDebugRuler();
 			CleanupTiledTextureManager();
 			CleanupTexture2DManager();
@@ -224,67 +226,6 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		#endregion
 		
-		#region Debug Ruler
-		
-		private void InitializeDebugRuler()
-		{
-//			EnableDebugRuler = false;
-//			DebugRulerAxisColor = Colors.Black;
-//			DebugRulerAxisThickness = 1.0f;
-//			DebugRulerGridColor = Colors.Grey60;
-//			DebugRulerGridThickness = 1.0f;
-		}
-		
-		private void CleanupDebugRuler()
-		{
-		}
-		
-//		private Boolean _EnableDebugRuler;
-//		public Boolean EnableDebugRuler
-//		{
-//			get { return _EnableDebugRuler; }
-//			set
-//			{
-//				_EnableDebugRuler = value;
-//				SetRenderRequired();
-//			}
-//		}
-//		
-//		private Color _DebugRulerAxisColor;
-//		public Color DebugRulerAxisColor
-//		{
-//			get { return _DebugRulerAxisColor; }
-//			set
-//			{
-//				_DebugRulerAxisColor = value;
-//				SetRenderRequired();
-//			}
-//		}
-//		
-//		private Single DebugRulerAxisThickness;
-//		
-//		public Color _DebugRulerGridColor;
-//		public Color DebugRulerGridColor
-//		{
-//			get { return _DebugRulerGridColor; }
-//			set
-//			{
-//				_DebugRulerGridColor = value;
-//				SetRenderRequired();
-//			}
-//		}
-//		
-//		private Single DebugRulerGridThickness;
-//		
-//		private void DrawDebugRulers()
-//		{
-//			//GraphicsContext.SetLineWidth(DebugRulerAxisThickness);
-//			
-//			//GraphicsContext.SetLineWidth(1.0f);
-//		}
-		
-		#endregion
-		
 		#region TiledTexture Manager
 		
 		private void InitializeTiledTextureManager()
@@ -342,17 +283,6 @@ namespace PsmFramework.Engines.DrawEngine2d
 			TiledTexture tt = new TiledTexture(this, path, columns, rows, sourceArea);
 			return tt;
 		}
-		
-//		public void RemoveTiledTexture(IDrawable user, TiledTexture tiledTexture)
-//		{
-//			if(user == null)
-//				throw new ArgumentNullException();
-//			
-//			if(tiledTexture == null)
-//				throw new ArgumentNullException();
-//			
-//			UnregisterTiledTextureUser(user, tiledTexture);
-//		}
 		
 		internal void RegisterTiledTextureUser(IDrawable user, TiledTexture tiledTexture)
 		{
@@ -481,7 +411,44 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		#endregion
 		
-		#region OpenGL Stuff
+		#region Camera
+		
+		private void InitializeCamera()
+		{
+			CameraPosition = Coordinate2.X0Y0;
+			CameraZoom = 1.0f;
+			CameraRotation = 0.0f;
+		}
+		
+		private void CleanupCamera()
+		{
+			CameraPosition = Coordinate2.X0Y0;
+			CameraZoom = 1.0f;
+			CameraRotation = 0.0f;
+		}
+		
+		private Coordinate2 CameraPosition;
+		
+		public void SetCameraPosition()
+		{
+		}
+		
+		//Switch to an enum instead of separate methods?
+		public void SetCameraPositionFromBottomLeft()
+		{
+		}
+		
+		public void SetCameraPositionFromTopLeft()
+		{
+		}
+		
+		private Single CameraZoom;
+		
+		private Single CameraRotation;
+		
+		#endregion
+		
+		#region OpenGL Graphics
 		
 		//http://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_2D
 		
@@ -532,6 +499,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			FrameBufferHeight = GraphicsContext.GetFrameBuffer().Height;
 			FrameBufferHeightAsSingle = (Single)FrameBufferHeight;
 			
+			//TODO: Is this one pixel too tall and wide?
 			ProjectionMatrixLeft = 0.0f;
 			ProjectionMatrixRight = FrameBufferWidthAsSingle;
 			ProjectionMatrixBottom = 0.0f;
@@ -585,34 +553,81 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		#endregion
 		
-		#region Camera
+		#region Debug Ruler
 		
-		private void InitializeCamera()
+		private void InitializeDebugRuler()
+		{
+//			EnableDebugRuler = false;
+//			DebugRulerAxisColor = Colors.Black;
+//			DebugRulerAxisThickness = 1.0f;
+//			DebugRulerGridColor = Colors.Grey60;
+//			DebugRulerGridThickness = 1.0f;
+		}
+		
+		private void CleanupDebugRuler()
 		{
 		}
 		
-		private void CleanupCamera()
+//		private Boolean _EnableDebugRuler;
+//		public Boolean EnableDebugRuler
+//		{
+//			get { return _EnableDebugRuler; }
+//			set
+//			{
+//				_EnableDebugRuler = value;
+//				SetRenderRequired();
+//			}
+//		}
+//		
+//		private Color _DebugRulerAxisColor;
+//		public Color DebugRulerAxisColor
+//		{
+//			get { return _DebugRulerAxisColor; }
+//			set
+//			{
+//				_DebugRulerAxisColor = value;
+//				SetRenderRequired();
+//			}
+//		}
+//		
+//		private Single DebugRulerAxisThickness;
+//		
+//		public Color _DebugRulerGridColor;
+//		public Color DebugRulerGridColor
+//		{
+//			get { return _DebugRulerGridColor; }
+//			set
+//			{
+//				_DebugRulerGridColor = value;
+//				SetRenderRequired();
+//			}
+//		}
+//		
+//		private Single DebugRulerGridThickness;
+//		
+//		private void DrawDebugRulers()
+//		{
+//			//GraphicsContext.SetLineWidth(DebugRulerAxisThickness);
+//			
+//			//GraphicsContext.SetLineWidth(1.0f);
+//		}
+		
+		#endregion
+		
+		#region Debug Font
+		
+		private void InitializeDebugFont()
 		{
+			DebugFont = new DebugFont();
 		}
 		
-		private Coordinate2i CameraPosition;
-		
-		public void SetCameraPosition()
+		private void CleanupDebugFont()
 		{
+			DebugFont.Dispose();
+			DebugFont = null;
 		}
 		
-		//Switch to an enum instead of separate methods?
-		public void SetCameraPositionFromBottomLeft()
-		{
-		}
-		
-		public void SetCameraPositionFromTopLeft()
-		{
-		}
-		
-		private Single CameraZoom;
-		
-		private Single CameraRotation;
+		internal DebugFont DebugFont { get; private set; }
 		
 		#endregion
 	}

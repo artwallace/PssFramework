@@ -336,7 +336,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void InitializeShaderProgram()
 		{
-			ShaderProgram = ShaderLoader.Load(ShaderPaths.Sprite);
+			ShaderProgram = ShaderLoader.Load(ShaderPaths.UltraSimpleSprite);
 			ShaderProgram.SetUniformBinding(ShaderBindingIndex, ShaderBindingName);
 		}
 		

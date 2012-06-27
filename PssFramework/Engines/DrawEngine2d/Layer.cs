@@ -126,5 +126,11 @@ namespace PsmFramework.Engines.DrawEngine2d
 		}
 		
 		#endregion
+		
+		//TODO: Add scales with world
+		//TODO: Add rotates with world
+		//TODO: Add pans with world
+		//TODO: Because UI overlays are positioned according to the screen,
+		// not the world.
 	}
 }

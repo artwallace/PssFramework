@@ -122,14 +122,29 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			{
 				if(disposing)
 				{
-					Common.DisposeAndNullify< ShaderProgram >( ref m_shader_program );
+					Common.DisposeAndNullify<ShaderProgram>(ref m_shader_program);
 				}
 			}
 
-			public ShaderProgram GetShaderProgram() { return m_shader_program;}
-			public void SetMVP( ref Matrix4 value ) { m_shader_program.SetUniformValue( 0, ref value );}
-			public void SetColor( ref Vector4 value ) { m_shader_program.SetUniformValue( 1, ref value );}
-			public void SetUVTransform( ref Vector4 value ) { m_shader_program.SetUniformValue( 2, ref value );}
+			public ShaderProgram GetShaderProgram()
+			{
+				return m_shader_program;
+			}
+			
+			public void SetMVP( ref Matrix4 value )
+			{
+				m_shader_program.SetUniformValue( 0, ref value );
+			}
+			
+			public void SetColor( ref Vector4 value )
+			{
+				m_shader_program.SetUniformValue( 1, ref value );
+			}
+			
+			public void SetUVTransform( ref Vector4 value )
+			{
+				m_shader_program.SetUniformValue( 2, ref value );
+			}
 		}
 
 		DefaultFontShader_ m_default_font_shader = new DefaultFontShader_();
@@ -154,10 +169,19 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 
 				m_embedded_font_texture_info = new TextureInfo();
 
-				m_embedded_font_texture_info.Initialize( font_texture, new Vector2i( EmbeddedDebugFontData.NumChars, 1 )
-										 , new TRS( new Bounds2( new Vector2( 0.0f, 0.0f )
-																 , new Vector2( ( EmbeddedDebugFontData.CharSizei.X * EmbeddedDebugFontData.NumChars ) / (float)font_texture.Width
-																				 , ( EmbeddedDebugFontData.CharSizei.Y / (float)font_texture.Height ) ) ) ) );
+				m_embedded_font_texture_info.Initialize(
+					font_texture,
+					new Vector2i( EmbeddedDebugFontData.NumChars, 1 ),
+					new TRS(
+						new Bounds2(
+							new Vector2(0.0f, 0.0f),
+							new Vector2(
+								(EmbeddedDebugFontData.CharSizei.X * EmbeddedDebugFontData.NumChars ) / (float)font_texture.Width,
+								(EmbeddedDebugFontData.CharSizei.Y / (float)font_texture.Height)
+								)
+							)
+						)
+					);
 			}
 		}
 
@@ -203,16 +227,19 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			ISpriteShader shader = null
 			)
 		{
-			if ( null == shader ) shader = (ISpriteShader)m_default_font_shader;
+			if (null == shader)
+				shader = (ISpriteShader)m_default_font_shader;
 
 			float scale = ( char_height / EmbeddedDebugFontData.CharSizei.Y );
 
 			Vector2 spacing_in_pixels = new Vector2( -1.0f, 1.0f );
 			Vector2 spacing = spacing_in_pixels * scale;
-
-			TRS char_box; // 1 character sprite bounding box in world space, could use Bouds2 instead really 
-						 // R and S stay unchaged, T gets incrementd as we draw chars
-
+			
+			//1 character sprite bounding box in world space,
+			//  could use Bounds2 instead really.
+			//R and S stay unchaged, T gets incrementd as we draw chars
+			TRS char_box;
+			
 			char_box.R = Math._10;
 			char_box.S = EmbeddedDebugFontData.CharSizef * scale;
 			char_box.T = bottom_left_start_pos;
@@ -222,19 +249,22 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 
 			if ( draw )
 			{
-				DefaultFontShader.SetUVTransform( ref Math.UV_TransformFlipV );
-				BeginSprites( m_embedded_font_texture_info, DefaultFontShader, str.Length );
+				DefaultFontShader.SetUVTransform(ref Math.UV_TransformFlipV);
+				BeginSprites(m_embedded_font_texture_info, DefaultFontShader, str.Length);
 			}
 
 			for ( int i=0; i < str.Length; ++i )
 			{
-				if ( str[i] == '\n' )
+				if ( str[i] == '\n')
 				{
 					char_box.T -= new Vector2( 0.0f, char_box.S.Y + spacing.Y );
 					char_box.T.X = left;
 					continue;
 				}
-
+				
+				if (str[i] == '\r')
+					continue;
+				
 				if ( draw )
 				{
 					int char_index = (int)str[i] - 32;
@@ -356,7 +386,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 
 			GL.Context.SetShaderProgram( shader.GetShaderProgram() );
 
-			Common.Assert( !texture_info.Disposed, "This TextureInfo oject has been disposed" );
+			Common.Assert( !texture_info.Disposed, "This TextureInfo object has been disposed" );
 			GL.Context.SetTexture( 0, texture_info.Texture );
 
 			m_current_texture_info = texture_info;
