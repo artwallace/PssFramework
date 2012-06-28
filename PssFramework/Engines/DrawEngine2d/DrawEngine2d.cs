@@ -36,6 +36,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			InitializeCamera();
 			InitializeLayers();
 			InitializeRenderRequiredFlag();
+			InitializeShaders();
 			InitializeTexture2DManager();
 			InitializeTiledTextureManager();
 			InitializeDebugRuler();
@@ -48,6 +49,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			CleanupDebugRuler();
 			CleanupTiledTextureManager();
 			CleanupTexture2DManager();
+			CleanupShaders();
 			CleanupRenderRequiredFlag();
 			CleanupLayers();
 			CleanupCamera();
@@ -628,6 +630,20 @@ namespace PsmFramework.Engines.DrawEngine2d
 		}
 		
 		internal DebugFont DebugFont { get; private set; }
+		
+		#endregion
+		
+		#region Shaders
+		
+		private void InitializeShaders()
+		{
+		}
+		
+		private void CleanupShaders()
+		{
+		}
+		
+		
 		
 		#endregion
 	}

@@ -28,17 +28,17 @@ namespace Demo.SpaceRockets
 			//EnableDebugInfo();
 			
 			Layer l = DrawEngine2d.GetOrCreateLayer(1);
-			UltraSimpleSprite uss = new UltraSimpleSprite(l);
+			//UltraSimpleSprite uss = new UltraSimpleSprite(l);
 			
 			TiledTexture tt = new TiledTexture(DrawEngine2d, "/Application/TwinStickShooter/Images/Ship64.png");
 			
 			Layer l2 = DrawEngine2d.GetOrCreateLayer(2);
 			SuperSimpleSpriteGroup sssg = new SuperSimpleSpriteGroup(l2, tt);
 			SuperSimpleSprite sss1 = new SuperSimpleSprite(sssg);
-			sss1.Position = new Coordinate2(5.0f, 5.0f);
+			sss1.SetPositionFromCenter(new Coordinate2(32f, 32f));
 			SuperSimpleSprite sss2 = new SuperSimpleSprite(sssg);
-			sss2.Position = new Coordinate2(100.0f, 100.0f);
-			sss2.Rotation = 45.0f;
+			sss2.SetPositionFromCenter(new Coordinate2(96f, 32f));
+			//sss2.Rotation = 45.0f;
 		}
 		
 		protected override void Cleanup()

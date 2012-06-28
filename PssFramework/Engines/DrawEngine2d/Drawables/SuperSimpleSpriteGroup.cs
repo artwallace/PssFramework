@@ -128,7 +128,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			Layer = null;
 		}
 		
-		private Layer Layer;
+		public Layer Layer;
 		
 		#endregion
 		
@@ -196,6 +196,16 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		}
 		
 		private TiledTexture TiledTexture;
+		
+		public Int32 TileWidth
+		{
+			get { return TiledTexture.TileWidth; }
+		}
+		
+		public Int32 TileHeight
+		{
+			get { return TiledTexture.TileHeight; }
+		}
 		
 		#endregion
 		
@@ -454,7 +464,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void InitializeShaderProgram()
 		{
-			Shader = new UltraSimpleSpriteShader(Layer.DrawEngine2d);
+			Shader = new SpriteShader(Layer.DrawEngine2d);
 		}
 		
 		private void CleanupShaderProgram()
@@ -463,7 +473,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			Shader = null;
 		}
 		
-		private UltraSimpleSpriteShader Shader;
+		private SpriteShader Shader;
 		
 		#endregion
 		

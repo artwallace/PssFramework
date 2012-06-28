@@ -189,7 +189,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 			Texture = null;
 		}
 		
-		private const Int32 FirstCharCode = 32;
 		private const Int32 MaxTextureCharCapacity = 128;
 		
 		private const Byte PixelDark = (Byte)0x00;
@@ -201,8 +200,14 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		private RectangularArea2i CalcPositionOfCharInTexture(Char c)
 		{
-			Int32 ci = (Int32)c - 32;
-			return new RectangularArea2i(ci * FontWidth, 0, ci * FontWidth + FontWidth, FontHeight);
+			Int32 ci = (Int32)c - NotPrintableChars;
+			
+			return new RectangularArea2i(
+				ci * FontWidth,
+				0,
+				ci * FontWidth + FontWidth,
+				FontHeight
+				);
 		}
 		
 		private void GenerateTexture()

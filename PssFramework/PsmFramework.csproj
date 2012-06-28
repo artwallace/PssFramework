@@ -119,8 +119,6 @@
     <Compile Include="Engines\DrawEngine2d\Support\Coordinate2.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\Coordinate3.cs" />
     <Compile Include="Modes\TopDown2dAlt\TopDown2dAltModeBase.cs" />
-    <Compile Include="Engines\DrawEngine2d\Shaders\ShaderPaths.cs" />
-    <Compile Include="Engines\DrawEngine2d\Shaders\ShaderLoader.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\DebugFont.cs" />
     <Compile Include="Engines\GameEngine2d\Action.cs" />
     <Compile Include="Engines\GameEngine2d\ActionManager.cs" />
@@ -192,13 +190,14 @@
     <Compile Include="Engines\DrawEngine2d\Drawables\Point.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\Text.cs" />
     <Compile Include="Engines\DrawEngine2d\RenderMode.cs" />
-    <Compile Include="Engines\DrawEngine2d\Support\CoordinateSystemMode.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\DebugText.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSpriteTranslationKey.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\FontShader.cs" />
-    <Compile Include="Engines\DrawEngine2d\Shaders\UltraSimpleSpriteShader.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\ShaderBase.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\DebugFontGlyph.cs" />
+    <Compile Include="Engines\DrawEngine2d\LayerType.cs" />
+    <Compile Include="Engines\DrawEngine2d\Shaders\SpriteShader.cs" />
+    <Compile Include="Engines\DrawEngine2d\CoordinateSystemMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />
@@ -221,8 +220,6 @@
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\default.vcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\particles.fcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\particles.vcg" />
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite_directional_fade.fcg" />
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite_directional_fade.vcg" />
     <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\default.fcg">
       <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
     </EmbeddedShaderProgram>
@@ -253,13 +250,9 @@
     <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\sprite_directional_fade.vcg">
       <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
     </EmbeddedShaderProgram>
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\UltraSimpleSprite.fcg" />
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\UltraSimpleSprite.vcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Font.vcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Font.fcg" />
-  </ItemGroup>
-  <ItemGroup>
-    <ShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite.fcg" />
-    <ShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite.vcg" />
+    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.fcg" />
+    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.vcg" />
   </ItemGroup>
 </Project>

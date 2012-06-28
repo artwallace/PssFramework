@@ -4,13 +4,15 @@ using PsmFramework.Engines.DrawEngine2d.Drawables;
 
 namespace PsmFramework.Engines.DrawEngine2d
 {
+	//TODO: Add scales with world
+	//TODO: Add rotates with world
 	public sealed class Layer : IDisposable
 	{
 		#region Constructor, Dispose
 		
-		public Layer(DrawEngine2d drawEngine2d, Int32 zIndex)
+		public Layer(DrawEngine2d drawEngine2d, Int32 zIndex, LayerType type = LayerType.World)
 		{
-			Initialize(drawEngine2d, zIndex);
+			Initialize(drawEngine2d, zIndex, type);
 		}
 		
 		public void Dispose()
@@ -22,9 +24,10 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize(DrawEngine2d drawEngine2d, Int32 zIndex)
+		private void Initialize(DrawEngine2d drawEngine2d, Int32 zIndex, LayerType type)
 		{
 			InitializeZIndex(zIndex);
+			InitializeType(type);
 			InitializeDrawEngine2d(drawEngine2d);
 			InitializeDrawables();
 		}
@@ -33,6 +36,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		{
 			CleanupDrawables();
 			CleanupDrawEngine2d();
+			CleanupType();
 			CleanupZIndex();
 		}
 		
@@ -60,6 +64,21 @@ namespace PsmFramework.Engines.DrawEngine2d
 		}
 		
 		public Int32 ZIndex { get; private set; }
+		
+		#endregion
+		
+		#region Type
+		
+		private void InitializeType(LayerType type)
+		{
+			Type = type;
+		}
+		
+		private void CleanupType()
+		{
+		}
+		
+		public LayerType Type { get; private set; }
 		
 		#endregion
 		
@@ -126,11 +145,5 @@ namespace PsmFramework.Engines.DrawEngine2d
 		}
 		
 		#endregion
-		
-		//TODO: Add scales with world
-		//TODO: Add rotates with world
-		//TODO: Add pans with world
-		//TODO: Because UI overlays are positioned according to the screen,
-		// not the world.
 	}
 }

@@ -81,7 +81,28 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		{
 		}
 		
-		public Coordinate2 Position;
+		private Coordinate2 _Position;
+		public Coordinate2 Position
+		{
+			get { return _Position; }
+			set
+			{
+				if(_Position == value)
+					return;
+				
+				_Position = value;
+				
+				SpriteGroup.Layer.DrawEngine2d.SetRenderRequired();
+			}
+		}
+		
+		public void SetPositionFromCenter(Coordinate2 position)
+		{
+			Single x = position.X - SpriteGroup.TileWidth / 2;
+			Single y = position.Y - SpriteGroup.TileHeight / 2;
+			
+			Position = new Coordinate2(x, y);
+		}
 		
 		#endregion
 		
@@ -96,7 +117,20 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		{
 		}
 		
-		public Single Scale;
+		private Single _Scale;
+		public Single Scale
+		{
+			get { return _Scale; }
+			set
+			{
+				if(_Scale == value)
+					return;
+				
+				_Scale = value;
+				
+				SpriteGroup.Layer.DrawEngine2d.SetRenderRequired();
+			}
+		}
 		
 		#endregion
 		
@@ -111,7 +145,20 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		{
 		}
 		
-		public Single Rotation;
+		private Single _Rotation;
+		public Single Rotation
+		{
+			get { return _Rotation; }
+			set
+			{
+				if(_Rotation == value)
+					return;
+				
+				_Rotation = value;
+				
+				SpriteGroup.Layer.DrawEngine2d.SetRenderRequired();
+			}
+		}
 		
 		#endregion
 	}

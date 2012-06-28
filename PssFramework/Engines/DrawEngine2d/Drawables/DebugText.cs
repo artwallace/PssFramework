@@ -205,6 +205,12 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		private FontShader FontShader;
 		
 		#endregion
+		
+		#region AdHocDraw
+		
+		//TODO: Impliment AdHocDraw.
+		
+		#endregion
 	}
 }
 

@@ -2,11 +2,11 @@ using System;
 
 namespace PsmFramework.Engines.DrawEngine2d.Shaders
 {
-	public class UltraSimpleSpriteShader : ShaderBase
+	public class SpriteShader : ShaderBase
 	{
 		#region Constructor
 		
-		public UltraSimpleSpriteShader(DrawEngine2d drawEngine2d)
+		public SpriteShader(DrawEngine2d drawEngine2d)
 			: base(drawEngine2d)
 		{
 		}
@@ -19,7 +19,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Shaders
 		{
 			get
 			{
-				return "PsmFramework.Engines.DrawEngine2d.Shaders.UltraSimpleSprite.cgx";
+				return "PsmFramework.Engines.DrawEngine2d.Shaders.Sprite.cgx";
 			}
 		}
 		
