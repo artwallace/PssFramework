@@ -250,8 +250,8 @@
     <EmbeddedShaderProgram Include="Engines\GameEngine2d\shaders\sprite_directional_fade.vcg">
       <Gettext-ScanForTranslations>false</Gettext-ScanForTranslations>
     </EmbeddedShaderProgram>
-    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Font.vcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Font.fcg" />
+    <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Font.vcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.fcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.vcg" />
   </ItemGroup>

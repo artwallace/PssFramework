@@ -39,6 +39,10 @@ namespace Demo.SpaceRockets
 			SuperSimpleSprite sss2 = new SuperSimpleSprite(sssg);
 			sss2.SetPositionFromCenter(new Coordinate2(96f, 32f));
 			//sss2.Rotation = 45.0f;
+			
+			Layer debugOverlay = DrawEngine2d.GetOrCreateLayer(10);
+			DebugText dt = new DebugText(debugOverlay);
+			dt.Text = "Test";
 		}
 		
 		protected override void Cleanup()

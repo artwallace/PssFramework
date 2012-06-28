@@ -150,7 +150,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Text
 		
-		public String _Text;
+		private String _Text;
 		public String Text
 		{
 			get { return _Text; }
@@ -171,7 +171,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Position
 		
-		public Coordinate2 _Position;
+		private Coordinate2 _Position;
 		public Coordinate2 Position
 		{
 			get { return _Position; }
