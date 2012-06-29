@@ -104,6 +104,14 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			Position = new Coordinate2(x, y);
 		}
 		
+		public void SetPositionFromCenter(Single x, Single y)
+		{
+			Single xx = x - SpriteGroup.TileWidth / 2;
+			Single yy = y - SpriteGroup.TileHeight / 2;
+			
+			Position = new Coordinate2(xx, yy);
+		}
+		
 		#endregion
 		
 		#region Scale

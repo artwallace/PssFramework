@@ -106,7 +106,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Shaders
 		{
 			if (ResourceAssembly.GetManifestResourceInfo(resourcePath) == null)
 			{
-				//String[] allResources = ResourceAssembly.GetManifestResourceNames();
+				String[] allResources = ResourceAssembly.GetManifestResourceNames();
 				throw new ArgumentException("Unable to load shader from resource: " + resourcePath);
 			}
 			

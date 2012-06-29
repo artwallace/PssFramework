@@ -102,7 +102,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			return ret;
 		}
 
-		//	use new TRS { T=a_T, R=a_S, S=a_S } instead?
+		//use new TRS { T=a_T, R=a_S, S=a_S } instead?
 //		public TRS( Vector2 a_T ,
 //					Vector2 a_R ,
 //					Vector2 a_S )
@@ -122,18 +122,18 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		{
 			Vector2 num_tiles_f = num_tiles.Vector2();
 			Vector2 tile_index_f = tile_index.Vector2();
-
+			
 			Vector2 tile_size = source_area.S / num_tiles_f;
-
+			
 			Vector2 X = source_area.X;
 			Vector2 Y = source_area.Y;
-
+			
 			TRS ret = new TRS();
-
+			
 			ret.T = source_area.T + tile_index_f * tile_size;
 			ret.R = source_area.R;
 			ret.S = tile_size;
-
+			
 			return ret;
 		}
 
@@ -185,18 +185,17 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// right point etc.</param>
 		public void Centering( Vector2 normalized_pos )
 		{
-			T = - X * normalized_pos.X 
-				- Y * normalized_pos.Y;
+			T = - X * normalized_pos.X - Y * normalized_pos.Y;
 		}
 
 		/// <summary></summary>
 		public override string ToString() 
 		{
 			if ( R.X == 0.0f && R.Y == 0.0f )
-				return string.Format("Invalid TRS (R lenght is zero)");
+				return string.Format("Invalid TRS (R length is zero)");
 
 			return string.Format("(T={0},R={1}={2} degrees,S={3})", T, R, Math.Rad2Deg(Angle), S);
-//			return string.Format("(T={0},R={1},S={2})", T, R, S);
+			//return string.Format("(T={0},R={1},S={2})", T, R, S);
 		}
 	}
 }

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Sce.Pss.Core.Graphics;
+using Sce.Pss.Core;
 
 namespace PsmFramework.Engines.DrawEngine2d.Support
 {
-	internal class DebugFont : IDisposable
+	internal class DebugFont : IDisposablePlus
 	{
 		#region Constructor, Dispose
 		
@@ -16,7 +17,10 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		public void Dispose()
 		{
 			Cleanup();
+			IsDisposed = true;
 		}
+		
+		public Boolean IsDisposed { get; private set; }
 		
 		#endregion
 		
@@ -26,10 +30,12 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		{
 			InitializeGlyphTable();
 			InitializeTexture();
+			InitializeCachedTileCoordinates();
 		}
 		
 		private void Cleanup()
 		{
+			CleanupCachedTileCoordinates();
 			CleanupTexture();
 			CleanupGlyphTable();
 		}
@@ -40,7 +46,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		private void InitializeGlyphTable()
 		{
-			//GlyphTableIndex = new Dictionary<Int32, Char>();
 			GlyphTable = new Dictionary<Char, DebugFontGlyph>();
 			
 			CreateGlyphTableEntry(0x00000000, 0x00000000, ' ');
@@ -142,25 +147,20 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		private void CleanupGlyphTable()
 		{
-			//GlyphTableIndex.Clear();
-			//GlyphTableIndex = null;
-			
 			GlyphTable.Clear();
 			GlyphTable = null;
 		}
 		
-		//private Dictionary<Int32, Char> GlyphTableIndex;
 		private Dictionary<Char, DebugFontGlyph> GlyphTable;
 		
 		private void CreateGlyphTableEntry(UInt32 data1, UInt32 data2, Char c)
 		{
-			//GlyphTableIndex[(Int32)c] = c;
 			GlyphTable[c] = new DebugFontGlyph(c, data1, data2);
 		}
 		
 		//These values are tied directly to the hardcoded glyph data and should not be altered.
-		internal const Int32 FontWidth = 8;
-		internal const Int32 FontHeight = 8;
+		public const Int32 FontWidth = 8;
+		public const Int32 FontHeight = 8;
 		
 		private const Int32 NotPrintableChars = 32;
 		
@@ -175,40 +175,18 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		private void InitializeTexture()
 		{
-			GlyphTexturePositions = new Dictionary<Char, RectangularArea2i>();
-			
 			GenerateTexture();
 		}
 		
 		private void CleanupTexture()
 		{
-			GlyphTexturePositions.Clear();
-			GlyphTexturePositions = null;
-			
 			Texture.Dispose();
 			Texture = null;
 		}
 		
 		private const Int32 MaxTextureCharCapacity = 128;
 		
-		private const Byte PixelDark = (Byte)0x00;
-		private const Byte PixelLit = (Byte)0xff;
-		
 		public Texture2D Texture { get; private set; }
-		
-		private Dictionary<Char, RectangularArea2i> GlyphTexturePositions;
-		
-		private RectangularArea2i CalcPositionOfCharInTexture(Char c)
-		{
-			Int32 ci = (Int32)c - NotPrintableChars;
-			
-			return new RectangularArea2i(
-				ci * FontWidth,
-				0,
-				ci * FontWidth + FontWidth,
-				FontHeight
-				);
-		}
 		
 		private void GenerateTexture()
 		{
@@ -233,6 +211,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 			Texture.SetFilter(TextureFilterMode.Nearest, TextureFilterMode.Nearest, TextureFilterMode.Nearest);
 		}
 		
+		private const Byte PixelDark = (Byte)0x00;
+		private const Byte PixelLit = (Byte)0xff;
+		
 		private void DecodeCharPixelData(ref Byte[] texturePixels, DebugFontGlyph glyph)
 		{
 			Int32 halfway = FontWidth * FontHeight / 2;
@@ -256,6 +237,55 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 					texturePixels[texturePixelIndex] = pixelIsLit ? PixelLit : PixelDark;
 				}
 			}
+		}
+		
+		#endregion
+		
+		#region Cached Tile Coordinates
+		
+		private void InitializeCachedTileCoordinates()
+		{
+			CachedTileCoordinates = new Dictionary<Char, RectangularArea2i>();
+			
+			GenerateCachedTileCoordinates();
+		}
+		
+		private void CleanupCachedTileCoordinates()
+		{
+			CachedTileCoordinates.Clear();
+			CachedTileCoordinates = null;
+		}
+		
+		private Dictionary<Char, RectangularArea2i> CachedTileCoordinates;
+		
+		private void GenerateCachedTileCoordinates()
+		{
+			foreach(Char c in GlyphTable.Keys)
+				CachedTileCoordinates.Add(c, CalcPositionOfCharInTexture(c));
+		}
+		
+		private RectangularArea2i CalcPositionOfCharInTexture(Char c)
+		{
+			Int32 glyphIndex = GetGlyphIndex(c);
+			
+			Int32 left = glyphIndex * FontWidth;
+			Int32 top = 0;
+			Int32 right = left + FontWidth;
+			Int32 bottom = FontHeight - 1;
+			
+			return new RectangularArea2i(left, top, right, bottom);
+		}
+		
+		private Vector4 CalcPositionOfCharInTextureAsVector4(Char c)
+		{
+			Int32 glyphIndex = GetGlyphIndex(c);
+			
+			Int32 left = glyphIndex * FontWidth;
+			Int32 top = 0;
+			Int32 right = left + FontWidth;
+			Int32 bottom = FontHeight - 1;
+			
+			return new Vector4();
 		}
 		
 		#endregion

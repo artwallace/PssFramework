@@ -209,10 +209,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#endregion
 		
-		#region Color
-		
-		#endregion
-		
 		#region Blend Mode
 		
 		#endregion
@@ -244,11 +240,10 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		{
 			Vertices = new Single[VertexCount * 3];
 			
-			//TODO: these are temporary, for testing.
-			VertexCoordinates_0_TopLeft = new Vector2(0.0f, 0.0f);
-			VertexCoordinates_1_BottomLeft = new Vector2(0.0f, 1.0f);
-			VertexCoordinates_2_TopRight = new Vector2(1.0f, 0.0f);
-			VertexCoordinates_3_BottomRight = new Vector2(1.0f, 1.0f);
+			VertexCoordinates_0_TopLeft = new Coordinate2(0.0f, 0.0f);
+			VertexCoordinates_1_BottomLeft = new Coordinate2(0.0f, 1.0f);
+			VertexCoordinates_2_TopRight = new Coordinate2(1.0f, 0.0f);
+			VertexCoordinates_3_BottomRight = new Coordinate2(1.0f, 1.0f);
 		}
 		
 		private void CleanupVertices()
@@ -262,11 +257,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private const Single VertexZ = 0.0f;
 		
-		private Vector2 VertexCoordinates_0_TopLeft
+		private Coordinate2 VertexCoordinates_0_TopLeft
 		{
 			get
 			{
-				return new Vector2(Vertices[0], Vertices[1]);
+				return new Coordinate2(Vertices[0], Vertices[1]);
 			}
 			set
 			{
@@ -276,11 +271,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			}
 		}
 		
-		private Vector2 VertexCoordinates_1_BottomLeft
+		private Coordinate2 VertexCoordinates_1_BottomLeft
 		{
 			get
 			{
-				return new Vector2(Vertices[3], Vertices[4]);
+				return new Coordinate2(Vertices[3], Vertices[4]);
 			}
 			set
 			{
@@ -290,11 +285,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			}
 		}
 		
-		private Vector2 VertexCoordinates_2_TopRight
+		private Coordinate2 VertexCoordinates_2_TopRight
 		{
 			get
 			{
-				return new Vector2(Vertices[6], Vertices[7]);
+				return new Coordinate2(Vertices[6], Vertices[7]);
 			}
 			set
 			{
@@ -304,11 +299,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			}
 		}
 		
-		private Vector2 VertexCoordinates_3_BottomRight
+		private Coordinate2 VertexCoordinates_3_BottomRight
 		{
 			get
 			{
-				return new Vector2(Vertices[9], Vertices[10]);
+				return new Coordinate2(Vertices[9], Vertices[10]);
 			}
 			set
 			{
@@ -327,10 +322,10 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			TextureCoordinates = new Single[4 * 2];
 			
 			//TODO: these are temporary, for testing.
-			TextureCoordinates_0_TopLeft = new Vector2(0.0f, 0.0f);
-			TextureCoordinates_1_BottomLeft = new Vector2(0.0f, 1.0f);
-			TextureCoordinates_2_TopRight = new Vector2(1.0f, 0.0f);
-			TextureCoordinates_3_BottomRight = new Vector2(1.0f, 1.0f);
+			TextureCoordinates_0_TopLeft = new Coordinate2(0.0f, 0.0f);
+			TextureCoordinates_1_BottomLeft = new Coordinate2(0.0f, 1.0f);
+			TextureCoordinates_2_TopRight = new Coordinate2(1.0f, 0.0f);
+			TextureCoordinates_3_BottomRight = new Coordinate2(1.0f, 1.0f);
 		}
 		
 		private void CleanupTextureCoordinates()
@@ -340,11 +335,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private Single[] TextureCoordinates;
 		
-		private Vector2 TextureCoordinates_0_TopLeft
+		private Coordinate2 TextureCoordinates_0_TopLeft
 		{
 			get
 			{
-				return new Vector2(TextureCoordinates[0], TextureCoordinates[1]);
+				return new Coordinate2(TextureCoordinates[0], TextureCoordinates[1]);
 			}
 			set
 			{
@@ -352,11 +347,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				TextureCoordinates[1] = value.Y;
 			}
 		}
-		private Vector2 TextureCoordinates_1_BottomLeft
+		private Coordinate2 TextureCoordinates_1_BottomLeft
 		{
 			get
 			{
-				return new Vector2(TextureCoordinates[2], TextureCoordinates[3]);
+				return new Coordinate2(TextureCoordinates[2], TextureCoordinates[3]);
 			}
 			set
 			{
@@ -364,11 +359,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				TextureCoordinates[3] = value.Y;
 			}
 		}
-		private Vector2 TextureCoordinates_2_TopRight
+		private Coordinate2 TextureCoordinates_2_TopRight
 		{
 			get
 			{
-				return new Vector2(TextureCoordinates[4], TextureCoordinates[5]);
+				return new Coordinate2(TextureCoordinates[4], TextureCoordinates[5]);
 			}
 			set
 			{
@@ -376,11 +371,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				TextureCoordinates[5] = value.Y;
 			}
 		}
-		private Vector2 TextureCoordinates_3_BottomRight
+		private Coordinate2 TextureCoordinates_3_BottomRight
 		{
 			get
 			{
-				return new Vector2(TextureCoordinates[6], TextureCoordinates[7]);
+				return new Coordinate2(TextureCoordinates[6], TextureCoordinates[7]);
 			}
 			set
 			{

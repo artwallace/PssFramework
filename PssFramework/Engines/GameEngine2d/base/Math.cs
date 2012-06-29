@@ -153,8 +153,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>Return the sign of x (returns 0.0f is x=0.0f).</summary>
-		public static
-		float Sign( float x ) 
+		public static float Sign( float x ) 
 		{
 			if ( x < 0.0f ) return -1.0f;
 			if ( x > 0.0f ) return 1.0f;
@@ -175,45 +174,39 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 
 		/// <summary>SaveAcos checks that x is in [-1,1], and if x is off by an epsilon it clamps it.</summary>
-		public static 
-		float SafeAcos( float x )
+		public static float SafeAcos( float x )
 		{
 			Common.Assert( FMath.Abs( x ) - 1.0f < 1.0e-5f );
 			return FMath.Acos( FMath.Clamp( x, -1.0f, 1.0f ) );	// clamp if necessary (we have checked that we are in in [-1,1] by an epsilon)
 		}
 
 		/// <summary>Return the absolute 2d angle formed by (1,0) and value, in range -pi,pi</summary>
-		public static 
-		float Angle( Vector2 value )
+		public static float Angle( Vector2 value )
 		{
 			float angle = SafeAcos( value.Normalize().X );
 			return value.Y < 0.0f ? -angle : angle;
 		}
 
 		/// <summary>Rotate 'point' around rotation center 'pivot' by an angle 'angle' (radians).</summary>
-		public static 
-		Vector2 Rotate( Vector2 point, float angle, Vector2 pivot )
+		public static Vector2 Rotate( Vector2 point, float angle, Vector2 pivot )
 		{
 			return pivot + ( point - pivot ).Rotate( angle );
 		}
 
 		/// <summary>Degree to radians.</summary>
-		public static 
-		float Deg2Rad( float value )
+		public static float Deg2Rad( float value )
 		{
 			return value * 0.01745329251f;
 		}
 
 		/// <summary>Radians to degrees.</summary>
-		public static 
-		float Rad2Deg( float value )
+		public static float Rad2Deg( float value )
 		{
 			return value * 57.29577951308f;
 		}
 
 		/// <summary>Element wise degree to radians.</summary>
-		public static 
-		Vector2 Deg2Rad( Vector2 value )
+		public static Vector2 Deg2Rad( Vector2 value )
 		{
 			return value * 0.01745329251f;
 		}

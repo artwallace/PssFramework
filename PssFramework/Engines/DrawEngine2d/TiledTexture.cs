@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using PsmFramework.Engines.DrawEngine2d.Support;
 using Sce.Pss.Core.Graphics;
 
@@ -32,12 +33,14 @@ namespace PsmFramework.Engines.DrawEngine2d
 			InitializeDrawEngine2d(drawEngine2d);
 			InitializeTexture2D(path);
 			InitializeTiles(columns, rows, sourceArea);
+			InitializeCachedTileCoordinates();
 		}
 		
 		private void Cleanup()
 		{
-			CleanupTexture2D();
+			CleanupCachedTileCoordinates();
 			CleanupTiles();
+			CleanupTexture2D();
 			CleanupDrawEngine2d();
 		}
 		
@@ -105,10 +108,8 @@ namespace PsmFramework.Engines.DrawEngine2d
 			}
 			else
 			{
-				//TODO: Need to decide how the coordinates are oriented!
 				SourceAreaWidth = SourceArea.Right - SourceArea.Left;
-				SourceAreaHeight = SourceArea.Top - SourceArea.Bottom;
-				throw new NotImplementedException();
+				SourceAreaHeight = SourceArea.Bottom - SourceArea.Top;
 			}
 			
 			if (SourceAreaWidth < 1 || SourceAreaHeight < 1)
@@ -143,7 +144,51 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		#region Cached Tile Coordinates
 		
-		//TODO: How much difference does this really make? Test without it for now.
+		private void InitializeCachedTileCoordinates()
+		{
+			CachedTileCoordinates = new Dictionary<TiledTextureIndex, RectangularArea2i>();
+			
+			GenerateCachedTileCoordinates();
+		}
+		
+		private void CleanupCachedTileCoordinates()
+		{
+			CachedTileCoordinates.Clear();
+			CachedTileCoordinates = null;
+		}
+		
+		private Dictionary<TiledTextureIndex, RectangularArea2i> CachedTileCoordinates;
+		
+		private void GenerateCachedTileCoordinates()
+		{
+			for(Int32 row = 0; row < Rows; row++)
+			{
+				Int32 topPstn = SourceArea.Top + (row * TileHeight);
+				Int32 bottomPstn = SourceArea.Top + (row * TileHeight) + TileHeight;
+				
+				for(Int32 column = 0; column < Columns; column++)
+				{
+					Int32 leftPstn = SourceArea.Left + (column * TileWidth);
+					Int32 rightPstn = SourceArea.Left + (column * TileWidth) + TileWidth;
+					
+					TiledTextureIndex tti = new TiledTextureIndex(column, row);
+					
+					RectangularArea2i ra = new RectangularArea2i(leftPstn, topPstn, rightPstn, bottomPstn);
+					
+					CachedTileCoordinates.Add(tti, ra);
+				}
+			}
+		}
+		
+		public RectangularArea2i GetTileCoordinates(TiledTextureIndex index)
+		{
+			return CachedTileCoordinates[index];
+		}
+		
+		public RectangularArea2i GetTileCoordinates(Int32 column, Int32 row)
+		{
+			return CachedTileCoordinates[new TiledTextureIndex(column, row)];
+		}
 		
 		#endregion
 		

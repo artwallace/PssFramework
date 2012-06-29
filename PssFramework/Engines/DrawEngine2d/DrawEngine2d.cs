@@ -41,10 +41,12 @@ namespace PsmFramework.Engines.DrawEngine2d
 			InitializeTiledTextureManager();
 			InitializeDebugRuler();
 			InitializeDebugFont();
+			InitializePerformanceTracking();
 		}
 		
 		private void Cleanup()
 		{
+			CleanupPerformanceTracking();
 			CleanupDebugFont();
 			CleanupDebugRuler();
 			CleanupTiledTextureManager();
@@ -644,6 +646,36 @@ namespace PsmFramework.Engines.DrawEngine2d
 		}
 		
 		
+		
+		#endregion
+		
+		#region Performance Tracking
+		
+		private void InitializePerformanceTracking()
+		{
+			ResetDrawArrayCallsCounter();
+		}
+		
+		private void CleanupPerformanceTracking()
+		{
+		}
+		
+		public Int32 DrawArrayCallsCounter;
+		
+		public void ResetDrawArrayCallsCounter()
+		{
+			DrawArrayCallsCounter = 0;
+		}
+		
+		public void IncrementDrawArrayCallsCounter()
+		{
+			DrawArrayCallsCounter++;
+		}
+		
+		public Int32 GetDrawArrayCallsCount()
+		{
+			return DrawArrayCallsCounter;
+		}
 		
 		#endregion
 	}

@@ -1,9 +1,3 @@
-/* SCE CONFIDENTIAL
- * PlayStation(R)Suite SDK 0.98.2
- * Copyright (C) 2012 Sony Computer Entertainment Inc.
- * All Rights Reserved.
- */
-
 void main(
 	float4 in a_Position : POSITION,
 	float2 in a_TexCoord : TEXCOORD0,

@@ -47,9 +47,23 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			if(RenderingRecacheRequired)
 				GenerateCachedRendering();
 			
+			FontShader.SetShaderProgram();
+			FontShader.SetVertexBuffer();
+			
+			if (Layer.DrawEngine2d.GraphicsContext.GetTexture(0) != Layer.DrawEngine2d.DebugFont.Texture)
+				Layer.DrawEngine2d.GraphicsContext.SetTexture(0, Layer.DrawEngine2d.DebugFont.Texture);
+			
 			for(Int32 c = 0; c < CachedRendering.Length; c++)
 			{
-				//Draw that sprite.
+				Matrix4 scaleMatrix = Matrix4.Scale(new Vector3(DebugFont.FontWidth, DebugFont.FontHeight, 1.0f));
+				Matrix4 transMatrix = Matrix4.Translation(new Vector3(CachedRendering[c].Position.X, CachedRendering[c].Position.Y, 1.0f));
+				Matrix4 modelMatrix = transMatrix * scaleMatrix;
+				Matrix4 worldViewProj = Layer.DrawEngine2d.ProjectionMatrix * Layer.DrawEngine2d.ModelViewMatrix * modelMatrix;
+				
+				FontShader.ShaderProgram.SetUniformValue(0, ref worldViewProj);
+				
+				//TODO: this needs to be changed to be an array of VBOs, like ge2d.
+				FontShader.DrawArrays();
 			}
 		}
 		
@@ -108,9 +122,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				//TODO: Add support for opposite Coordinate Mode here.
 				CachedRendering[cacheIndex].Position.X = Position.X + (DebugFont.FontWidth * charOnThisLineNumber);
 				CachedRendering[cacheIndex].Position.Y = Position.Y + (DebugFont.FontHeight * lineNumber);
-				
-				
-				
+				CachedRendering[cacheIndex].CharCode = c;
 				
 				//Final things to do.
 				cacheIndex++;
@@ -122,10 +134,10 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private RenderingCacheData[] CachedRendering;
 		
-		internal struct RenderingCacheData
+		private struct RenderingCacheData
 		{
-			internal Coordinate2 Position;
-			internal Int32 CharCode;
+			public Coordinate2 Position;
+			public Int32 CharCode;
 		}
 		
 		#endregion

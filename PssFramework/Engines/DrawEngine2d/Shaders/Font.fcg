@@ -5,7 +5,7 @@ void main(
 	out float4 col : COLOR
 	)
 {
-	// luminance texture: font value is in r,g or b.
+	//luminance texture: font value is in r,g or b.
 	float value = tex2D(Tex, vout_tex).r;
 	col = vout_color;
 	col.a *= value;

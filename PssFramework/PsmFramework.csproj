@@ -198,6 +198,8 @@
     <Compile Include="Engines\DrawEngine2d\LayerType.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\SpriteShader.cs" />
     <Compile Include="Engines\DrawEngine2d\CoordinateSystemMode.cs" />
+    <Compile Include="IDisposablePlus.cs" />
+    <Compile Include="Engines\DrawEngine2d\TiledTextureIndex.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />

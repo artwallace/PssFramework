@@ -1,13 +1,7 @@
-/* SCE CONFIDENTIAL
- * PlayStation(R)Suite SDK 0.98.2
- * Copyright (C) 2012 Sony Computer Entertainment Inc.
- * All Rights Reserved.
- */
-
 void main(
-	float2 in v_TexCoord  : TEXCOORD0,
-	float4 in v_Color     : COLOR0,
-	float4 out color      : COLOR,
+	float2 in v_TexCoord : TEXCOORD0,
+	float4 in v_Color : COLOR0,
+	float4 out color : COLOR,
 	uniform sampler2D s_Texture : TEXUNIT0
 	)
 {

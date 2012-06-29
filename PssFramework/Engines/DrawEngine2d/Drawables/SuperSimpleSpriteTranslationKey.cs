@@ -2,6 +2,7 @@ using System;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
+	//TODO: Need to get rid of this struct and keep data in the sprite class.
 	public struct SuperSimpleSpriteTranslationKey
 	{
 		public Single X;
