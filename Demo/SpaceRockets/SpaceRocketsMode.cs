@@ -38,7 +38,7 @@ namespace Demo.SpaceRockets
 			//sss2.Rotation = 45.0f;
 			
 			Layer debugOverlay = DrawEngine2d.GetOrCreateLayer(2);
-			_DebugTextLabel = new DebugText(debugOverlay);
+			_DebugTextLabel = new DebugLabel(debugOverlay);
 			_DebugTextLabel.Text = "Test! Test! Test!";
 			_DebugTextLabel.Position = new Coordinate2(100.0f, 100.0f);
 		}
@@ -77,7 +77,7 @@ namespace Demo.SpaceRockets
 		
 		#endregion
 		
-		private DebugText _DebugTextLabel;
+		private DebugLabel _DebugTextLabel;
 	}
 }
 

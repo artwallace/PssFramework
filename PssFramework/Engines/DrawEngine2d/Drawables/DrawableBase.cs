@@ -29,10 +29,14 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		{
 			InitializeLayer(layer);
 			InitializeDrawEngine2d();
+			InitializeChanged();
+			InitializeVisibility();
 		}
 		
 		private void CleanupInternal()
 		{
+			CleanupVisibility();
+			CleanupChanged();
 			CleanupDrawEngine2d();
 			CleanupLayer();
 		}
@@ -84,6 +88,79 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		#region Render
 		
 		public abstract void Render();
+		
+		#endregion
+		
+		#region Changed
+		
+		private void InitializeChanged()
+		{
+			//TODO: force changed here?
+		}
+		
+		private void CleanupChanged()
+		{
+		}
+		
+		private Boolean _Changed;
+		protected Boolean Changed
+		{
+			get { return _Changed; }
+			private set
+			{
+				if (_Changed == value)
+					return;
+				
+				_Changed = value;
+				
+				if(_Changed)
+					DrawEngine2d.SetRenderRequired();
+				
+				ChangedHelper();
+			}
+		}
+		
+		protected void MarkAsChanged()
+		{
+			Changed = true;
+		}
+		
+		protected void ClearChanged()
+		{
+			Changed = false;
+		}
+		
+		//Poor-man's OnChanged event.
+		protected virtual void ChangedHelper()
+		{
+		}
+		
+		#endregion
+		
+		#region Visibility
+		
+		private void InitializeVisibility()
+		{
+			Visible = true;
+		}
+		
+		private void CleanupVisibility()
+		{
+		}
+		
+		private Boolean _Visible;
+		public Boolean Visible
+		{
+			get { return _Visible; }
+			set
+			{
+				if (_Visible == value)
+					return;
+				
+				_Visible = value;
+				MarkAsChanged();
+			}
+		}
 		
 		#endregion
 	}

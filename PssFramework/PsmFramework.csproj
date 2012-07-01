@@ -187,18 +187,18 @@
     <Compile Include="Engines\DrawEngine2d\Drawables\Line.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\Circle.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\Point.cs" />
-    <Compile Include="Engines\DrawEngine2d\Drawables\Text.cs" />
-    <Compile Include="Engines\DrawEngine2d\RenderMode.cs" />
-    <Compile Include="Engines\DrawEngine2d\Drawables\DebugText.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSpriteTranslationKey.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\FontShader.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\ShaderBase.cs" />
     <Compile Include="Engines\DrawEngine2d\LayerType.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\SpriteShader.cs" />
-    <Compile Include="Engines\DrawEngine2d\CoordinateSystemMode.cs" />
     <Compile Include="IDisposablePlus.cs" />
     <Compile Include="Engines\DrawEngine2d\TiledTextureIndex.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\DrawableBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\Support\RenderMode.cs" />
+    <Compile Include="Engines\DrawEngine2d\Support\CoordinateSystemMode.cs" />
+    <Compile Include="Engines\DrawEngine2d\Drawables\DebugLabel.cs" />
+    <Compile Include="Engines\DrawEngine2d\Drawables\Label.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />

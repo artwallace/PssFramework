@@ -1,40 +1,28 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using PsmFramework.Engines.DrawEngine2d.Shaders;
 using PsmFramework.Engines.DrawEngine2d.Support;
 using Sce.Pss.Core;
 using Sce.Pss.Core.Graphics;
+using System.Collections.Generic;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
-	public sealed class SuperSimpleSpriteGroup : DrawableBase
+	public class DebugLabel : DrawableBase
 	{
-		//This class is a mess, just used for testing and learning OpenGL.
-		//Eventually, a barebones spritegroup that doesn't support rotation or scaling
-		// will be added for background tiles and simple sprites. Will allow for faster
-		// culling calcs and less matrix calcs.
-		//This class will evolve into a more advanced sprite class with more
-		// complicated culling due to rotation and scaling.
-		//A lot of the calcs need to be moved to the sprite class and only recalced
-		// when the props change.
-		
 		#region Constructor, Dispose
 		
-		public SuperSimpleSpriteGroup(Layer layer, TiledTexture tiledTexture)
+		public DebugLabel(Layer layer)
 			: base(layer)
 		{
-			InitializeCustom(tiledTexture);
 		}
 		
 		#endregion
 		
 		#region Initialize, Cleanup
 		
-		private void InitializeCustom(TiledTexture tiledTexture)
+		protected override void Initialize()
 		{
-			InitializeSprites();
-			InitializeTiledTexture(tiledTexture);
+			//InitializeRenderingCache();
 			
 			InitializeVertices();
 			InitializeIndices();
@@ -50,6 +38,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		protected override void Cleanup()
 		{
+			//CleanupRenderingCache();
+			
 			CleanupScalingMatrixCache();
 			CleanupRotationMatrixCache();
 			CleanupTransformationMatrixCache();
@@ -60,39 +50,71 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			CleanupTextureCoordinates();
 			CleanupIndices();
 			CleanupVertices();
-			
-			CleanupTiledTexture();
-			CleanupSprites();
 		}
 		
 		#endregion
 		
 		#region Render
 		
-		private Stopwatch TestTimer = new Stopwatch();
-		
 		public override void Render()
 		{
-			//Need to test how caching matrix calcs affects performance.
-			//Could be a waste of time.
-			//Could be better to recalc matrix in sprite when
-			// position, angle and scale are changed and store it there.
-			TestTimer.Start();
+//			if(RenderingRecacheRequired)
+//				GenerateCachedRendering();
+//			
+//			DrawEngine2d.FontShader.SetVertexBuffer();
+//			DrawEngine2d.FontShader.SetShaderProgram();
+//			
+//			Texture2D t = new Texture2D("/Application/TwinStickShooter/Images/Ship64.png", false);
+//			DrawEngine2d.GraphicsContext.SetTexture(0, t);
+//			//if (DrawEngine2d.GraphicsContext.GetTexture(0) != DrawEngine2d.DebugFont.Texture)
+//			//DrawEngine2d.GraphicsContext.SetTexture(0, DrawEngine2d.DebugFont.Texture);
+//			
+//			foreach(RenderingCacheData cacheData in CachedRendering)
+//			{
+//				Vector3 scaleVector = new Vector3(DebugFont.FontWidth, DebugFont.FontHeight, 1.0f);
+//				Matrix4 scaleMatrix = Matrix4.Scale(scaleVector);
+//				Vector3 translationVector = new Vector3(cacheData.Position.X, cacheData.Position.Y, 1.0f);
+//				Matrix4 transMatrix = Matrix4.Translation(translationVector);
+//				Matrix4 modelMatrix = transMatrix * scaleMatrix;
+//				Matrix4 worldViewProj = Layer.DrawEngine2d.ProjectionMatrix * Layer.DrawEngine2d.ModelViewMatrix;// * modelMatrix;
+//				
+//				DrawEngine2d.FontShader.SetWorldViewProjection(ref worldViewProj);
+//				
+//				//TODO: this needs to be changed to be an array of VBOs, like ge2d.
+//				DrawEngine2d.FontShader.DrawArrays();
+//			}
+//			
+//			for(Int32 c = 0; c < CachedRendering.Length; c++)
+//			{
+//				//Matrix4 scaleMatrix = Matrix4.Scale(new Vector3(DebugFont.FontWidth, DebugFont.FontHeight, 1.0f));
+//				//Matrix4 transMatrix = Matrix4.Translation(new Vector3(CachedRendering[c].Position.X, CachedRendering[c].Position.Y, 0.0f));
+//				//Matrix4 modelMatrix = transMatrix * scaleMatrix;
+//				Matrix4 worldViewProj = DrawEngine2d.ProjectionMatrix * DrawEngine2d.ModelViewMatrix;// * modelMatrix;
+//				
+//				DrawEngine2d.FontShader.SetWorldViewProjection(ref worldViewProj);
+//				
+//				//TODO: this needs to be changed to be an array of VBOs, like ge2d.
+//				DrawEngine2d.FontShader.DrawArrays();
+//			}
 			
 			//Set up the drawing
 			
 			//TODO: These need to be changed as little as possible, as seen in GOSLlib.
-			Layer.DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
-			Layer.DrawEngine2d.GraphicsContext.SetShaderProgram(Shader.ShaderProgram);
-			Layer.DrawEngine2d.GraphicsContext.SetTexture(0, TiledTexture.Texture);
+			DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
+			DrawEngine2d.GraphicsContext.SetShaderProgram(Shader.ShaderProgram);
 			
-			foreach(SuperSimpleSprite sprite in Sprites)
+			Texture2D t = new Texture2D("/Application/TwinStickShooter/Images/Ship64.png", false);
+			DrawEngine2d.GraphicsContext.SetTexture(0, DrawEngine2d.DebugFont.Texture);
+			
+			GenerateCachedRendering();
+			
+			foreach(RenderingCacheData cacheData in CachedRendering)
 			{
-				Matrix4 scaleMatrix = GetScalingMatrix(sprite.Scale);
-				Matrix4 rotMatrix = GetRotationMatrix(sprite.Rotation);
-				Matrix4 transMatrix = GetTranslationMatrix(sprite.Position.X, sprite.Position.Y, sprite.Scale, sprite.Rotation);
+				Matrix4 scaleMatrix = GetScalingMatrix(1.0f);
+				Matrix4 rotMatrix = GetRotationMatrix(1.0f);
+				Matrix4 transMatrix = GetTranslationMatrix(cacheData.Position.X, cacheData.Position.Y, 1.0f, 1.0f);
 				Matrix4 modelMatrix = transMatrix * rotMatrix * scaleMatrix;
-				Matrix4 worldViewProj = Layer.DrawEngine2d.ProjectionMatrix * Layer.DrawEngine2d.ModelViewMatrix * modelMatrix;
+				Matrix4 worldViewProj = DrawEngine2d.ProjectionMatrix * DrawEngine2d.ModelViewMatrix * modelMatrix;
 				
 				Shader.ShaderProgram.SetUniformValue(0, ref worldViewProj);
 				
@@ -101,92 +123,135 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			}
 			
 			//Clean up the drawing
-			
-			TestTimer.Stop();
+			//
 		}
 		
 		#endregion
 		
-		#region Sprites
+		#region Rendering Cache
 		
-		private void InitializeSprites()
+		private void InitializeRenderingCache()
 		{
-			Sprites = new List<SuperSimpleSprite>();
+			RenderingRecacheRequired = true;
 		}
 		
-		private void CleanupSprites()
+		private void CleanupRenderingCache()
 		{
-			SuperSimpleSprite[] sprites = Sprites.ToArray();
-			
-			foreach(SuperSimpleSprite sprite in sprites)
-				sprite.Dispose();
-			Sprites.Clear();
-			
-			Sprites = null;
+			CachedRendering = new RenderingCacheData[0];
 		}
 		
-		private List<SuperSimpleSprite> Sprites;
-		
-		internal void AddSprite(SuperSimpleSprite sprite)
+		private void GenerateCachedRendering()
 		{
-			if(sprite == null)
-				throw new ArgumentNullException();
+			RenderingRecacheRequired = false;
 			
-			if(Sprites.Contains(sprite))
-				throw new ArgumentException();
+			if(String.IsNullOrWhiteSpace(Text))
+			{
+				CachedRendering = new RenderingCacheData[0];
+				return;
+			}
 			
-			Sprites.Add(sprite);
-			Layer.DrawEngine2d.SetRenderRequired();
+			Int32 charCount = 0;
+			
+			foreach(Char c in Text)
+			{
+				if(c == '\n' || c == '\r')
+					continue;
+				else
+					charCount++;
+			}
+			
+			CachedRendering = new RenderingCacheData[charCount];
+			
+			Int32 cacheIndex = 0;
+			Int32 lineNumber = 0;
+			Int32 charOnThisLineNumber = 0;
+			
+			foreach(Char c in Text)
+			{
+				if(c == '\n')
+				{
+					lineNumber++;
+					charOnThisLineNumber = 0;
+					continue;
+				}
+				else if(c == '\r')
+					continue;
+				
+				//TODO: Needs spacing added.
+				//TODO: Add support for opposite Coordinate Mode here.
+				CachedRendering[cacheIndex].CharCode = c;
+				CachedRendering[cacheIndex].Position.X = Position.X + (DebugFont.FontWidth * charOnThisLineNumber);
+				CachedRendering[cacheIndex].Position.Y = Position.Y + (DebugFont.FontHeight * lineNumber);
+				
+				//Final things to do.
+				cacheIndex++;
+				charOnThisLineNumber++;
+			}
 		}
 		
-		internal void RemoveSprite(SuperSimpleSprite sprite)
+		private Boolean RenderingRecacheRequired;
+		
+		private RenderingCacheData[] CachedRendering;
+		
+		private struct RenderingCacheData
 		{
-			if(sprite == null)
-				throw new ArgumentNullException();
-			
-			if(!Sprites.Contains(sprite))
-				throw new ArgumentException();
-			
-			Sprites.Remove(sprite);
-			Layer.DrawEngine2d.SetRenderRequired();
-		}
-		
-		#endregion
-		
-		#region TiledTexture
-		
-		private void InitializeTiledTexture(TiledTexture tiledTexture)
-		{
-			if(tiledTexture == null)
-				throw new ArgumentNullException();
-			
-			TiledTexture = tiledTexture;
-			
-			Layer.DrawEngine2d.RegisterTiledTextureUser(this, TiledTexture);
-		}
-		
-		private void CleanupTiledTexture()
-		{
-			Layer.DrawEngine2d.UnregisterTiledTextureUser(this, TiledTexture);
-		}
-		
-		private TiledTexture TiledTexture;
-		
-		public Int32 TileWidth
-		{
-			get { return TiledTexture.TileWidth; }
-		}
-		
-		public Int32 TileHeight
-		{
-			get { return TiledTexture.TileHeight; }
+			public Coordinate2 Position;
+			public Int32 CharCode;
 		}
 		
 		#endregion
 		
-		#region Blend Mode NOT IMPLEMENTED
+		#region Text
+		
+		private String _Text;
+		public String Text
+		{
+			get { return _Text; }
+			set
+			{
+				if (_Text == value)
+					return;
+				
+				MarkAsChanged();
+				
+				_Text = Clean(value);
+			}
+		}
+		
+		private static String Clean(String text)
+		{
+			return text.Trim();
+		}
 		
 		#endregion
+		
+		#region Position
+		
+		private Coordinate2 _Position;
+		public Coordinate2 Position
+		{
+			get { return _Position; }
+			set
+			{
+				if (_Position == value)
+					return;
+				
+				MarkAsChanged();
+				
+				_Position = value;
+			}
+		}
+		
+		#endregion
+		
+		#region AdHocDraw
+		
+		//TODO: Impliment AdHocDraw.
+		
+		#endregion
+		
+		
+		
 		
 		#region Vertices
 		
@@ -275,7 +340,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void InitializeIndices()
 		{
-			Indices = new UInt16[4];
+			Indices = new UInt16[IndexCount];
+			
 			Indices[0] = 0;
 			Indices[1] = 1;
 			Indices[2] = 2;
@@ -284,10 +350,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void CleanupIndices()
 		{
-			Indices = new UInt16[0];
+			Indices = default(UInt16[]);
 		}
 		
 		private const Int32 IndexCount = 4;
+		
 		private UInt16[] Indices;
 		
 		#endregion
@@ -307,7 +374,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void CleanupTextureCoordinates()
 		{
-			TextureCoordinates = new Single[0];
+			TextureCoordinates = default(Single[]);
 		}
 		
 		private Single[] TextureCoordinates;
@@ -324,6 +391,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				TextureCoordinates[1] = value.Y;
 			}
 		}
+		
 		private Coordinate2 TextureCoordinates_1_BottomLeft
 		{
 			get
@@ -336,6 +404,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				TextureCoordinates[3] = value.Y;
 			}
 		}
+		
 		private Coordinate2 TextureCoordinates_2_TopRight
 		{
 			get
@@ -348,6 +417,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				TextureCoordinates[5] = value.Y;
 			}
 		}
+		
 		private Coordinate2 TextureCoordinates_3_BottomRight
 		{
 			get
@@ -373,7 +443,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void CleanupColor()
 		{
-			VertexColors = new Single[0];
+			VertexColors = default(Single[]);
 		}
 		
 		private Single[] VertexColors;
@@ -436,7 +506,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void InitializeShaderProgram()
 		{
-			Shader = new SpriteShader(Layer.DrawEngine2d);
+			Shader = new SpriteShader(DrawEngine2d);
 		}
 		
 		private void CleanupShaderProgram()
@@ -493,8 +563,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void GenerateScalingMatrix(Single scale)
 		{
-			Single scaleX = TiledTexture.TileWidth * scale;
-			Single scaleY = TiledTexture.TileHeight * scale;
+			Single scaleX = DebugFont.FontWidth * scale;
+			Single scaleY = DebugFont.FontHeight * scale;
 			Single scaleZ = 1.0f;
 			
 			Vector3 scaleV = new Vector3(scaleX, scaleY, scaleZ);
@@ -516,7 +586,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private Int32 GetScalingMatrixLimit()
 		{
-			return Sprites.Count * ScalingMatrixCacheLimitFactor;
+			return Text.Length * ScalingMatrixCacheLimitFactor;
 		}
 		
 		#endregion
@@ -583,7 +653,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private Int32 GetRotationMatrixCacheLimit()
 		{
-			return Sprites.Count * RotationMatrixCacheLimitFactor;
+			return Text.Length * RotationMatrixCacheLimitFactor;
 		}
 		
 		#endregion
@@ -664,7 +734,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private Int32 GetTranslationMatrixCacheLimit()
 		{
-			return Sprites.Count * TranslationMatrixCacheLimitFactor;
+			return Text.Length * TranslationMatrixCacheLimitFactor;
 		}
 		
 		#endregion
