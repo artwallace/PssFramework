@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PsmFramework.Engines.DrawEngine2d.Drawables;
+using PsmFramework.Engines.DrawEngine2d.Shaders;
 using PsmFramework.Engines.DrawEngine2d.Support;
 using Sce.Pss.Core;
 using Sce.Pss.Core.Graphics;
@@ -235,7 +236,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		private void InitializeTiledTextureManager()
 		{
 			TiledTextureList = new List<TiledTexture>();
-			TiledTextureUsers = new Dictionary<IDrawable, TiledTexture>();
+			TiledTextureUsers = new Dictionary<DrawableBase, TiledTexture>();
 		}
 		
 		private void CleanupTiledTextureManager()
@@ -251,7 +252,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private List<TiledTexture> TiledTextureList;
 		
-		private Dictionary<IDrawable, TiledTexture> TiledTextureUsers;
+		private Dictionary<DrawableBase, TiledTexture> TiledTextureUsers;
 		
 		public TiledTexture GetOrCreateTiledTexture(String path, Int32 columns = 1, Int32 rows = 1)
 		{
@@ -288,7 +289,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			return tt;
 		}
 		
-		internal void RegisterTiledTextureUser(IDrawable user, TiledTexture tiledTexture)
+		internal void RegisterTiledTextureUser(DrawableBase user, TiledTexture tiledTexture)
 		{
 			if(user == null)
 				throw new ArgumentNullException();
@@ -315,7 +316,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			}
 		}
 		
-		internal void UnregisterTiledTextureUser(IDrawable user, TiledTexture tiledTexture)
+		internal void UnregisterTiledTextureUser(DrawableBase user, TiledTexture tiledTexture)
 		{
 			throw new NotImplementedException();
 		}
@@ -503,6 +504,8 @@ namespace PsmFramework.Engines.DrawEngine2d
 			FrameBufferHeight = GraphicsContext.GetFrameBuffer().Height;
 			FrameBufferHeightAsSingle = (Single)FrameBufferHeight;
 			
+			//TODO: I'm not sure if the ZNear and ZFar are correct.
+			
 			//TODO: Is this one pixel too tall and wide?
 			ProjectionMatrixLeft = 0.0f;
 			ProjectionMatrixRight = FrameBufferWidthAsSingle;
@@ -639,13 +642,16 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private void InitializeShaders()
 		{
+			FontShader = new FontShader(this);
 		}
 		
 		private void CleanupShaders()
 		{
+			FontShader.Dispose();
+			FontShader = null;
 		}
 		
-		
+		internal FontShader FontShader;
 		
 		#endregion
 		

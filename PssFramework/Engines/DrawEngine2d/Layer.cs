@@ -46,7 +46,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		public void Render()
 		{
-			foreach(IDrawable item in Items)
+			foreach(DrawableBase item in Items)
 				item.Render();
 		}
 		
@@ -104,23 +104,23 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private void InitializeDrawables()
 		{
-			Items = new List<IDrawable>();
+			Items = new List<DrawableBase>();
 		}
 		
 		private void CleanupDrawables()
 		{
-			IDrawable[] items = Items.ToArray();
+			DrawableBase[] items = Items.ToArray();
 			
-			foreach(IDrawable item in items)
+			foreach(DrawableBase item in items)
 				item.Dispose();
 			Items.Clear();
 			
 			Items = null;
 		}
 		
-		private List<IDrawable> Items { get; set; }
+		private List<DrawableBase> Items { get; set; }
 		
-		internal void AddDrawable(IDrawable item)
+		internal void AddDrawable(DrawableBase item)
 		{
 			if(item == null)
 				throw new ArgumentNullException();
@@ -132,7 +132,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			DrawEngine2d.SetRenderRequired();
 		}
 		
-		internal void RemoveDrawable(IDrawable item)
+		internal void RemoveDrawable(DrawableBase item)
 		{
 			if(item == null)
 				throw new ArgumentNullException();

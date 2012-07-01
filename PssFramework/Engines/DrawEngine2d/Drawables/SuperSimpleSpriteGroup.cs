@@ -8,7 +8,7 @@ using Sce.Pss.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
-	public sealed class SuperSimpleSpriteGroup : IDisposable, IDrawable
+	public sealed class SuperSimpleSpriteGroup : DrawableBase
 	{
 		//This class is a mess, just used for testing and learning OpenGL.
 		//Eventually, a barebones spritegroup that doesn't support rotation or scaling
@@ -22,22 +22,17 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		#region Constructor, Dispose
 		
 		public SuperSimpleSpriteGroup(Layer layer, TiledTexture tiledTexture)
+			: base(layer)
 		{
-			Initialize(layer, tiledTexture);
-		}
-		
-		public void Dispose()
-		{
-			Cleanup();
+			InitializeCustom(tiledTexture);
 		}
 		
 		#endregion
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize(Layer layer, TiledTexture tiledTexture)
+		private void InitializeCustom(TiledTexture tiledTexture)
 		{
-			InitializeLayer(layer);
 			InitializeSprites();
 			InitializeTiledTexture(tiledTexture);
 			
@@ -53,7 +48,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			InitializeTransformationMatrixCache();
 		}
 		
-		private void Cleanup()
+		protected override void Cleanup()
 		{
 			CleanupScalingMatrixCache();
 			CleanupRotationMatrixCache();
@@ -68,7 +63,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			
 			CleanupTiledTexture();
 			CleanupSprites();
-			CleanupLayer();
 		}
 		
 		#endregion
@@ -77,7 +71,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private Stopwatch TestTimer = new Stopwatch();
 		
-		public void Render()
+		public override void Render()
 		{
 			//Need to test how caching matrix calcs affects performance.
 			//Could be a waste of time.
@@ -111,24 +105,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			
 			TestTimer.Stop();
 		}
-		
-		#endregion
-		
-		#region Layer
-		
-		private void InitializeLayer(Layer layer)
-		{
-			Layer = layer;
-			Layer.AddDrawable(this);
-		}
-		
-		private void CleanupLayer()
-		{
-			Layer.RemoveDrawable(this);
-			Layer = null;
-		}
-		
-		public Layer Layer;
 		
 		#endregion
 		

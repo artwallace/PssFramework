@@ -27,12 +27,9 @@ namespace Demo.SpaceRockets
 			DrawEngine2d.ClearColor = Colors.Blue;
 			//EnableDebugInfo();
 			
-			Layer l = DrawEngine2d.GetOrCreateLayer(1);
-			//UltraSimpleSprite uss = new UltraSimpleSprite(l);
-			
 			TiledTexture tt = new TiledTexture(DrawEngine2d, "/Application/TwinStickShooter/Images/Ship64.png");
 			
-			Layer l2 = DrawEngine2d.GetOrCreateLayer(2);
+			Layer l2 = DrawEngine2d.GetOrCreateLayer(1);
 			SuperSimpleSpriteGroup sssg = new SuperSimpleSpriteGroup(l2, tt);
 			SuperSimpleSprite sss1 = new SuperSimpleSprite(sssg);
 			sss1.SetPositionFromCenter(new Coordinate2(32f, 32f));
@@ -40,14 +37,15 @@ namespace Demo.SpaceRockets
 			sss2.SetPositionFromCenter(new Coordinate2(96f, 32f));
 			//sss2.Rotation = 45.0f;
 			
-			Layer debugOverlay = DrawEngine2d.GetOrCreateLayer(10);
+			Layer debugOverlay = DrawEngine2d.GetOrCreateLayer(2);
 			_DebugTextLabel = new DebugText(debugOverlay);
-			_DebugTextLabel.Text = "Test";
-			_DebugTextLabel.Position = new Coordinate2(100f, 100f);
+			_DebugTextLabel.Text = "Test! Test! Test!";
+			_DebugTextLabel.Position = new Coordinate2(100.0f, 100.0f);
 		}
 		
 		protected override void Cleanup()
 		{
+			_DebugTextLabel.Dispose();
 			_DebugTextLabel = null;
 		}
 		

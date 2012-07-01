@@ -80,6 +80,15 @@ namespace PsmFramework.Engines.DrawEngine2d.Shaders
 		
 		#endregion
 		
+		#region WorldViewProjection
+		
+		public void SetWorldViewProjection(ref Matrix4 worldViewProj)
+		{
+			ShaderProgram.SetUniformValue(0, ref worldViewProj);
+		}
+		
+		#endregion
+		
 		#region Vertex Rendering Order Indices
 		
 		private void InitializeIndices()
@@ -115,7 +124,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Shaders
 		
 		private void CleanupVertices()
 		{
-			Vertices = new Single[0];
+			Vertices = default(Single[]);
 		}
 		
 		private Single[] Vertices;
@@ -196,7 +205,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Shaders
 		
 		private void CleanupTextureCoordinates()
 		{
-			TextureCoordinates = new Single[0];
+			TextureCoordinates = default(Single[]);
 		}
 		
 		private Single[] TextureCoordinates;
@@ -262,7 +271,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Shaders
 		
 		private void CleanupColor()
 		{
-			VertexColors = new Single[0];
+			VertexColors = default(Single[]);
 		}
 		
 		private Single[] VertexColors;

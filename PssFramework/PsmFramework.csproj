@@ -168,7 +168,6 @@
     <Compile Include="Engines\GameEngine2d\Plane3D.cs" />
     <Compile Include="Engines\GameEngine2d\DebugFlags.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\UltraSimpleSprite.cs" />
-    <Compile Include="Engines\DrawEngine2d\Drawables\IDrawable.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSpriteGroup.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSprite.cs" />
     <Compile Include="Engines\DrawEngine2d\TiledTexture.cs" />
@@ -194,12 +193,12 @@
     <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSpriteTranslationKey.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\FontShader.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\ShaderBase.cs" />
-    <Compile Include="Engines\DrawEngine2d\Support\DebugFontGlyph.cs" />
     <Compile Include="Engines\DrawEngine2d\LayerType.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\SpriteShader.cs" />
     <Compile Include="Engines\DrawEngine2d\CoordinateSystemMode.cs" />
     <Compile Include="IDisposablePlus.cs" />
     <Compile Include="Engines\DrawEngine2d\TiledTextureIndex.cs" />
+    <Compile Include="Engines\DrawEngine2d\Drawables\DrawableBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />

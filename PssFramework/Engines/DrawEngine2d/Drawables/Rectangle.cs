@@ -2,15 +2,12 @@ using System;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
-	public class Rectangle : IDrawable, IDisposable
+	public class Rectangle : DrawableBase
 	{
 		#region Constructor, Dispose
 		
 		public Rectangle(Layer layer)
-		{
-		}
-		
-		public void Dispose()
+			: base(layer)
 		{
 		}
 		
@@ -18,7 +15,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Render
 		
-		public void Render()
+		public override void Render()
 		{
 		}
 		

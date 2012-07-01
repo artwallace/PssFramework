@@ -6,65 +6,83 @@ using Sce.Pss.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
-	public class DebugText : IDrawable
+	public class DebugText : DrawableBase
 	{
 		#region Constructor, Dispose
 		
 		public DebugText(Layer layer)
+			: base(layer)
 		{
-			Initialize(layer);
-		}
-		
-		public void Dispose()
-		{
-			Cleanup();
 		}
 		
 		#endregion
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize(Layer layer)
+		protected override void Initialize()
 		{
-			InitializeLayer(layer);
-			InitializeShader();
 			InitializeRenderingCache();
 		}
 		
-		private void Cleanup()
+		protected override void Cleanup()
 		{
 			CleanupRenderingCache();
-			CleanupShader();
-			CleanupLayer();
 		}
 		
 		#endregion
 		
 		#region Render
 		
-		public void Render()
+		public override void Render()
 		{
 			if(RenderingRecacheRequired)
 				GenerateCachedRendering();
 			
-			FontShader.SetShaderProgram();
-			FontShader.SetVertexBuffer();
+			DrawEngine2d.FontShader.SetVertexBuffer();
+			DrawEngine2d.FontShader.SetShaderProgram();
 			
-			if (Layer.DrawEngine2d.GraphicsContext.GetTexture(0) != Layer.DrawEngine2d.DebugFont.Texture)
-				Layer.DrawEngine2d.GraphicsContext.SetTexture(0, Layer.DrawEngine2d.DebugFont.Texture);
+			Texture2D t = new Texture2D("/Application/TwinStickShooter/Images/Ship64.png", false);
+			DrawEngine2d.GraphicsContext.SetTexture(0, t);
+			//if (DrawEngine2d.GraphicsContext.GetTexture(0) != DrawEngine2d.DebugFont.Texture)
+			//DrawEngine2d.GraphicsContext.SetTexture(0, DrawEngine2d.DebugFont.Texture);
+			
+			foreach(RenderingCacheData cacheData in CachedRendering)
+			{
+				Vector3 scaleVector = new Vector3(DebugFont.FontWidth, DebugFont.FontHeight, 1.0f);
+				Matrix4 scaleMatrix = Matrix4.Scale(scaleVector);
+				Vector3 translationVector = new Vector3(cacheData.Position.X, cacheData.Position.Y, 1.0f);
+				Matrix4 transMatrix = Matrix4.Translation(translationVector);
+				Matrix4 modelMatrix = transMatrix * scaleMatrix;
+				Matrix4 worldViewProj = Layer.DrawEngine2d.ProjectionMatrix * Layer.DrawEngine2d.ModelViewMatrix;// * modelMatrix;
+				
+				DrawEngine2d.FontShader.SetWorldViewProjection(ref worldViewProj);
+				
+				//TODO: this needs to be changed to be an array of VBOs, like ge2d.
+				DrawEngine2d.FontShader.DrawArrays();
+			}
 			
 			for(Int32 c = 0; c < CachedRendering.Length; c++)
 			{
-				Matrix4 scaleMatrix = Matrix4.Scale(new Vector3(DebugFont.FontWidth, DebugFont.FontHeight, 1.0f));
-				Matrix4 transMatrix = Matrix4.Translation(new Vector3(CachedRendering[c].Position.X, CachedRendering[c].Position.Y, 1.0f));
-				Matrix4 modelMatrix = transMatrix * scaleMatrix;
-				Matrix4 worldViewProj = Layer.DrawEngine2d.ProjectionMatrix * Layer.DrawEngine2d.ModelViewMatrix * modelMatrix;
+				//Matrix4 scaleMatrix = Matrix4.Scale(new Vector3(DebugFont.FontWidth, DebugFont.FontHeight, 1.0f));
+				//Matrix4 transMatrix = Matrix4.Translation(new Vector3(CachedRendering[c].Position.X, CachedRendering[c].Position.Y, 0.0f));
+				//Matrix4 modelMatrix = transMatrix * scaleMatrix;
+				Matrix4 worldViewProj = DrawEngine2d.ProjectionMatrix * DrawEngine2d.ModelViewMatrix;// * modelMatrix;
 				
-				FontShader.ShaderProgram.SetUniformValue(0, ref worldViewProj);
+				DrawEngine2d.FontShader.SetWorldViewProjection(ref worldViewProj);
 				
 				//TODO: this needs to be changed to be an array of VBOs, like ge2d.
-				FontShader.DrawArrays();
+				DrawEngine2d.FontShader.DrawArrays();
 			}
+		}
+		
+		#endregion
+		
+		#region MarkAsChanged
+		
+		private void MarkAsChanged()
+		{
+			RenderingRecacheRequired = true;
+			DrawEngine2d.SetRenderRequired();
 		}
 		
 		#endregion
@@ -120,9 +138,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				
 				//TODO: Needs spacing added.
 				//TODO: Add support for opposite Coordinate Mode here.
+				CachedRendering[cacheIndex].CharCode = c;
 				CachedRendering[cacheIndex].Position.X = Position.X + (DebugFont.FontWidth * charOnThisLineNumber);
 				CachedRendering[cacheIndex].Position.Y = Position.Y + (DebugFont.FontHeight * lineNumber);
-				CachedRendering[cacheIndex].CharCode = c;
 				
 				//Final things to do.
 				cacheIndex++;
@@ -142,24 +160,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#endregion
 		
-		#region Layer
-		
-		private void InitializeLayer(Layer layer)
-		{
-			Layer = layer;
-			Layer.AddDrawable(this);
-		}
-		
-		private void CleanupLayer()
-		{
-			Layer.RemoveDrawable(this);
-			Layer = null;
-		}
-		
-		protected Layer Layer;
-		
-		#endregion
-		
 		#region Text
 		
 		private String _Text;
@@ -171,12 +171,15 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				if (_Text == value)
 					return;
 				
-				Layer.DrawEngine2d.SetRenderRequired();
+				MarkAsChanged();
 				
-				//TODO: Should the text get cleaned here?
-				//Strip whitespace, \r, etc?
-				_Text = value.Trim();
+				_Text = Clean(value);
 			}
+		}
+		
+		private static String Clean(String text)
+		{
+			return text.Trim();
 		}
 		
 		#endregion
@@ -192,29 +195,11 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				if (_Position == value)
 					return;
 				
-				Layer.DrawEngine2d.SetRenderRequired();
+				MarkAsChanged();
 				
 				_Position = value;
 			}
 		}
-		
-		#endregion
-		
-		#region Shader Program
-		
-		private void InitializeShader()
-		{
-			//TODO: Should share shader, cache in DE2d.
-			FontShader = new FontShader(Layer.DrawEngine2d);
-		}
-		
-		private void CleanupShader()
-		{
-			FontShader.Dispose();
-			FontShader = null;
-		}
-		
-		private FontShader FontShader;
 		
 		#endregion
 		

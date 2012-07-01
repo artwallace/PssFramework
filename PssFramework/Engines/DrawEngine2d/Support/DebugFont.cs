@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Sce.Pss.Core.Graphics;
-using Sce.Pss.Core;
 
 namespace PsmFramework.Engines.DrawEngine2d.Support
 {
@@ -46,7 +45,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		private void InitializeGlyphTable()
 		{
-			GlyphTable = new Dictionary<Char, DebugFontGlyph>();
+			GlyphTableUpperPixelData = new Dictionary<Char, UInt32>();
+			GlyphTableLowerPixelData = new Dictionary<Char, UInt32>();
 			
 			CreateGlyphTableEntry(0x00000000, 0x00000000, ' ');
 			CreateGlyphTableEntry(0x10101010, 0x00100000, '!');
@@ -147,18 +147,26 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		private void CleanupGlyphTable()
 		{
-			GlyphTable.Clear();
-			GlyphTable = null;
+			GlyphTableUpperPixelData.Clear();
+			GlyphTableLowerPixelData.Clear();
+			GlyphTableUpperPixelData = null;
+			GlyphTableLowerPixelData = null;
 		}
 		
-		private Dictionary<Char, DebugFontGlyph> GlyphTable;
+		//These two should be in sync all the time.
+		//They should be unified by combining the upper and lower data
+		// into a single UInt and kept as a single dict.
+		private Dictionary<Char, UInt32> GlyphTableUpperPixelData;
+		private Dictionary<Char, UInt32> GlyphTableLowerPixelData;
 		
-		private void CreateGlyphTableEntry(UInt32 data1, UInt32 data2, Char c)
+		private void CreateGlyphTableEntry(UInt32 upperData, UInt32 lowerData, Char c)
 		{
-			GlyphTable[c] = new DebugFontGlyph(c, data1, data2);
+			GlyphTableUpperPixelData[c] = upperData;
+			GlyphTableLowerPixelData[c] = lowerData;
 		}
 		
-		//These values are tied directly to the hardcoded glyph data and should not be altered.
+		//These values are tied directly to the hardcoded glyph data and
+		// should not be altered.
 		public const Int32 FontWidth = 8;
 		public const Int32 FontHeight = 8;
 		
@@ -175,7 +183,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		private void InitializeTexture()
 		{
-			GenerateTexture();
+			Texture = GenerateTexture();
 		}
 		
 		private void CleanupTexture()
@@ -188,51 +196,53 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		public Texture2D Texture { get; private set; }
 		
-		private void GenerateTexture()
+		private Texture2D GenerateTexture()
 		{
 			Int32 textureWidth = MaxTextureCharCapacity * FontWidth;
 			Int32 textureHeight = FontHeight;
 			
 			Byte[] texturePixels = new Byte[textureWidth * textureHeight];
 			
-			//TODO: Is this necessary?
-			for (Int32 i = 0; i < texturePixels.Length; i++)
-			{
-				if (texturePixels[i] != PixelDark)
-					throw new InvalidProgramException("Just wanted to see if this was needed.");
-				texturePixels[i] = PixelDark;
-			}
+			//This loop references only one of the two glyph dicts but
+			// that is just a convenience. The data from both will be 
+			// used during the loop.
+			foreach(Char c in GlyphTableUpperPixelData.Keys)
+				DecodeCharPixelData(ref texturePixels, c);
 			
-			foreach(DebugFontGlyph glyph in GlyphTable.Values)
-				DecodeCharPixelData(ref texturePixels, glyph);
+			Texture2D texture = new Texture2D(textureWidth, textureHeight, false, PixelFormat.Luminance);
+			texture.SetPixels(0, texturePixels, PixelFormat.Luminance);
+			texture.SetFilter(TextureFilterMode.Nearest, TextureFilterMode.Nearest, TextureFilterMode.Nearest);
 			
-			Texture = new Texture2D(textureWidth, textureHeight, false, PixelFormat.Luminance);
-			Texture.SetPixels(0, texturePixels, PixelFormat.Luminance);
-			Texture.SetFilter(TextureFilterMode.Nearest, TextureFilterMode.Nearest, TextureFilterMode.Nearest);
+			return texture;
 		}
 		
 		private const Byte PixelDark = (Byte)0x00;
 		private const Byte PixelLit = (Byte)0xff;
 		
-		private void DecodeCharPixelData(ref Byte[] texturePixels, DebugFontGlyph glyph)
+		private void DecodeCharPixelData(ref Byte[] texturePixels, Char c)
 		{
+			Int32 charPstn = GetGlyphIndex(c);
+			Int32 charTextureOffset = charPstn * FontWidth * FontHeight;
 			Int32 halfway = FontWidth * FontHeight / 2;
 			Boolean pixelIsLit;
 			
 			for (Int32 y = 0; y < FontHeight; y++)
 			{
+				Int32 rowPixelOffset = y * FontHeight;
+				
 				for (Int32 x = 0; x < FontWidth; x++)
 				{
-					Int32 charPixelIndex = x + FontHeight * y;
+					Int32 charPixelIndex = rowPixelOffset + x;
 					
 					if(charPixelIndex < halfway)
-						pixelIsLit = ((glyph.Data1 & (1 << charPixelIndex)) != 0);
+						pixelIsLit = ((GlyphTableUpperPixelData[c] & (1 << charPixelIndex)) != 0);
 					else
-						pixelIsLit = ((glyph.Data2 & (1 << (charPixelIndex - halfway))) != 0);
+						pixelIsLit = ((GlyphTableLowerPixelData[c] & (1 << (charPixelIndex - halfway))) != 0);
 					
 					//(c * CharSizei.X + x) + y * font_size.X
-					Int32 charPstn = GetGlyphIndex(glyph.Character);
-					Int32 texturePixelIndex = (charPstn * FontWidth + x) + (FontWidth * y);
+					//TODO: This calc seems incorrect. Verify fix is correct.
+					//Int32 texturePixelIndex = (charPstn * FontWidth + x) + (FontWidth * y);
+					Int32 texturePixelIndex = charTextureOffset + charPixelIndex;
 					
 					texturePixels[texturePixelIndex] = pixelIsLit ? PixelLit : PixelDark;
 				}
@@ -260,7 +270,10 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		private void GenerateCachedTileCoordinates()
 		{
-			foreach(Char c in GlyphTable.Keys)
+			//This loop references only one of the two glyph dicts but
+			// that is just a convenience. The data from both will be 
+			// used during the loop.
+			foreach(Char c in GlyphTableUpperPixelData.Keys)
 				CachedTileCoordinates.Add(c, CalcPositionOfCharInTexture(c));
 		}
 		
@@ -274,18 +287,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 			Int32 bottom = FontHeight - 1;
 			
 			return new RectangularArea2i(left, top, right, bottom);
-		}
-		
-		private Vector4 CalcPositionOfCharInTextureAsVector4(Char c)
-		{
-			Int32 glyphIndex = GetGlyphIndex(c);
-			
-			Int32 left = glyphIndex * FontWidth;
-			Int32 top = 0;
-			Int32 right = left + FontWidth;
-			Int32 bottom = FontHeight - 1;
-			
-			return new Vector4();
 		}
 		
 		#endregion
