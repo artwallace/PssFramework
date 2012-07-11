@@ -81,7 +81,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			
 			GraphicsContext.Clear();
 			
-			foreach(Layer layer in Layers.Values)
+			foreach(LayerBase layer in Layers.Values)
 				layer.Render();
 			
 			GraphicsContext.SwapBuffers();
@@ -146,32 +146,50 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private void InitializeLayers()
 		{
-			Layers = new SortedList<Int32, Layer>();
+			Layers = new SortedList<Int32, LayerBase>();
 		}
 		
 		private void CleanupLayers()
 		{
-			Layer[] layers = new Layer[Layers.Values.Count];
+			LayerBase[] layers = new LayerBase[Layers.Values.Count];
 			Layers.Values.CopyTo(layers, 0);
 			
-			foreach(Layer layer in layers)
+			foreach(LayerBase layer in layers)
 				layer.Dispose();
 			Layers.Clear();
 			
 			Layers = null;
 		}
 		
-		private SortedList<Int32, Layer> Layers { get; set; }
+		private SortedList<Int32, LayerBase> Layers { get; set; }
 		
-		public Layer GetOrCreateLayer(Int32 zIndex)
+		public WorldLayer GetOrCreateWorldLayer(Int32 zIndex)
 		{
 			if(Layers.ContainsKey(zIndex))
-				return Layers[zIndex];
+			{
+				if(Layers[zIndex] is WorldLayer)
+					return (WorldLayer)Layers[zIndex];
+				else
+					throw new ArgumentException("The requested layer is not a WorldLayer.");
+			}
 			else
-				return new Layer(this, zIndex);
+				return new WorldLayer(this, zIndex);
 		}
 		
-		internal void AddLayer(Layer layer, Int32 zIndex)
+		public ScreenLayer GetOrCreateScreenLayer(Int32 zIndex)
+		{
+			if(Layers.ContainsKey(zIndex))
+			{
+				if(Layers[zIndex] is ScreenLayer)
+					return (ScreenLayer)Layers[zIndex];
+				else
+					throw new ArgumentException("The requested layer is not a ScreenLayer.");
+			}
+			else
+				return new ScreenLayer(this, zIndex);
+		}
+		
+		internal void AddLayer(LayerBase layer, Int32 zIndex)
 		{
 			if(layer == null)
 				throw new ArgumentNullException();
@@ -183,7 +201,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			Layers.Add(zIndex, layer);
 		}
 		
-		public void RemoveLayer(Layer layer)
+		public void RemoveLayer(LayerBase layer)
 		{
 			if(layer == null)
 				throw new ArgumentNullException();

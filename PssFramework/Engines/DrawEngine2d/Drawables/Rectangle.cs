@@ -6,7 +6,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 	{
 		#region Constructor, Dispose
 		
-		public Rectangle(Layer layer)
+		public Rectangle(LayerBase layer)
 			: base(layer)
 		{
 		}

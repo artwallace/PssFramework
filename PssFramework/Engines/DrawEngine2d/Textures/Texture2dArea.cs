@@ -20,7 +20,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Textures
 			_BottomRight = new Coordinate2i(right, bottom);
 			
 			_Width = right - left + 1; //zero based
-			_Height = top - bottom + 1; //zero based
+			_Height = bottom - top + 1; //zero based
 			
 			_CoordinateArray = new Single[8];
 			//TopLeft

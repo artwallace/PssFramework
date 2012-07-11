@@ -9,7 +9,7 @@ using Sce.Pss.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
-	public sealed class SuperSimpleSpriteGroup : DrawableBase
+	public sealed class SpriteGroup : DrawableBase
 	{
 		//This class is a mess, just used for testing and learning OpenGL.
 		//Eventually, a barebones spritegroup that doesn't support rotation or scaling
@@ -22,7 +22,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Constructor, Dispose
 		
-		public SuperSimpleSpriteGroup(Layer layer, TiledTexture tiledTexture)
+		public SpriteGroup(LayerBase layer, TiledTexture tiledTexture)
 			: base(layer)
 		{
 			InitializeCustom(tiledTexture);
@@ -87,8 +87,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			Layer.DrawEngine2d.GraphicsContext.SetShaderProgram(Shader.ShaderProgram);
 			Layer.DrawEngine2d.GraphicsContext.SetTexture(0, TiledTexture.Texture);
 			
-			foreach(SuperSimpleSprite sprite in Sprites)
+			foreach(Sprite sprite in Sprites)
 			{
+				
 				Matrix4 scaleMatrix = GetScalingMatrix(sprite.Scale, sprite.TileWidth, sprite.TileHeight);
 				Matrix4 rotMatrix = GetRotationMatrix(sprite.Rotation);
 				Matrix4 transMatrix = GetTranslationMatrix(sprite.Position.X, sprite.Position.Y, sprite.Scale, sprite.Rotation);
@@ -112,23 +113,23 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void InitializeSprites()
 		{
-			Sprites = new List<SuperSimpleSprite>();
+			Sprites = new List<Sprite>();
 		}
 		
 		private void CleanupSprites()
 		{
-			SuperSimpleSprite[] sprites = Sprites.ToArray();
+			Sprite[] sprites = Sprites.ToArray();
 			
-			foreach(SuperSimpleSprite sprite in sprites)
+			foreach(Sprite sprite in sprites)
 				sprite.Dispose();
 			Sprites.Clear();
 			
 			Sprites = null;
 		}
 		
-		private List<SuperSimpleSprite> Sprites;
+		private List<Sprite> Sprites;
 		
-		internal void AddSprite(SuperSimpleSprite sprite)
+		internal void AddSprite(Sprite sprite)
 		{
 			if(sprite == null)
 				throw new ArgumentNullException();
@@ -140,7 +141,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			Layer.DrawEngine2d.SetRenderRequired();
 		}
 		
-		internal void RemoveSprite(SuperSimpleSprite sprite)
+		internal void RemoveSprite(Sprite sprite)
 		{
 			if(sprite == null)
 				throw new ArgumentNullException();
@@ -612,9 +613,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void InitializeTransformationMatrixCache()
 		{
-			TranslationMatrixCacheIndex = new Queue<SuperSimpleSpriteTranslationKey>();
+			TranslationMatrixCacheIndex = new Queue<SpriteTranslationKey>();
 			
-			TranslationMatrixCache = new Dictionary<SuperSimpleSpriteTranslationKey, Matrix4>();
+			TranslationMatrixCache = new Dictionary<SpriteTranslationKey, Matrix4>();
 			
 			TranslationMatrixCacheLimitFactor = 1;
 		}
@@ -628,8 +629,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			TranslationMatrixCache = null;
 		}
 		
-		private Queue<SuperSimpleSpriteTranslationKey> TranslationMatrixCacheIndex;
-		private Dictionary<SuperSimpleSpriteTranslationKey, Matrix4> TranslationMatrixCache;
+		private Queue<SpriteTranslationKey> TranslationMatrixCacheIndex;
+		private Dictionary<SpriteTranslationKey, Matrix4> TranslationMatrixCache;
 		
 		private Int32 _TranslationMatrixCacheLimitFactor;
 		public Int32 TranslationMatrixCacheLimitFactor
@@ -645,14 +646,14 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		public Matrix4 GetTranslationMatrix(Single x, Single y, Single scale, Single angle)
 		{
-			SuperSimpleSpriteTranslationKey key = new SuperSimpleSpriteTranslationKey(x, y, scale, angle);
+			SpriteTranslationKey key = new SpriteTranslationKey(x, y, scale, angle);
 			
 			if(!TranslationMatrixCache.ContainsKey(key))
 				GenerateTranslationMatrix(key);
 			return TranslationMatrixCache[key];
 		}
 		
-		private void GenerateTranslationMatrix(SuperSimpleSpriteTranslationKey key)
+		private void GenerateTranslationMatrix(SpriteTranslationKey key)
 		{
 			Single RadianAngle = DegreeToRadian(key.Angle);
 			
@@ -673,7 +674,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			Int32 limit = GetTranslationMatrixCacheLimit();
 			while(TranslationMatrixCache.Count > limit)
 			{
-				SuperSimpleSpriteTranslationKey old = TranslationMatrixCacheIndex.Dequeue();
+				SpriteTranslationKey old = TranslationMatrixCacheIndex.Dequeue();
 				TranslationMatrixCache.Remove(old);
 			}
 		}

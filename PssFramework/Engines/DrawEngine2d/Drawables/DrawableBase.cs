@@ -6,7 +6,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 	{
 		#region Constructor, Dispose
 		
-		public DrawableBase(Layer layer)
+		public DrawableBase(LayerBase layer)
 		{
 			InitializeInternal(layer);
 			Initialize();
@@ -25,7 +25,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Initialize, Cleanup
 		
-		private void InitializeInternal(Layer layer)
+		private void InitializeInternal(LayerBase layer)
 		{
 			InitializeLayer(layer);
 			InitializeDrawEngine2d();
@@ -53,7 +53,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Layer
 		
-		private void InitializeLayer(Layer layer)
+		private void InitializeLayer(LayerBase layer)
 		{
 			Layer = layer;
 			Layer.AddDrawable(this);
@@ -65,7 +65,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			Layer = null;
 		}
 		
-		public Layer Layer;
+		public LayerBase Layer;
 		
 		#endregion
 		

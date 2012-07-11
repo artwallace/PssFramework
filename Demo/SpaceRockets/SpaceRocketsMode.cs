@@ -34,15 +34,15 @@ namespace Demo.SpaceRockets
 			TiledTexture tt = new TiledTexture(DrawEngine2d, TextureCachePolicy.DisposeAfterLastUse, shipSprite, t2d);
 			tt.CreateColumnIndex(1);
 			
-			Layer l2 = DrawEngine2d.GetOrCreateLayer(1);
-			SuperSimpleSpriteGroup sssg = new SuperSimpleSpriteGroup(l2, tt);
-			SuperSimpleSprite sss1 = new SuperSimpleSprite(sssg, new TiledTextureIndex(0));
+			LayerBase l2 = DrawEngine2d.GetOrCreateWorldLayer(1);
+			SpriteGroup sssg = new SpriteGroup(l2, tt);
+			Sprite sss1 = new Sprite(sssg, new TiledTextureIndex(0));
 			sss1.SetPositionFromCenter(new Coordinate2(32f, 32f));
-			SuperSimpleSprite sss2 = new SuperSimpleSprite(sssg, new TiledTextureIndex(0));
+			Sprite sss2 = new Sprite(sssg, new TiledTextureIndex(0));
 			sss2.SetPositionFromCenter(new Coordinate2(96f, 32f));
 			//sss2.Rotation = 45.0f;
 			
-			Layer debugOverlay = DrawEngine2d.GetOrCreateLayer(2);
+			LayerBase debugOverlay = DrawEngine2d.GetOrCreateScreenLayer(2);
 			_DebugTextLabel = new DebugLabel(debugOverlay);
 			_DebugTextLabel.Text = "Test! Test! Test!";
 			_DebugTextLabel.Position = new Coordinate2(100.0f, 100.0f);

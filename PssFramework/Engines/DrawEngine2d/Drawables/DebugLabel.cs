@@ -11,7 +11,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 	{
 		#region Constructor, Dispose
 		
-		public DebugLabel(Layer layer)
+		public DebugLabel(LayerBase layer)
 			: base(layer)
 		{
 		}
@@ -243,14 +243,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#endregion
 		
-		#region AdHocDraw
 		
-		//TODO: Impliment AdHocDraw.
-		
-		#endregion
-		
-		
-		
+		//Old crap, need to fix.
 		
 		#region Vertices
 		
@@ -665,9 +659,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void InitializeTransformationMatrixCache()
 		{
-			TranslationMatrixCacheIndex = new Queue<SuperSimpleSpriteTranslationKey>();
+			TranslationMatrixCacheIndex = new Queue<SpriteTranslationKey>();
 			
-			TranslationMatrixCache = new Dictionary<SuperSimpleSpriteTranslationKey, Matrix4>();
+			TranslationMatrixCache = new Dictionary<SpriteTranslationKey, Matrix4>();
 			
 			TranslationMatrixCacheLimitFactor = 1;
 		}
@@ -681,8 +675,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			TranslationMatrixCache = null;
 		}
 		
-		private Queue<SuperSimpleSpriteTranslationKey> TranslationMatrixCacheIndex;
-		private Dictionary<SuperSimpleSpriteTranslationKey, Matrix4> TranslationMatrixCache;
+		private Queue<SpriteTranslationKey> TranslationMatrixCacheIndex;
+		private Dictionary<SpriteTranslationKey, Matrix4> TranslationMatrixCache;
 		
 		private Int32 _TranslationMatrixCacheLimitFactor;
 		public Int32 TranslationMatrixCacheLimitFactor
@@ -698,14 +692,14 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		public Matrix4 GetTranslationMatrix(Single x, Single y, Single scale, Single angle)
 		{
-			SuperSimpleSpriteTranslationKey key = new SuperSimpleSpriteTranslationKey(x, y, scale, angle);
+			SpriteTranslationKey key = new SpriteTranslationKey(x, y, scale, angle);
 			
 			if(!TranslationMatrixCache.ContainsKey(key))
 				GenerateTranslationMatrix(key);
 			return TranslationMatrixCache[key];
 		}
 		
-		private void GenerateTranslationMatrix(SuperSimpleSpriteTranslationKey key)
+		private void GenerateTranslationMatrix(SpriteTranslationKey key)
 		{
 			Single RadianAngle = DegreeToRadian(key.Angle);
 			
@@ -726,7 +720,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			Int32 limit = GetTranslationMatrixCacheLimit();
 			while(TranslationMatrixCache.Count > limit)
 			{
-				SuperSimpleSpriteTranslationKey old = TranslationMatrixCacheIndex.Dequeue();
+				SpriteTranslationKey old = TranslationMatrixCacheIndex.Dequeue();
 				TranslationMatrixCache.Remove(old);
 			}
 		}

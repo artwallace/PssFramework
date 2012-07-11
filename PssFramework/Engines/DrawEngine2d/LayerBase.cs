@@ -4,40 +4,49 @@ using PsmFramework.Engines.DrawEngine2d.Drawables;
 
 namespace PsmFramework.Engines.DrawEngine2d
 {
-	//TODO: Add scales with world
-	//TODO: Add rotates with world
-	public sealed class Layer : IDisposable
+	public abstract class LayerBase : IDisposablePlus
 	{
 		#region Constructor, Dispose
 		
-		public Layer(DrawEngine2d drawEngine2d, Int32 zIndex, LayerType type = LayerType.World)
+		public LayerBase(DrawEngine2d drawEngine2d, Int32 zIndex)
 		{
-			Initialize(drawEngine2d, zIndex, type);
+			InitializeInternal(drawEngine2d, zIndex);
+			Initialize();
 		}
 		
 		public void Dispose()
 		{
 			Cleanup();
+			CleanupInternal();
+			IsDisposed = true;
 		}
+		
+		public Boolean IsDisposed { get; private set; }
 		
 		#endregion
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize(DrawEngine2d drawEngine2d, Int32 zIndex, LayerType type)
+		private void InitializeInternal(DrawEngine2d drawEngine2d, Int32 zIndex)
 		{
 			InitializeZIndex(zIndex);
-			InitializeType(type);
 			InitializeDrawEngine2d(drawEngine2d);
 			InitializeDrawables();
 		}
 		
-		private void Cleanup()
+		private void CleanupInternal()
 		{
 			CleanupDrawables();
 			CleanupDrawEngine2d();
-			CleanupType();
 			CleanupZIndex();
+		}
+		
+		protected virtual void Initialize()
+		{
+		}
+		
+		protected virtual void Cleanup()
+		{
 		}
 		
 		#endregion
@@ -64,21 +73,6 @@ namespace PsmFramework.Engines.DrawEngine2d
 		}
 		
 		public Int32 ZIndex { get; private set; }
-		
-		#endregion
-		
-		#region Type
-		
-		private void InitializeType(LayerType type)
-		{
-			Type = type;
-		}
-		
-		private void CleanupType()
-		{
-		}
-		
-		public LayerType Type { get; private set; }
 		
 		#endregion
 		
@@ -118,7 +112,7 @@ namespace PsmFramework.Engines.DrawEngine2d
 			Items = null;
 		}
 		
-		private List<DrawableBase> Items { get; set; }
+		protected List<DrawableBase> Items { get; set; }
 		
 		internal void AddDrawable(DrawableBase item)
 		{

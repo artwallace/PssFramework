@@ -5,13 +5,13 @@ using PsmFramework.Engines.DrawEngine2d.Textures;
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
 	//This is not a Drawable, the group is.
-	public sealed class SuperSimpleSprite : IDisposable
+	public sealed class Sprite : IDisposable
 	{
 		//TODO: Convert to a struct once we get it working properly.
 		
 		#region Constructor, Dispose
 		
-		public SuperSimpleSprite(SuperSimpleSpriteGroup spriteGroup, TiledTextureIndex textureIndex)
+		public Sprite(SpriteGroup spriteGroup, TiledTextureIndex textureIndex)
 		{
 			Initialize(spriteGroup, textureIndex);
 		}
@@ -25,7 +25,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize(SuperSimpleSpriteGroup spriteGroup, TiledTextureIndex textureIndex)
+		private void Initialize(SpriteGroup spriteGroup, TiledTextureIndex textureIndex)
 		{
 			InitializeSpriteGroup(spriteGroup);
 			InitializeTextureIndex(textureIndex);
@@ -59,7 +59,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region SpriteGroup
 		
-		private void InitializeSpriteGroup(SuperSimpleSpriteGroup spriteGroup)
+		private void InitializeSpriteGroup(SpriteGroup spriteGroup)
 		{
 			SpriteGroup = spriteGroup;
 			SpriteGroup.AddSprite(this);
@@ -71,7 +71,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			SpriteGroup = null;
 		}
 		
-		private SuperSimpleSpriteGroup SpriteGroup;
+		private SpriteGroup SpriteGroup;
 		
 		private void InformSpriteGroupThatUpdateIsRequired()
 		{
@@ -101,7 +101,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				
 				_TextureIndex = value;
 				
-				
+				UpdateCachedTextureCoordinates();
 				
 				SpriteGroup.Layer.DrawEngine2d.SetRenderRequired();
 			}
@@ -113,7 +113,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		public Int32 TileHeight { get; private set; }
 		
-		private void UpdateCachedTextureCoordinates(TiledTextureIndex index)
+		private void UpdateCachedTextureCoordinates()
 		{
 			Int32 width, height;
 			
