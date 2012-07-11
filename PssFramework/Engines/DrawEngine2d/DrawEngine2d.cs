@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PsmFramework.Engines.DrawEngine2d.Drawables;
 using PsmFramework.Engines.DrawEngine2d.Shaders;
 using PsmFramework.Engines.DrawEngine2d.Support;
+using PsmFramework.Engines.DrawEngine2d.Textures;
 using Sce.Pss.Core;
 using Sce.Pss.Core.Graphics;
 
@@ -35,26 +36,26 @@ namespace PsmFramework.Engines.DrawEngine2d
 			InitializeGraphics();
 			InitializeClearColor();
 			InitializeCamera();
-			InitializeLayers();
 			InitializeRenderRequiredFlag();
 			InitializeShaders();
-			InitializeTexture2DManager();
+			InitializeTexture2dManager();
 			InitializeTiledTextureManager();
 			InitializeDebugRuler();
 			InitializeDebugFont();
 			InitializePerformanceTracking();
+			InitializeLayers();
 		}
 		
 		private void Cleanup()
 		{
+			CleanupLayers();
 			CleanupPerformanceTracking();
 			CleanupDebugFont();
 			CleanupDebugRuler();
 			CleanupTiledTextureManager();
-			CleanupTexture2DManager();
+			CleanupTexture2dManager();
 			CleanupShaders();
 			CleanupRenderRequiredFlag();
-			CleanupLayers();
 			CleanupCamera();
 			CleanupClearColor();
 			CleanupGraphics();
@@ -231,187 +232,242 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		#endregion
 		
-		#region TiledTexture Manager
+		#region Texture2D Manager
 		
-		private void InitializeTiledTextureManager()
+		private void InitializeTexture2dManager()
 		{
-			TiledTextureList = new List<TiledTexture>();
-			TiledTextureUsers = new Dictionary<DrawableBase, TiledTexture>();
+			Textures = new Dictionary<String, Texture2dPlus>();
+			Texture2dPlusCachePolicies = new Dictionary<String, TextureCachePolicy>();
+			Texture2dPlusUsers = new Dictionary<String, List<TiledTexture>>();
 		}
 		
-		private void CleanupTiledTextureManager()
+		private void CleanupTexture2dManager()
 		{
-			TiledTextureUsers.Clear();
-			TiledTextureUsers = null;
-			
-			foreach(TiledTexture t in TiledTextureList)
+			//Textures
+			foreach(Texture2dPlus t in Textures.Values)
 				t.Dispose();
-			TiledTextureList.Clear();
-			TiledTextureList = null;
-		}
-		
-		private List<TiledTexture> TiledTextureList;
-		
-		private Dictionary<DrawableBase, TiledTexture> TiledTextureUsers;
-		
-		public TiledTexture GetOrCreateTiledTexture(String path, Int32 columns = 1, Int32 rows = 1)
-		{
-			return GetOrCreateTiledTextureHelper(path, columns, rows, RectangularArea2i.Zero);
-		}
-		
-		public TiledTexture GetOrCreateTiledTexture(String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
-		{
-			return GetOrCreateTiledTextureHelper(path, columns, rows, sourceArea);
-		}
-		
-		private TiledTexture GetOrCreateTiledTextureHelper(String path, Int32 columns, Int32 rows, RectangularArea2i sourceArea)
-		{
-			if(String.IsNullOrWhiteSpace(path))
-				throw new ArgumentException();
+			Textures.Clear();
+			Textures = null;
 			
-			if(columns < 1 || rows < 1)
-				throw new ArgumentException();
+			//Cache
+			Texture2dPlusCachePolicies.Clear();
+			Texture2dPlusCachePolicies = null;
 			
-			foreach(TiledTexture t in TiledTextureList)
-			{
-				if(
-					t.Path == path &&
-					t.Columns == columns &&
-					t.Rows == rows &&
-					t.SourceArea == sourceArea
-					)
-				{
-					return t;
-				}
-			}
-			
-			TiledTexture tt = new TiledTexture(this, path, columns, rows, sourceArea);
-			return tt;
+			//Users
+			foreach(List<TiledTexture> list in Texture2dPlusUsers.Values)
+				list.Clear();
+			Texture2dPlusUsers.Clear();
+			Texture2dPlusUsers = null;
 		}
 		
-		internal void RegisterTiledTextureUser(DrawableBase user, TiledTexture tiledTexture)
+		private Dictionary<String, Texture2dPlus> Textures;
+		private Dictionary<String, TextureCachePolicy> Texture2dPlusCachePolicies;
+		private Dictionary<String, List<TiledTexture>> Texture2dPlusUsers;
+		
+		internal void RegisterTexture2dPlus(String key, Texture2dPlus texture, TextureCachePolicy cachePolicy)
 		{
+			if(String.IsNullOrWhiteSpace(key))
+				throw new ArgumentNullException();
+			
+			if(texture == null)
+				throw new ArgumentNullException();
+			
+			if(Textures.ContainsKey(key))
+				throw new ArgumentException("Attempt to register duplicate key.");
+			
+			Textures.Add(key, texture);
+			Texture2dPlusCachePolicies.Add(key, cachePolicy);
+			Texture2dPlusUsers.Add(key, new List<TiledTexture>());
+		}
+		
+		internal void UnregisterTexture2dPlus(String key)
+		{
+			if(String.IsNullOrWhiteSpace(key))
+				throw new ArgumentNullException();
+			
+			if(!Textures.ContainsKey(key))
+				throw new ArgumentException("Attempt to unregister an unknown key.");
+			
+			Textures.Remove(key);
+			Texture2dPlusCachePolicies.Remove(key);
+			Texture2dPlusUsers[key].Clear();
+			Texture2dPlusUsers[key] = null;
+			Texture2dPlusUsers.Remove(key);
+		}
+		
+		private void ApplyTexture2dPlusCachePolicyForRemovalOfUser(String key)
+		{
+			if(Texture2dPlusUsers[key].Count > 0)
+				return;
+			
+			if(Texture2dPlusCachePolicies[key] != TextureCachePolicy.DisposeAfterLastUse)
+				return;
+			
+			Textures[key].Dispose();
+		}
+		
+		internal void AddTexture2dPlusUser(String key, TiledTexture user)
+		{
+			if(String.IsNullOrWhiteSpace(key))
+				throw new ArgumentNullException();
+			
 			if(user == null)
 				throw new ArgumentNullException();
 			
-			if(tiledTexture == null)
-				throw new ArgumentNullException();
+			if(!Texture2dPlusUsers.ContainsKey(key))
+				throw new ArgumentException("Attempt to add a user to an unknown key.");
 			
-			//If user is unregistered, add is as a user of this texture.
-			if(!TiledTextureUsers.ContainsKey(user))
-			{
-				TiledTextureUsers.Add(user, tiledTexture);
-				return;
-			}
-			//If the user is already registered, ensure the path is what was requested.
-			else if(TiledTextureUsers[user] == tiledTexture)
-			{
-				//Everything is OK, exit.
-				return;
-			}
-			else
-			{
-				//User is registered with another texture, this is an error.
-				throw new NotSupportedException();
-			}
+			if(Texture2dPlusUsers[key] == null)
+				Texture2dPlusUsers[key] = new List<TiledTexture>();
+			
+			if(Texture2dPlusUsers[key].Contains(user))
+				throw new ArgumentException("Attempt to register a duplicate user.");
+			
+			Texture2dPlusUsers[key].Add(user);
 		}
 		
-		internal void UnregisterTiledTextureUser(DrawableBase user, TiledTexture tiledTexture)
+		internal void RemoveTexture2dPlusUser(String key, TiledTexture user)
 		{
-			throw new NotImplementedException();
+			if(String.IsNullOrWhiteSpace(key))
+				throw new ArgumentNullException();
+			
+			if(user == null)
+				throw new ArgumentNullException();
+			
+			if(!Texture2dPlusUsers.ContainsKey(key))
+				throw new ArgumentException("Attempt to remove a user from an unknown key.");
+			
+			if(Texture2dPlusUsers[key] == null)
+				throw new ArgumentException("Attempt to remove an unknown user.");
+			
+			if(!Texture2dPlusUsers[key].Contains(user))
+				throw new ArgumentException("Attempt to remove an unknown user.");
+			
+			Texture2dPlusUsers[key].Remove(user);
+			
+			//Let the cache policy decide what to do.
+			ApplyTexture2dPlusCachePolicyForRemovalOfUser(key);
 		}
 		
 		#endregion
 		
-		#region Texture2D Manager
+		#region TiledTexture Manager
 		
-		private void InitializeTexture2DManager()
+		private void InitializeTiledTextureManager()
 		{
-			Texture2DList = new Dictionary<String,Texture2D>();
-			Texture2DUsers = new Dictionary<TiledTexture, String>();
+			TiledTextures = new Dictionary<String, TiledTexture>();
+			TiledTextureCachePolicies = new Dictionary<String, TextureCachePolicy>();
+			TiledTextureUsers = new Dictionary<String, List<DrawableBase>>();
 		}
 		
-		private void CleanupTexture2DManager()
+		private void CleanupTiledTextureManager()
 		{
-			Texture2DUsers.Clear();
-			Texture2DUsers = null;
-			
-			foreach(Texture2D t in Texture2DList.Values)
+			//Textures
+			TiledTexture[] cleanup = new TiledTexture[TiledTextures.Values.Count];
+			TiledTextures.Values.CopyTo(cleanup, 0);
+			foreach(TiledTexture t in cleanup)
 				t.Dispose();
-			Texture2DList.Clear();
-			Texture2DList = null;
+			TiledTextures.Clear();
+			TiledTextures = null;
+			
+			//Cache
+			TiledTextureCachePolicies.Clear();
+			TiledTextureCachePolicies = null;
+			
+			//Users
+			foreach(List<DrawableBase> list in TiledTextureUsers.Values)
+				list.Clear();
+			TiledTextureUsers.Clear();
+			TiledTextureUsers = null;
 		}
 		
-		private Dictionary<String,Texture2D> Texture2DList;
+		private Dictionary<String, TiledTexture> TiledTextures;
+		private Dictionary<String, TextureCachePolicy> TiledTextureCachePolicies;
+		private Dictionary<String, List<DrawableBase>> TiledTextureUsers;
 		
-		private Dictionary<TiledTexture, String> Texture2DUsers;
-		
-		internal Texture2D GetOrCreateTexture2D(TiledTexture user, String path)
+		internal void RegisterTiledTexture(String key, TiledTexture texture, TextureCachePolicy cachePolicy)
 		{
-			if(user == null)
+			if(String.IsNullOrWhiteSpace(key))
 				throw new ArgumentNullException();
 			
-			if(String.IsNullOrWhiteSpace(path))
-				throw new ArgumentException();
+			if(texture == null)
+				throw new ArgumentNullException();
 			
-			//Ensure this user is registered.
-			RegisterTexture2DUser(user, path);
+			if(TiledTextures.ContainsKey(key))
+				throw new ArgumentException("Attempt to register duplicate key.");
 			
-			//Check if texture already exists and return it.
-			if(Texture2DList.ContainsKey(path))
-			{
-				return Texture2DList[path];
-			}
-			else
-			{
-				//Otherwise, create the new texture.
-				Texture2D t = new Texture2D(path, false);
-				Texture2DList.Add(path, t);
-				return t;
-			}
+			TiledTextures.Add(key, texture);
+			TiledTextureCachePolicies.Add(key, cachePolicy);
+			TiledTextureUsers.Add(key, new List<DrawableBase>());
 		}
 		
-		internal void RemoveTexture2D(TiledTexture user, String path)
+		internal void UnregisterTiledTexture(String key)
 		{
-			if(user == null)
+			if(String.IsNullOrWhiteSpace(key))
 				throw new ArgumentNullException();
 			
-			if(String.IsNullOrWhiteSpace(path))
-				throw new ArgumentException();
+			if(!TiledTextures.ContainsKey(key))
+				throw new ArgumentException("Attempt to unregister an unknown key.");
 			
-			UnregisterTexture2DUser(user, path);
+			TiledTextures.Remove(key);
+			TiledTextureCachePolicies.Remove(key);
+			TiledTextureUsers[key].Clear();
+			TiledTextureUsers[key] = null;
+			TiledTextureUsers.Remove(key);
 		}
 		
-		private void RegisterTexture2DUser(TiledTexture user, String path)
+		private void ApplyTiledTextureCachePolicyForRemovalOfUser(String key)
 		{
-			if(user == null)
-				throw new ArgumentNullException();
-			
-			if(String.IsNullOrWhiteSpace(path))
-				throw new ArgumentException();
-			
-			//If user is unregistered, add is as a user of this texture.
-			if(!Texture2DUsers.ContainsKey(user))
-			{
-				Texture2DUsers.Add(user, path);
+			if(TiledTextureUsers[key].Count > 0)
 				return;
-			}
-			//If the user is already registered, ensure the path is what was requested.
-			else if(Texture2DUsers[user] == path)
-			{
-				//Everything is OK, exit.
+			
+			if(TiledTextureCachePolicies[key] != TextureCachePolicy.DisposeAfterLastUse)
 				return;
-			}
-			else
-			{
-				//User is registered with another texture, this is an error.
-				throw new NotSupportedException();
-			}
+			
+			TiledTextures[key].Dispose();
 		}
 		
-		private void UnregisterTexture2DUser(TiledTexture user, String path)
+		internal void AddTiledTextureUser(String key, DrawableBase user)
 		{
-			throw new NotImplementedException();
+			if(String.IsNullOrWhiteSpace(key))
+				throw new ArgumentNullException();
+			
+			if(user == null)
+				throw new ArgumentNullException();
+			
+			if(!TiledTextureUsers.ContainsKey(key))
+				throw new ArgumentException("Attempt to add a user to an unknown key.");
+			
+			if(TiledTextureUsers[key] == null)
+				TiledTextureUsers[key] = new List<DrawableBase>();
+			
+			if(TiledTextureUsers[key].Contains(user))
+				throw new ArgumentException("Attempt to register a duplicate user.");
+			
+			TiledTextureUsers[key].Add(user);
+		}
+		
+		internal void RemoveTiledTextureUser(String key, DrawableBase user)
+		{
+			if(String.IsNullOrWhiteSpace(key))
+				throw new ArgumentNullException();
+			
+			if(user == null)
+				throw new ArgumentNullException();
+			
+			if(!TiledTextureUsers.ContainsKey(key))
+				throw new ArgumentException("Attempt to remove a user from an unknown key.");
+			
+			if(TiledTextureUsers[key] == null)
+				throw new ArgumentException("Attempt to remove an unknown user.");
+			
+			if(!TiledTextureUsers[key].Contains(user))
+				throw new ArgumentException("Attempt to remove an unknown user.");
+			
+			TiledTextureUsers[key].Remove(user);
+			
+			//Let the cache policy decide what to do.
+			ApplyTiledTextureCachePolicyForRemovalOfUser(key);
 		}
 		
 		#endregion

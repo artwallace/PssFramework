@@ -17,6 +17,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 			_BottomLeft = new Coordinate2i(left, bottom);
 			_TopRight = new Coordinate2i(right, top);
 			_BottomRight = new Coordinate2i(right, bottom);
+			
+			_Width = right - left + 1; //zero based
+			_Height = top - bottom + 1; //zero based
 		}
 		
 		#endregion
@@ -50,6 +53,16 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		
 		private Coordinate2i _BottomRight;
 		public Coordinate2i BottomRight { get { return _BottomRight; } }
+		
+		#endregion
+		
+		#region Dimensions
+		
+		private Int32 _Width;
+		public Int32 Width { get { return _Width; } }
+		
+		private Int32 _Height;
+		public Int32 Height { get { return _Height; } }
 		
 		#endregion
 		

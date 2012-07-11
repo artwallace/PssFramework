@@ -103,7 +103,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
 			DrawEngine2d.GraphicsContext.SetShaderProgram(Shader.ShaderProgram);
 			
-			Texture2D t = new Texture2D("/Application/TwinStickShooter/Images/Ship64.png", false);
 			DrawEngine2d.GraphicsContext.SetTexture(0, DrawEngine2d.DebugFont.Texture);
 			
 			GenerateCachedRendering();

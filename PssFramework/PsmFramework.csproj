@@ -170,7 +170,6 @@
     <Compile Include="Engines\DrawEngine2d\Drawables\UltraSimpleSprite.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSpriteGroup.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\SuperSimpleSprite.cs" />
-    <Compile Include="Engines\DrawEngine2d\TiledTexture.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\Coordinate2i.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\Coordinate3i.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\RectangularArea2i.cs" />
@@ -193,12 +192,17 @@
     <Compile Include="Engines\DrawEngine2d\LayerType.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\SpriteShader.cs" />
     <Compile Include="IDisposablePlus.cs" />
-    <Compile Include="Engines\DrawEngine2d\TiledTextureIndex.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\DrawableBase.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\RenderMode.cs" />
     <Compile Include="Engines\DrawEngine2d\Support\CoordinateSystemMode.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\DebugLabel.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\Label.cs" />
+    <Compile Include="Engines\DrawEngine2d\Textures\TiledTextureIndex.cs" />
+    <Compile Include="Engines\DrawEngine2d\Textures\TiledTextureIndexType.cs" />
+    <Compile Include="Engines\DrawEngine2d\Textures\TextureCachePolicy.cs" />
+    <Compile Include="Engines\DrawEngine2d\Textures\Texture2dPlus.cs" />
+    <Compile Include="Engines\DrawEngine2d\Textures\Texture2dArea.cs" />
+    <Compile Include="Engines\DrawEngine2d\Textures\TiledTexture.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />
@@ -215,6 +219,7 @@
     <Folder Include="Engines\GameEngine2d\shaders\" />
     <Folder Include="Engines\DrawEngine2d\Drawables\" />
     <Folder Include="Engines\PadServer\" />
+    <Folder Include="Engines\DrawEngine2d\Textures\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\default.fcg" />

@@ -1,8 +1,10 @@
+using System;
 using Demo.MainMenu;
 using PsmFramework;
 using PsmFramework.Engines.DrawEngine2d;
 using PsmFramework.Engines.DrawEngine2d.Drawables;
 using PsmFramework.Engines.DrawEngine2d.Support;
+using PsmFramework.Engines.DrawEngine2d.Textures;
 using PsmFramework.Modes;
 using PsmFramework.Modes.TopDown2dAlt;
 
@@ -27,13 +29,16 @@ namespace Demo.SpaceRockets
 			DrawEngine2d.ClearColor = Colors.Blue;
 			//EnableDebugInfo();
 			
-			TiledTexture tt = new TiledTexture(DrawEngine2d, "/Application/TwinStickShooter/Images/Ship64.png");
+			String shipSprite = "/Application/TwinStickShooter/Images/Ship64.png";
+			Texture2dPlus t2d = new Texture2dPlus(DrawEngine2d, TextureCachePolicy.DisposeAfterLastUse, shipSprite);
+			TiledTexture tt = new TiledTexture(DrawEngine2d, TextureCachePolicy.DisposeAfterLastUse, shipSprite, t2d);
+			tt.CreateColumnIndex(1);
 			
 			Layer l2 = DrawEngine2d.GetOrCreateLayer(1);
 			SuperSimpleSpriteGroup sssg = new SuperSimpleSpriteGroup(l2, tt);
-			SuperSimpleSprite sss1 = new SuperSimpleSprite(sssg);
+			SuperSimpleSprite sss1 = new SuperSimpleSprite(sssg, new TiledTextureIndex(0));
 			sss1.SetPositionFromCenter(new Coordinate2(32f, 32f));
-			SuperSimpleSprite sss2 = new SuperSimpleSprite(sssg);
+			SuperSimpleSprite sss2 = new SuperSimpleSprite(sssg, new TiledTextureIndex(0));
 			sss2.SetPositionFromCenter(new Coordinate2(96f, 32f));
 			//sss2.Rotation = 45.0f;
 			

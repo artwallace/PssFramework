@@ -20,22 +20,12 @@ namespace PsmFramework.Engines.DrawEngine2d.Shaders
 		
 		protected override void Initialize()
 		{
-			InitializeVertices();
-			InitializeIndices();
-			InitializeTextureCoordinates();
-			InitializeColor();
 			InitializeShaderProgram();
-			InitializeVertexBuffer();
 		}
 		
 		protected override void Cleanup()
 		{
-			CleanupVertexBuffer();
 			CleanupShaderProgram();
-			CleanupColor();
-			CleanupTextureCoordinates();
-			CleanupIndices();
-			CleanupVertices();
 		}
 		
 		#endregion

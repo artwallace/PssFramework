@@ -5,7 +5,7 @@ void main(
 	uniform sampler2D s_Texture : TEXUNIT0
 	)
 {
-	float4 tmpColor = tex2D( s_Texture, v_TexCoord );
+	float4 tmpColor = tex2D(s_Texture, v_TexCoord);
 	tmpColor.r = tmpColor.r * v_Color.r;
 	tmpColor.g = tmpColor.g * v_Color.g;
 	tmpColor.b = tmpColor.b * v_Color.b;

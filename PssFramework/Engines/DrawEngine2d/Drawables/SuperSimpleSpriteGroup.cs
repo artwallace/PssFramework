@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using PsmFramework.Engines.DrawEngine2d.Shaders;
 using PsmFramework.Engines.DrawEngine2d.Support;
+using PsmFramework.Engines.DrawEngine2d.Textures;
 using Sce.Pss.Core;
 using Sce.Pss.Core.Graphics;
 
@@ -88,7 +89,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			
 			foreach(SuperSimpleSprite sprite in Sprites)
 			{
-				Matrix4 scaleMatrix = GetScalingMatrix(sprite.Scale);
+				Matrix4 scaleMatrix = GetScalingMatrix(sprite.Scale, sprite.TileWidth, sprite.TileHeight);
 				Matrix4 rotMatrix = GetRotationMatrix(sprite.Rotation);
 				Matrix4 transMatrix = GetTranslationMatrix(sprite.Position.X, sprite.Position.Y, sprite.Scale, sprite.Rotation);
 				Matrix4 modelMatrix = transMatrix * rotMatrix * scaleMatrix;
@@ -162,25 +163,40 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			
 			TiledTexture = tiledTexture;
 			
-			Layer.DrawEngine2d.RegisterTiledTextureUser(this, TiledTexture);
+			RegisterAsUserOfTiledTexture();
 		}
 		
 		private void CleanupTiledTexture()
 		{
-			Layer.DrawEngine2d.UnregisterTiledTextureUser(this, TiledTexture);
+			UnregisterAsUserOfTiledTexture();
 		}
 		
 		private TiledTexture TiledTexture;
 		
-		public Int32 TileWidth
+		private void RegisterAsUserOfTiledTexture()
 		{
-			get { return TiledTexture.TileWidth; }
+			DrawEngine2d.AddTiledTextureUser(TiledTexture.Key, this);
 		}
 		
-		public Int32 TileHeight
+		private void UnregisterAsUserOfTiledTexture()
 		{
-			get { return TiledTexture.TileHeight; }
+			DrawEngine2d.RemoveTiledTextureUser(TiledTexture.Key, this);
 		}
+		
+		public Single[] GetTiledTextureCoordinates(TiledTextureIndex index, out Int32 width, out Int32 height)
+		{
+			return TiledTexture.GetTextureCoordinates(index, out width, out height);
+		}
+		
+//		public Int32 TileWidth
+//		{
+//			get { return TiledTexture.TileWidth; }
+//		}
+		
+//		public Int32 TileHeight
+//		{
+//			get { return TiledTexture.TileHeight; }
+//		}
 		
 		#endregion
 		
@@ -484,17 +500,17 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			}
 		}
 		
-		public Matrix4 GetScalingMatrix(Single scale)
+		public Matrix4 GetScalingMatrix(Single scale, Int32 tileWidth, Int32 tileHeight)
 		{
 			if(!ScalingMatrixCache.ContainsKey(scale))
-				GenerateScalingMatrix(scale);
+				GenerateScalingMatrix(scale, tileWidth, tileHeight);
 			return ScalingMatrixCache[scale];
 		}
 		
-		private void GenerateScalingMatrix(Single scale)
+		private void GenerateScalingMatrix(Single scale, Int32 tileWidth, Int32 tileHeight)
 		{
-			Single scaleX = TiledTexture.TileWidth * scale;
-			Single scaleY = TiledTexture.TileHeight * scale;
+			Single scaleX = tileWidth * scale;
+			Single scaleY = tileHeight * scale;
 			Single scaleZ = 1.0f;
 			
 			Vector3 scaleV = new Vector3(scaleX, scaleY, scaleZ);

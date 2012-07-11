@@ -1,16 +1,19 @@
 using System;
 using PsmFramework.Engines.DrawEngine2d.Support;
+using PsmFramework.Engines.DrawEngine2d.Textures;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
 	//This is not a Drawable, the group is.
 	public sealed class SuperSimpleSprite : IDisposable
 	{
+		//TODO: Convert to a struct once we get it working properly.
+		
 		#region Constructor, Dispose
 		
-		public SuperSimpleSprite(SuperSimpleSpriteGroup spriteGroup)
+		public SuperSimpleSprite(SuperSimpleSpriteGroup spriteGroup, TiledTextureIndex textureIndex)
 		{
-			Initialize(spriteGroup);
+			Initialize(spriteGroup, textureIndex);
 		}
 		
 		public void Dispose()
@@ -22,9 +25,10 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#region Initialize, Cleanup
 		
-		private void Initialize(SuperSimpleSpriteGroup spriteGroup)
+		private void Initialize(SuperSimpleSpriteGroup spriteGroup, TiledTextureIndex textureIndex)
 		{
 			InitializeSpriteGroup(spriteGroup);
+			InitializeTextureIndex(textureIndex);
 			InitializePosition();
 			InitializeScale();
 			InitializeRotation();
@@ -32,9 +36,10 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void Cleanup()
 		{
-			CleanupPosition();
-			CleanupScale();
 			CleanupRotation();
+			CleanupScale();
+			CleanupPosition();
+			CleanupTextureIndex();
 			CleanupSpriteGroup();
 		}
 		
@@ -62,11 +67,60 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void CleanupSpriteGroup()
 		{
-			SpriteGroup = null;
 			SpriteGroup.RemoveSprite(this);
+			SpriteGroup = null;
 		}
 		
 		private SuperSimpleSpriteGroup SpriteGroup;
+		
+		private void InformSpriteGroupThatUpdateIsRequired()
+		{
+		}
+		
+		#endregion
+		
+		#region TextureIndex
+		
+		private void InitializeTextureIndex(TiledTextureIndex textureIndex)
+		{
+			TextureIndex = textureIndex;
+		}
+		
+		private void CleanupTextureIndex()
+		{
+		}
+		
+		private TiledTextureIndex _TextureIndex;
+		public TiledTextureIndex TextureIndex
+		{
+			get { return _TextureIndex; }
+			set
+			{
+				//if(_TextureIndex == value)
+					//return;
+				
+				_TextureIndex = value;
+				
+				
+				
+				SpriteGroup.Layer.DrawEngine2d.SetRenderRequired();
+			}
+		}
+		
+		private Single[] CachedTextureCoordinates;
+		
+		public Int32 TileWidth { get; private set; }
+		
+		public Int32 TileHeight { get; private set; }
+		
+		private void UpdateCachedTextureCoordinates(TiledTextureIndex index)
+		{
+			Int32 width, height;
+			
+			CachedTextureCoordinates = SpriteGroup.GetTiledTextureCoordinates(_TextureIndex, out width, out height);
+			TileWidth = width;
+			TileHeight = height;
+		}
 		
 		#endregion
 		
@@ -98,16 +152,16 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		public void SetPositionFromCenter(Coordinate2 position)
 		{
-			Single x = position.X - SpriteGroup.TileWidth / 2;
-			Single y = position.Y - SpriteGroup.TileHeight / 2;
+			Single x = position.X - TileWidth / 2;
+			Single y = position.Y - TileHeight / 2;
 			
 			Position = new Coordinate2(x, y);
 		}
 		
 		public void SetPositionFromCenter(Single x, Single y)
 		{
-			Single xx = x - SpriteGroup.TileWidth / 2;
-			Single yy = y - SpriteGroup.TileHeight / 2;
+			Single xx = x - TileWidth / 2;
+			Single yy = y - TileHeight / 2;
 			
 			Position = new Coordinate2(xx, yy);
 		}
@@ -171,4 +225,3 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		#endregion
 	}
 }
-

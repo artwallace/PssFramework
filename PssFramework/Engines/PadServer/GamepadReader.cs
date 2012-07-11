@@ -269,7 +269,6 @@ namespace PsmFramework.Engines.PadServer
 			
 			default:
 				throw new InvalidProgramException("Unknown controller type.");
-				break;
 			}
 			
 			return gpd;
