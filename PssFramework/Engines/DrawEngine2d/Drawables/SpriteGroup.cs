@@ -11,10 +11,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
 	public sealed class SpriteGroup : DrawableBase
 	{
-		//This class is a mess, just used for testing and learning OpenGL.
-		//Eventually, a barebones spritegroup that doesn't support rotation or scaling
-		// will be added for background tiles and simple sprites. Will allow for faster
-		// culling calcs and less matrix calcs.
 		//This class will evolve into a more advanced sprite class with more
 		// complicated culling due to rotation and scaling.
 		//A lot of the calcs need to be moved to the sprite class and only recalced
@@ -34,8 +30,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		private void InitializeCustom(TiledTexture tiledTexture)
 		{
-			InitializeSprites();
 			InitializeTiledTexture(tiledTexture);
+			InitializeSprites();
 			
 			InitializeVertices();
 			InitializeIndices();
@@ -62,8 +58,8 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			CleanupIndices();
 			CleanupVertices();
 			
-			CleanupTiledTexture();
 			CleanupSprites();
+			CleanupTiledTexture();
 		}
 		
 		#endregion
@@ -105,52 +101,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			//Clean up the drawing
 			
 			TestTimer.Stop();
-		}
-		
-		#endregion
-		
-		#region Sprites
-		
-		private void InitializeSprites()
-		{
-			Sprites = new List<Sprite>();
-		}
-		
-		private void CleanupSprites()
-		{
-			Sprite[] sprites = Sprites.ToArray();
-			
-			foreach(Sprite sprite in sprites)
-				sprite.Dispose();
-			Sprites.Clear();
-			
-			Sprites = null;
-		}
-		
-		private List<Sprite> Sprites;
-		
-		internal void AddSprite(Sprite sprite)
-		{
-			if(sprite == null)
-				throw new ArgumentNullException();
-			
-			if(Sprites.Contains(sprite))
-				throw new ArgumentException();
-			
-			Sprites.Add(sprite);
-			Layer.DrawEngine2d.SetRenderRequired();
-		}
-		
-		internal void RemoveSprite(Sprite sprite)
-		{
-			if(sprite == null)
-				throw new ArgumentNullException();
-			
-			if(!Sprites.Contains(sprite))
-				throw new ArgumentException();
-			
-			Sprites.Remove(sprite);
-			Layer.DrawEngine2d.SetRenderRequired();
 		}
 		
 		#endregion
@@ -200,6 +150,64 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 //		}
 		
 		#endregion
+		
+		#region Sprites
+		
+		private void InitializeSprites()
+		{
+			Sprites = new List<Sprite>();
+		}
+		
+		private void CleanupSprites()
+		{
+			Sprite[] sprites = Sprites.ToArray();
+			
+			foreach(Sprite sprite in sprites)
+				sprite.Dispose();
+			Sprites.Clear();
+			
+			Sprites = null;
+		}
+		
+		private List<Sprite> Sprites;
+		
+		internal void AddSprite(Sprite sprite)
+		{
+			if(sprite == null)
+				throw new ArgumentNullException();
+			
+			if(Sprites.Contains(sprite))
+				throw new ArgumentException();
+			
+			Sprites.Add(sprite);
+			Layer.DrawEngine2d.SetRenderRequired();
+		}
+		
+		internal void RemoveSprite(Sprite sprite)
+		{
+			if(sprite == null)
+				throw new ArgumentNullException();
+			
+			if(!Sprites.Contains(sprite))
+				throw new ArgumentException();
+			
+			Sprites.Remove(sprite);
+			Layer.DrawEngine2d.SetRenderRequired();
+		}
+		
+		#endregion
+		
+		#region Bounds
+		
+		protected override void UpdateBounds()
+		{
+			throw new NotImplementedException();
+		}
+		
+		#endregion
+		
+		
+		//Old crap, need to fix.
 		
 		#region Blend Mode NOT IMPLEMENTED
 		

@@ -1,4 +1,5 @@
 using System;
+using PsmFramework.Engines.DrawEngine2d.Support;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
@@ -30,12 +31,14 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			InitializeLayer(layer);
 			InitializeDrawEngine2d();
 			InitializeChanged();
-			InitializeVisibility();
+			InitializeVisible();
+			InitializeBounds();
 		}
 		
 		private void CleanupInternal()
 		{
-			CleanupVisibility();
+			CleanupBounds();
+			CleanupVisible();
 			CleanupChanged();
 			CleanupDrawEngine2d();
 			CleanupLayer();
@@ -137,14 +140,14 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		
 		#endregion
 		
-		#region Visibility
+		#region Visible
 		
-		private void InitializeVisibility()
+		private void InitializeVisible()
 		{
 			Visible = true;
 		}
 		
-		private void CleanupVisibility()
+		private void CleanupVisible()
 		{
 		}
 		
@@ -160,6 +163,41 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 				_Visible = value;
 				MarkAsChanged();
 			}
+		}
+		
+		#endregion
+		
+		#region Bounds
+		
+		private void InitializeBounds()
+		{
+		}
+		
+		private void CleanupBounds()
+		{
+		}
+		
+		private  RectangularArea2 _Bounds;
+		public RectangularArea2 Bounds
+		{
+			get
+			{
+				if(Changed)
+					UpdateBounds();
+				return _Bounds;
+			}
+			protected set { _Bounds = value; }
+		}
+		
+		protected abstract void UpdateBounds();
+		
+		#endregion
+		
+		#region OnScreen
+		
+		public Boolean DetermineIfOnScreen()
+		{
+			throw new NotImplementedException();
 		}
 		
 		#endregion

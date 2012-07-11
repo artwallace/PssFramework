@@ -208,6 +208,7 @@
     <Compile Include="Engines\DrawEngine2d\WorldLayer.cs" />
     <Compile Include="Engines\DrawEngine2d\ScreenLayer.cs" />
     <Compile Include="Engines\DrawEngine2d\LayerBase.cs" />
+    <Compile Include="Engines\DrawEngine2d\Support\RectangularArea2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modes\" />

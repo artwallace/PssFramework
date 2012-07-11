@@ -20,6 +20,15 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		}
 		
 		#endregion
+		
+		#region Bounds
+		
+		protected override void UpdateBounds()
+		{
+			throw new NotImplementedException();
+		}
+		
+		#endregion
 	}
 }
 

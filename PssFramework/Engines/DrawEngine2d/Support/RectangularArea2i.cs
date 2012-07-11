@@ -13,6 +13,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 			_Right = right;
 			_Bottom = bottom;
 			
+			_HashCodeDirty = true;
+			_HashCode = 0;
+			
 			_TopLeft = new Coordinate2i(left, top);
 			_BottomLeft = new Coordinate2i(left, bottom);
 			_TopRight = new Coordinate2i(right, top);
@@ -95,9 +98,18 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 				;
 		}
 		
+		private Int32 _HashCode;
 		public override Int32 GetHashCode()
 		{
-			return Left ^ Top ^ Right ^ Bottom;
+			if(_HashCodeDirty)
+				UpdateHashCode();
+			return _HashCode;
+		}
+		private Boolean _HashCodeDirty;
+		private void UpdateHashCode()
+		{
+			_HashCode = Left ^ Top ^ Right ^ Bottom;
+			_HashCodeDirty = false;
 		}
 		
 		public static Boolean operator ==(RectangularArea2i o1, RectangularArea2i o2)

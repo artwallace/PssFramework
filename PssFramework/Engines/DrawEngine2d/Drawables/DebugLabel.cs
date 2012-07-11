@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Generic;
 using PsmFramework.Engines.DrawEngine2d.Shaders;
 using PsmFramework.Engines.DrawEngine2d.Support;
 using Sce.Pss.Core;
 using Sce.Pss.Core.Graphics;
-using System.Collections.Generic;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {
@@ -242,6 +242,16 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		}
 		
 		#endregion
+		
+		#region Bounds
+		
+		protected override void UpdateBounds()
+		{
+			throw new NotImplementedException();
+		}
+		
+		#endregion
+		
 		
 		
 		//Old crap, need to fix.

@@ -10,6 +10,9 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		{
 			_X = x;
 			_Y = y;
+			
+			_HashCodeDirty = true;
+			_HashCode = 0;
 		}
 		
 		#endregion
@@ -20,14 +23,22 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 		public Single X
 		{
 			get { return _X; }
-			set { _X = value; }
+			set
+			{
+				_X = value;
+				_HashCodeDirty = true;
+			}
 		}
 		
 		private Single _Y;
 		public Single Y
 		{
 			get { return _Y; }
-			set { _Y = value; }
+			set
+			{
+				_Y = value;
+				_HashCodeDirty = true;
+			}
 		}
 		
 		#endregion
@@ -59,9 +70,18 @@ namespace PsmFramework.Engines.DrawEngine2d.Support
 				;
 		}
 		
+		private Int32 _HashCode;
 		public override Int32 GetHashCode()
 		{
-			return (Int32)X ^ (Int32)Y;
+			if(_HashCodeDirty)
+				UpdateHashCode();
+			return _HashCode;
+		}
+		private Boolean _HashCodeDirty;
+		private void UpdateHashCode()
+		{
+			_HashCode = (Int32)X ^ (Int32)Y;
+			_HashCodeDirty = false;
 		}
 		
 		public static Boolean operator ==(Coordinate2 o1, Coordinate2 o2)
