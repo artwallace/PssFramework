@@ -7,11 +7,11 @@
 using System;
 using System.Collections.Generic;
 
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics;
-using Sce.Pss.Core.Imaging;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics;
+using Sce.PlayStation.Core.Imaging;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
 	/// Given a Font object and a text containing all the characters you intend to use, 
@@ -104,7 +104,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 
 			for ( int k=0; k < 2; ++k )
 			{
-				Vector2i turtle = new Vector2i( 0, 0 );	// turtle is in Sce.Pss.Core.Imaging.Font's coordinate system
+				Vector2i turtle = new Vector2i( 0, 0 );	// turtle is in Sce.PlayStation.Core.Imaging.Font's coordinate system
 				int max_height = 0;
 
 				for ( int i=0; i < charset.Length; ++i )
@@ -123,7 +123,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 					{
 						// hit the right side, go to next line
 						turtle.X = 0;
-						turtle.Y += max_height;	// Sce.Pss.Core.Imaging.Font's coordinate system: top is 0, so we += to move down
+						turtle.Y += max_height;	// Sce.PlayStation.Core.Imaging.Font's coordinate system: top is 0, so we += to move down
 						max_height = 0;
 
 						// make sure we are noit going to newline forever due to lack of fontmap_width

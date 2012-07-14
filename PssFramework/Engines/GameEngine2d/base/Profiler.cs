@@ -9,9 +9,9 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	// An ad hoc profiler (high overhead)
 	public class Profiler

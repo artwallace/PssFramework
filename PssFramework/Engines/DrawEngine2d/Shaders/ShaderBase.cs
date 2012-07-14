@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using PsmFramework.Engines.DrawEngine2d;
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Shaders
 {

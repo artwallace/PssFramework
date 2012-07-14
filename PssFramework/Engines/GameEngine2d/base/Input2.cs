@@ -6,12 +6,12 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
-	/// Wrap Sce.Pss.Core.Input so that input conditional expressions are less verbose.
+	/// Wrap Sce.PlayStation.Core.Input so that input conditional expressions are less verbose.
 	/// Some examples:
 	/// 
 	/// if ( Input2.GamePad.GetData(0).Left.Down ) // is game pad left button down
@@ -69,7 +69,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		{
 			ButtonState m_state;
 			Vector2 m_pos;
-			Vector2 m_pos_prev; // Sce.Pss.Core.Input bug workaround: in some cases, return the previous frame's position
+			Vector2 m_pos_prev; // Sce.PlayStation.Core.Input bug workaround: in some cases, return the previous frame's position
 			internal bool m_visited;
 			internal int m_id; // api ID
 
@@ -87,7 +87,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			/// in normalized screen coordinates: bottom left (-1,1), upper right (1,1).
 			/// </summary>
 			public Vector2 Pos { get { return m_pos; } } 
-			// work around a bug in Sce.Pss.Core.Input that resets position to 0,0 before we fully release the mouse...
+			// work around a bug in Sce.PlayStation.Core.Input that resets position to 0,0 before we fully release the mouse...
 			public Vector2 PreviousPos { get { return m_pos_prev; } }	
 			/// <summary>Return true if we are touching this frame</summary>
 			public bool Down { get { return m_state.Down; } }
@@ -115,7 +115,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			internal TouchData[] m_touch_data;
 			int m_device_index;
 			bool m_external_control = false;
-			List< Sce.Pss.Core.Input.TouchData > m_external_data;
+			List< Sce.PlayStation.Core.Input.TouchData > m_external_data;
 
 			int Capacity { get { return 10; } }
 
@@ -150,12 +150,12 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			}
 
 			/// <summary>
-			/// By default, Sce.Pss.HighLevel.GameEngine2D.Base.Input2 simply gets the input data automatically, but 
+			/// By default, Sce.PlayStation.HighLevel.GameEngine2D.Base.Input2 simply gets the input data automatically, but 
 			/// you can override this behaviour and manually set the data. If the data you set has the .Skip flag set 
-			/// to true, all touch and button input will be ignored in Sce.Pss.HighLevel.GameEngine2D.Base.Input2.
+			/// to true, all touch and button input will be ignored in Sce.PlayStation.HighLevel.GameEngine2D.Base.Input2.
 			/// Calling SetData once forever enables the manual/external control behavior.
 			/// </summary>
-			public void SetData (List< Sce.Pss.Core.Input.TouchData > data)
+			public void SetData (List< Sce.PlayStation.Core.Input.TouchData > data)
 			{
 				m_external_control = true;
 				m_external_data = data;
@@ -163,9 +163,9 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 
 			internal void frame_update ()
 			{
-				List< Sce.Pss.Core.Input.TouchData > touch_data_list = m_external_data;
+				List< Sce.PlayStation.Core.Input.TouchData > touch_data_list = m_external_data;
 				if (!m_external_control)
-					touch_data_list = Sce.Pss.Core.Input.Touch.GetData (m_device_index);
+					touch_data_list = Sce.PlayStation.Core.Input.Touch.GetData (m_device_index);
 
 				Common.Assert (touch_data_list != null);
 
@@ -173,10 +173,10 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 					td.m_visited = false;
 
 				m_id_set.Clear ();
-				foreach (Sce.Pss.Core.Input.TouchData src_data in touch_data_list)
+				foreach (Sce.PlayStation.Core.Input.TouchData src_data in touch_data_list)
 					m_id_set.Add (src_data.ID);
 
-				foreach (Sce.Pss.Core.Input.TouchData src_data in touch_data_list) {
+				foreach (Sce.PlayStation.Core.Input.TouchData src_data in touch_data_list) {
 					TouchData td = get_touch_data (src_data.ID);
 					td.m_visited = true;
 
@@ -222,7 +222,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 				return s_touch_data0.m_touch_data;
 			}
 
-			public static void SetData (uint deviceIndex, List< Sce.Pss.Core.Input.TouchData > data)
+			public static void SetData (uint deviceIndex, List< Sce.PlayStation.Core.Input.TouchData > data)
 			{
 				Common.Assert (deviceIndex == 0);
 				s_touch_data0.SetData (data);
@@ -236,7 +236,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		{
 			int m_device_index;
 			bool m_external_control = false;
-			Sce.Pss.Core.Input.GamePadData m_external_data;
+			Sce.PlayStation.Core.Input.GamePadData m_external_data;
 
 			/// <summary></summary>
 			public ButtonState Left = ButtonState.Default;
@@ -275,12 +275,12 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			}
 
 			/// <summary>
-			/// By default, Sce.Pss.HighLevel.GameEngine2D.Base.Input2 simply gets the input data automatically, but 
+			/// By default, Sce.PlayStation.HighLevel.GameEngine2D.Base.Input2 simply gets the input data automatically, but 
 			/// you can override this behaviour and manually set the data. If the data you set has the .Skip flag set 
-			/// to true, all touch and button input will be ignored in Sce.Pss.HighLevel.GameEngine2D.Base.Input2.
+			/// to true, all touch and button input will be ignored in Sce.PlayStation.HighLevel.GameEngine2D.Base.Input2.
 			/// Calling SetData once forever enables the manual/external control behavior.
 			/// </summary>
-			public void SetData (Sce.Pss.Core.Input.GamePadData data)
+			public void SetData (Sce.PlayStation.Core.Input.GamePadData data)
 			{
 				m_external_control = true;
 				m_external_data = data;
@@ -288,26 +288,26 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 
 			internal void frame_update ()
 			{
-				Sce.Pss.Core.Input.GamePadData game_pad_data = m_external_data;
+				Sce.PlayStation.Core.Input.GamePadData game_pad_data = m_external_data;
 				if (!m_external_control)
-					game_pad_data = Sce.Pss.Core.Input.GamePad.GetData (m_device_index);
+					game_pad_data = Sce.PlayStation.Core.Input.GamePad.GetData (m_device_index);
 
 				bool skip_mask = true;
 				if (game_pad_data.Skip)
 					skip_mask = false; // .Skip flag set on external data: ignore the data
 
-				Left . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Left) != 0) && skip_mask);
-				Up . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Up) != 0) && skip_mask);
-				Right . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Right) != 0) && skip_mask);
-				Down . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Down) != 0) && skip_mask);
-				Square . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Square) != 0) && skip_mask);
-				Triangle . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Triangle) != 0) && skip_mask);
-				Circle . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Circle) != 0) && skip_mask);
-				Cross . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Cross) != 0) && skip_mask);
-				Start . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Start) != 0) && skip_mask);
-				Select . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.Select) != 0) && skip_mask);
-				L . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.L) != 0) && skip_mask);
-				R . frame_update (((game_pad_data.Buttons & Sce.Pss.Core.Input.GamePadButtons.R) != 0) && skip_mask);
+				Left . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Left) != 0) && skip_mask);
+				Up . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Up) != 0) && skip_mask);
+				Right . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Right) != 0) && skip_mask);
+				Down . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Down) != 0) && skip_mask);
+				Square . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Square) != 0) && skip_mask);
+				Triangle . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Triangle) != 0) && skip_mask);
+				Circle . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Circle) != 0) && skip_mask);
+				Cross . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Cross) != 0) && skip_mask);
+				Start . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Start) != 0) && skip_mask);
+				Select . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.Select) != 0) && skip_mask);
+				L . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.L) != 0) && skip_mask);
+				R . frame_update (((game_pad_data.Buttons & Sce.PlayStation.Core.Input.GamePadButtons.R) != 0) && skip_mask);
 
 				if (skip_mask == true) {
 					Dpad = GameEngine2D.Base.Math._00;
@@ -351,7 +351,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 				return s_game_pad_data0;
 			}
 
-			public static void SetData (uint deviceIndex, Sce.Pss.Core.Input.GamePadData data)
+			public static void SetData (uint deviceIndex, Sce.PlayStation.Core.Input.GamePadData data)
 			{
 				Common.Assert (deviceIndex == 0);
 				s_game_pad_data0.SetData (data);

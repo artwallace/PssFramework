@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Textures
 {

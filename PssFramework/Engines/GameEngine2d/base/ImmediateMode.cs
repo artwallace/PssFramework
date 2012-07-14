@@ -11,9 +11,9 @@
 using System;
 using System.Collections.Generic;
 
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core.Graphics;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
 	/// An immediate mode vertex array that you can write everyframe

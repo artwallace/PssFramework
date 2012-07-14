@@ -4,9 +4,9 @@
  * All Rights Reserved.
  */
 
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core.Graphics;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
 	/// BlendMode wraps the blend state (BlendFunc+'enabled' bool) and provides some human friendly blend mode names.

@@ -1,5 +1,5 @@
 using System;
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 
 namespace PsmFramework
 {

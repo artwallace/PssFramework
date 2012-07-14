@@ -6,18 +6,18 @@
 
 using System;
 
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics; // BlendMode
-using Sce.Pss.Core.Imaging; // Font
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics; // BlendMode
+using Sce.PlayStation.Core.Imaging; // Font
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
-	/// Augment Sce.Pss.Core.Graphics.GraphicsContext with a matrix stack and a couple of other functions.
+	/// Augment Sce.PlayStation.Core.Graphics.GraphicsContext with a matrix stack and a couple of other functions.
 	/// </summary>
 	public class GraphicsContextAlpha : System.IDisposable
 	{
-		Sce.Pss.Core.Graphics.GraphicsContext m_context;
+		Sce.PlayStation.Core.Graphics.GraphicsContext m_context;
 		bool m_context_must_be_disposed; // if true, m_context is disposed of in this class
 		Texture2D m_white_texture;
 		TextureInfo m_white_texture_info;
@@ -25,21 +25,21 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		/// <summary>
 		/// The core graphics context.
 		/// </summary>
-		public Sce.Pss.Core.Graphics.GraphicsContext Context { get { return m_context; } }
+		public Sce.PlayStation.Core.Graphics.GraphicsContext Context { get { return m_context; } }
 
 		bool m_disposed = false;
 		/// <summary>Return true if this object been disposed.</summary>
 		public bool Disposed { get { return m_disposed; } }
 
 		/// <summary>GraphicsContextAlpha constructor.</summary>
-		public GraphicsContextAlpha( Sce.Pss.Core.Graphics.GraphicsContext context = null )
+		public GraphicsContextAlpha( Sce.PlayStation.Core.Graphics.GraphicsContext context = null )
 		{
 			m_context = context;
 			m_context_must_be_disposed = false;
 
 			if ( m_context == null )
 			{
-				m_context = new Sce.Pss.Core.Graphics.GraphicsContext();
+				m_context = new Sce.PlayStation.Core.Graphics.GraphicsContext();
 				m_context_must_be_disposed = true; // this class takes ownership of m_context
 			}
 
@@ -65,7 +65,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 			if(disposing)
 			{
 				if ( m_context_must_be_disposed )
-					Common.DisposeAndNullify< Sce.Pss.Core.Graphics.GraphicsContext >( ref m_context );
+					Common.DisposeAndNullify< Sce.PlayStation.Core.Graphics.GraphicsContext >( ref m_context );
 				Common.DisposeAndNullify< Texture2D >( ref m_white_texture );
 				m_disposed = true;
 			}

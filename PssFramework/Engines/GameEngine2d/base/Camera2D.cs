@@ -4,9 +4,9 @@
  * All Rights Reserved.
  */
 
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
 	/// 2D view setup and navigation. Uses GraphicsContextAlpha + DrawHelpers
@@ -452,5 +452,5 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 	}
 
-} // namespace Sce.Pss.HighLevel.GameEngine2D.Base
+} // namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 

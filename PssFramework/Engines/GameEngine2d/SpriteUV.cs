@@ -5,10 +5,10 @@
  */
 
 using System.Collections.Generic;
-using Sce.Pss.Core;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
-namespace Sce.Pss.HighLevel.GameEngine2D
+namespace Sce.PlayStation.HighLevel.GameEngine2D
 {
 	/// <summary>
 	/// SpriteUV is a sprite for which you set uvs manually. Uvs are stored as a TRS object. 

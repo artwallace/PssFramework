@@ -9,7 +9,7 @@
     <ProjectTypeGuids>{69878862-DA7D-4DC6-B0A1-50D8FAB4242F};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>PsmFramework</RootNamespace>
-    <AssemblyName>PssFramework</AssemblyName>
+    <AssemblyName>PsmFramework</AssemblyName>
     <newfilesearch>OnLoadAutoInsert</newfilesearch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,11 +34,11 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Sce.Pss.Core" />
-    <Reference Include="Sce.Pss.HighLevel.UI" />
+    <Reference Include="Sce.PlayStation.Core" />
+    <Reference Include="Sce.PlayStation.HighLevel.UI" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Sce\Sce.Pss.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Sce\Sce.Psm.CSharp.targets" />
   <ItemGroup>
     <Compile Include="AppManager.cs" />
     <Compile Include="AppOptionsBase.cs" />
@@ -184,7 +184,6 @@
     <Compile Include="Engines\DrawEngine2d\Drawables\Point.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\FontShader.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\ShaderBase.cs" />
-    <Compile Include="Engines\DrawEngine2d\LayerType.cs" />
     <Compile Include="Engines\DrawEngine2d\Shaders\SpriteShader.cs" />
     <Compile Include="IDisposablePlus.cs" />
     <Compile Include="Engines\DrawEngine2d\Drawables\DrawableBase.cs" />
@@ -266,5 +265,8 @@
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Font.vcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.fcg" />
     <EmbeddedShaderProgram Include="Engines\DrawEngine2d\Shaders\Sprite.vcg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ShaderProgram Include="Engines\DrawEngine2d\Shaders\sprite.vcg" />
   </ItemGroup>
 </Project>

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics;
-using Sce.Pss.HighLevel.GameEngine2D;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics;
+using Sce.PlayStation.HighLevel.GameEngine2D;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
 namespace PsmFramework
 {

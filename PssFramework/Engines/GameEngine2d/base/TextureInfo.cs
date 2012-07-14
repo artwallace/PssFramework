@@ -5,10 +5,10 @@
  */
 
 using System;
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
 	/// TextureInfo holds a Texture2D object and caches associated tile UV data. 

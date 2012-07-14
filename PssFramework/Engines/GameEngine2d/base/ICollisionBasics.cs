@@ -6,9 +6,9 @@
 
 using System;
 using System.Collections.Generic;
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>Common interface for Bounds2, Sphere2, ConvexPoly2.</summary>
 	public interface ICollisionBasics

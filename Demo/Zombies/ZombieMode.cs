@@ -2,8 +2,8 @@ using System;
 using PsmFramework;
 using PsmFramework.Modes;
 using PsmFramework.Modes.Isometric2d;
-using Sce.Pss.Core;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 using Demo.MainMenu;
 
 namespace Demo.Zombies

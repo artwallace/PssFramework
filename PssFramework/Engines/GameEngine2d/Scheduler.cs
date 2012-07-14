@@ -5,9 +5,9 @@
  */
 
 using System.Collections.Generic;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
-namespace Sce.Pss.HighLevel.GameEngine2D
+namespace Sce.PlayStation.HighLevel.GameEngine2D
 {
 	/// <summary>
 	/// The delegate type for functions added to the Scheduler has to match Node.Update's signature.
@@ -307,5 +307,5 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		}
 	}
 
-} // namespace Sce.Pss.HighLevel.GameEngine2D
+} // namespace Sce.PlayStation.HighLevel.GameEngine2D
 

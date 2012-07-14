@@ -4,8 +4,8 @@ using PsmFramework.Engines.DrawEngine2d.Drawables;
 using PsmFramework.Engines.DrawEngine2d.Shaders;
 using PsmFramework.Engines.DrawEngine2d.Support;
 using PsmFramework.Engines.DrawEngine2d.Textures;
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d
 {
@@ -490,43 +490,6 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		#endregion
 		
-		#region Camera
-		
-		private void InitializeCamera()
-		{
-			CameraPosition = Coordinate2.X0Y0;
-			CameraZoom = 1.0f;
-			CameraRotation = 0.0f;
-		}
-		
-		private void CleanupCamera()
-		{
-			CameraPosition = Coordinate2.X0Y0;
-			CameraZoom = 1.0f;
-			CameraRotation = 0.0f;
-		}
-		
-		private Coordinate2 CameraPosition;
-		
-		public void SetCameraPosition()
-		{
-		}
-		
-		//Switch to an enum instead of separate methods?
-		public void SetCameraPositionFromBottomLeft()
-		{
-		}
-		
-		public void SetCameraPositionFromTopLeft()
-		{
-		}
-		
-		private Single CameraZoom;
-		
-		private Single CameraRotation;
-		
-		#endregion
-		
 		#region OpenGL Graphics
 		
 		//http://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_2D
@@ -582,15 +545,15 @@ namespace PsmFramework.Engines.DrawEngine2d
 			
 			//TODO: Is this one pixel too tall and wide?
 			ProjectionMatrixLeft = 0.0f;
-			ProjectionMatrixRight = FrameBufferWidthAsSingle;
+			ProjectionMatrixRight = FrameBufferWidthAsSingle - 1;
 			ProjectionMatrixBottom = 0.0f;
-			ProjectionMatrixTop = FrameBufferHeightAsSingle;
+			ProjectionMatrixTop = FrameBufferHeightAsSingle - 1;
 			ProjectionMatrixNear = -1.0f;
 			ProjectionMatrixFar = 1.0f;
 			
-			ViewMatrixEye = new Vector3(0.0f, FrameBufferHeightAsSingle, 0.0f);
-			ViewMatrixCenter = new Vector3(0.0f, FrameBufferHeightAsSingle, 1.0f);
-			ViewMatrixUp = new Vector3(0.0f, -1.0f, 0.0f);
+			ModelViewMatrixEye = new Vector3(0.0f, FrameBufferHeightAsSingle - 1, 0.0f);
+			ModelViewMatrixCenter = new Vector3(0.0f, FrameBufferHeightAsSingle - 1, 1.0f);
+			ModelViewMatrixUp = new Vector3(0.0f, -1.0f, 0.0f);
 			
 			ProjectionMatrix = Matrix4.Ortho(
 				ProjectionMatrixLeft,
@@ -602,9 +565,9 @@ namespace PsmFramework.Engines.DrawEngine2d
 				);
 			
 			ModelViewMatrix = Matrix4.LookAt(
-				ViewMatrixEye,
-				ViewMatrixCenter,
-				ViewMatrixUp
+				ModelViewMatrixEye,
+				ModelViewMatrixCenter,
+				ModelViewMatrixUp
 				);
 		}
 		
@@ -628,9 +591,46 @@ namespace PsmFramework.Engines.DrawEngine2d
 		private Single ProjectionMatrixNear;
 		private Single ProjectionMatrixFar;
 		
-		private Vector3 ViewMatrixEye;
-		private Vector3 ViewMatrixCenter;
-		private Vector3 ViewMatrixUp;
+		private Vector3 ModelViewMatrixEye;
+		private Vector3 ModelViewMatrixCenter;
+		private Vector3 ModelViewMatrixUp;
+		
+		#endregion
+		
+		#region Camera
+		
+		private void InitializeCamera()
+		{
+			CameraPosition = Coordinate2.X0Y0;
+			CameraZoom = 1.0f;
+			CameraRotation = 0.0f;
+		}
+		
+		private void CleanupCamera()
+		{
+			CameraPosition = Coordinate2.X0Y0;
+			CameraZoom = 1.0f;
+			CameraRotation = 0.0f;
+		}
+		
+		private Coordinate2 CameraPosition;
+		
+		public void SetCameraPosition()
+		{
+		}
+		
+		//Switch to an enum instead of separate methods?
+		public void SetCameraPositionFromBottomLeft()
+		{
+		}
+		
+		public void SetCameraPositionFromTopLeft()
+		{
+		}
+		
+		private Single CameraZoom;
+		
+		private Single CameraRotation;
 		
 		#endregion
 		

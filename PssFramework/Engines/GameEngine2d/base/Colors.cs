@@ -6,11 +6,11 @@
 
 using System;
 
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics; // BlendMode
-using Sce.Pss.Core.Imaging; // Font
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics; // BlendMode
+using Sce.PlayStation.Core.Imaging; // Font
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
 	/// Some named colored constants.

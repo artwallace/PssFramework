@@ -6,9 +6,9 @@
 
 using System;
 using System.Collections.Generic;
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>Some extensions to the math/vector lib</summary>
 	public static class Math

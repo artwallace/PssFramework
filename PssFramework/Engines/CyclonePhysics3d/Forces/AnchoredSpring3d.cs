@@ -6,13 +6,13 @@
 // https://github.com/roastedamoeba
 
 using System;
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 
 namespace PsmFramework.Engines.CyclonePhysics3d.Forces
 {
 	public class AnchoredSpring3d : ForceGenerator3dBase
 	{
-		protected Sce.Pss.Core.Vector3 Anchor { get; private set; }
+		protected Sce.PlayStation.Core.Vector3 Anchor { get; private set; }
 		protected Single SpringConstant { get; private set; }
 		protected Single RestLength { get; private set; }
 

@@ -6,7 +6,7 @@
 
 using System.IO;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	public static class Common
 	{
@@ -128,16 +128,16 @@ namespace Sce.Pss.HighLevel.GameEngine2D.Base
 		}
 		
 		// Wrap the creation of shader programs so we can switch bewteen file/embedded data.
-		public static Sce.Pss.Core.Graphics.ShaderProgram CreateShaderProgram( string filename )
+		public static Sce.PlayStation.Core.Graphics.ShaderProgram CreateShaderProgram( string filename )
 		{
 //			System.Console.WriteLine( "CreateShaderProgram("+filename+")" );
 
 			// try load embedded version
 			System.Byte[] shaderfile = Common.GetEmbeddedResource( filename );
-			Sce.Pss.Core.Graphics.ShaderProgram ret = new Sce.Pss.Core.Graphics.ShaderProgram( shaderfile );
+			Sce.PlayStation.Core.Graphics.ShaderProgram ret = new Sce.PlayStation.Core.Graphics.ShaderProgram( shaderfile );
 
 			//try load from disk
-//			ret = new Sce.Pss.Core.Graphics.ShaderProgram( filename );
+//			ret = new Sce.PlayStation.Core.Graphics.ShaderProgram( filename );
 
 			return ret;
 		}

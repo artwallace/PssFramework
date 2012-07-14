@@ -6,10 +6,10 @@
 
 using System.Collections.Generic;
 using System.Diagnostics; // for [Conditional("DEBUG")]
-using Sce.Pss.Core;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
-namespace Sce.Pss.HighLevel.GameEngine2D
+namespace Sce.PlayStation.HighLevel.GameEngine2D
 {
 	/// <summary>
 	/// The Plane3D node allows 3d orientations in the scenegraph, to some extent.

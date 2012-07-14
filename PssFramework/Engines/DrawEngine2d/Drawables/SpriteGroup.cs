@@ -4,8 +4,8 @@ using System.Diagnostics;
 using PsmFramework.Engines.DrawEngine2d.Shaders;
 using PsmFramework.Engines.DrawEngine2d.Support;
 using PsmFramework.Engines.DrawEngine2d.Textures;
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Drawables
 {

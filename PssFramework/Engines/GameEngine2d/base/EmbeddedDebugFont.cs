@@ -4,10 +4,10 @@
  * All Rights Reserved.
  */
 using System;
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
 	/// Embedded font data for on screen debug prints.

@@ -2,8 +2,8 @@ using System;
 using System.Diagnostics;
 using Demo.MainMenu;
 using PsmFramework;
-using Sce.Pss.Core.Environment;
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core.Environment;
+using Sce.PlayStation.Core.Graphics;
 
 namespace Demo
 {
@@ -29,7 +29,7 @@ namespace Demo
 		
 		private static void Initialize()
 		{
-			Log.SetToConsole();
+			//Log.SetToConsole();
 			
 			Opts = new AppOptions();
 			Mgr = new AppManager(Opts, GenerateGraphicsContext(), cDefaultFpsLimit);

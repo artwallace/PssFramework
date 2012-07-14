@@ -3,10 +3,10 @@ using Demo.MainMenu;
 using PsmFramework;
 using PsmFramework.Modes;
 using PsmFramework.Modes.FixedFront2d;
-using Sce.Pss.Core;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 using PsmFramework.Engines.PadServer;
-using Sce.Pss.Core.Input;
+using Sce.PlayStation.Core.Input;
 
 namespace Demo.Fireworks
 {

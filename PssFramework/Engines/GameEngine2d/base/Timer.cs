@@ -4,7 +4,7 @@
  * All Rights Reserved.
  */
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>A simple timer.</summary>
 	public class Timer

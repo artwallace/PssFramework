@@ -1,7 +1,7 @@
 using System;
 using PsmFramework.Engines.CyclonePhysics2d.Forces;
 using PsmFramework.Modes.TopDown2d;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
 namespace Demo.TwinStickShooter
 {

@@ -1,6 +1,6 @@
 using System;
 using PsmFramework.Modes.Isometric2d;
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 
 namespace Demo.Zombies
 {

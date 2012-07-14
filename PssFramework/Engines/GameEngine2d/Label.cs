@@ -4,10 +4,10 @@
  * All Rights Reserved.
  */
 
-using Sce.Pss.Core;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
-namespace Sce.Pss.HighLevel.GameEngine2D
+namespace Sce.PlayStation.HighLevel.GameEngine2D
 {
 	/// <summary>
 	/// Draw text primitive. 2 types of font data supported:
@@ -88,5 +88,5 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 			else return Director.Instance.SpriteRenderer.DrawTextWithFontMap( Text, GameEngine2D.Base.Math._00, CharWorldHeight, false, FontMap, Shader );
 		}
 	}
-} // namespace Sce.Pss.HighLevel.GameEngine2D
+} // namespace Sce.PlayStation.HighLevel.GameEngine2D
 

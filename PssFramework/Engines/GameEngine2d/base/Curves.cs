@@ -4,11 +4,11 @@
  * All Rights Reserved.
  */
 
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	public class Curves
 	{

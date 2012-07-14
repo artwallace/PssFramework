@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using PsmFramework.Modes;
-using Sce.Pss.Core.Environment;
-using Sce.Pss.Core.Graphics;
-using Sce.Pss.Core.Imaging;
-using Sce.Pss.Core.Input;
+using Sce.PlayStation.Core.Environment;
+using Sce.PlayStation.Core.Graphics;
+using Sce.PlayStation.Core.Imaging;
+using Sce.PlayStation.Core.Input;
 
 namespace PsmFramework
 {

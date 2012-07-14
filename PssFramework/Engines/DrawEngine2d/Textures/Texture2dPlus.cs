@@ -1,5 +1,5 @@
 using System;
-using Sce.Pss.Core.Graphics;
+using Sce.PlayStation.Core.Graphics;
 
 namespace PsmFramework.Engines.DrawEngine2d.Textures
 {

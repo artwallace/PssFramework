@@ -10,9 +10,9 @@
 using System;
 using System.Collections.Generic;
 
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
-namespace Sce.Pss.HighLevel.GameEngine2D
+namespace Sce.PlayStation.HighLevel.GameEngine2D
 {
 	/// <summary>
 	/// The flag bits used by Director.Instance.DebugFlags. 

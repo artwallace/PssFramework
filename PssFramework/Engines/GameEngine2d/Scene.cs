@@ -4,10 +4,10 @@
  * All Rights Reserved.
  */
 
-using Sce.Pss.Core;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
-namespace Sce.Pss.HighLevel.GameEngine2D
+namespace Sce.PlayStation.HighLevel.GameEngine2D
 {
 	/// <summary>Scene is the type of a root node in the scene graph. You can use the 
 	/// Director singleton to manipulate the scene stack, can the current scene can be 
@@ -195,5 +195,5 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		}
 	}
 
-} // namespace Sce.Pss.HighLevel.GameEngine2D
+} // namespace Sce.PlayStation.HighLevel.GameEngine2D
 

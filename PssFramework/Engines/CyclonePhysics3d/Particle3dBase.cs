@@ -6,8 +6,8 @@
 // https://github.com/roastedamoeba
 
 using System;
-using Sce.Pss.Core;
-using PssMath = Sce.Pss.HighLevel.GameEngine2D.Base.Math;
+using Sce.PlayStation.Core;
+using PssMath = Sce.PlayStation.HighLevel.GameEngine2D.Base.Math;
 
 namespace PsmFramework.Engines.CyclonePhysics3d
 {

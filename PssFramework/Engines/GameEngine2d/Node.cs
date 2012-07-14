@@ -6,10 +6,10 @@
 
 using System.Collections.Generic;
 using System.Diagnostics; // for [Conditional("DEBUG")]
-using Sce.Pss.Core;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
-namespace Sce.Pss.HighLevel.GameEngine2D
+namespace Sce.PlayStation.HighLevel.GameEngine2D
 {
 	/// <summary>
 	/// Node is the base class for all scenegraph nodes. It holds a standard 2D transform, 
@@ -916,5 +916,5 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 //			return "{" + GetType().Name + ":" + Name + "} " + GetHashCode();
 		}
 	}
-} // namespace Sce.Pss.HighLevel.GameEngine2D
+} // namespace Sce.PlayStation.HighLevel.GameEngine2D
 

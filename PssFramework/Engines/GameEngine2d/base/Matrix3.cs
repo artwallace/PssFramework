@@ -4,9 +4,9 @@
  * All Rights Reserved.
  */
 
-using Sce.Pss.Core;
+using Sce.PlayStation.Core;
 
-namespace Sce.Pss.HighLevel.GameEngine2D.Base
+namespace Sce.PlayStation.HighLevel.GameEngine2D.Base
 {
 	/// <summary>
 	/// A 3x3 matrix class for 2D operations (similar to Matrix4).

@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using Sce.Pss.Core.Input;
+using Sce.PlayStation.Core.Input;
 
 namespace PsmFramework.Engines.PadServer
 {

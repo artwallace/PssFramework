@@ -6,11 +6,11 @@
 
 using System;
 
-using Sce.Pss.Core;
-using Sce.Pss.Core.Graphics;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.Core.Graphics;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
-namespace Sce.Pss.HighLevel.GameEngine2D
+namespace Sce.PlayStation.HighLevel.GameEngine2D
 {
 	/// <summary>
 	/// Base class for scenes transition nodes. Those nodes make a visual
@@ -388,5 +388,5 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		}
 	}
 
-} // namespace Sce.Pss.HighLevel.GameEngine2D
+} // namespace Sce.PlayStation.HighLevel.GameEngine2D
 

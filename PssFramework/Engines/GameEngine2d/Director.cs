@@ -10,9 +10,9 @@
 using System;
 using System.Collections.Generic;
 
-using Sce.Pss.HighLevel.GameEngine2D.Base;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
 
-namespace Sce.Pss.HighLevel.GameEngine2D
+namespace Sce.PlayStation.HighLevel.GameEngine2D
 {
 	/// <summary>
 	/// The Director is a singleton (accessed via Director.Instance) that manages the scene stack 
@@ -61,7 +61,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		/// <param name="sprites_capacity">The maximum number of sprites, passed to SpriteRenderer's constructor.</param>
 		/// <param name="draw_helpers_capacity">The maximum number of vertices that we can use in DrawHelpers.</param>
 		/// <param name="context">The core graphics context.</param>
-		static public void Initialize( uint sprites_capacity = 500, uint draw_helpers_capacity = 400, Sce.Pss.Core.Graphics.GraphicsContext context = null )
+		static public void Initialize( uint sprites_capacity = 500, uint draw_helpers_capacity = 400, Sce.PlayStation.Core.Graphics.GraphicsContext context = null )
 		{
 			m_instance = new Director( sprites_capacity, draw_helpers_capacity, context );
 			Scheduler.m_instance = new Scheduler();
@@ -83,7 +83,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		}
 
 		/// <summary>Director constructor.</summary>
-		Director( uint sprites_capacity, uint draw_helpers_capacity, Sce.Pss.Core.Graphics.GraphicsContext context )
+		Director( uint sprites_capacity, uint draw_helpers_capacity, Sce.PlayStation.Core.Graphics.GraphicsContext context )
 		{
 			m_paused = false;
 			m_frame_timer = new Timer();
@@ -348,7 +348,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 		void internal_step( float dt )
 		{
 //			#if DEBUG
-			if ( ( ( this.DebugFlags & Sce.Pss.HighLevel.GameEngine2D.DebugFlags.Navigate ) != 0 )
+			if ( ( ( this.DebugFlags & Sce.PlayStation.HighLevel.GameEngine2D.DebugFlags.Navigate ) != 0 )
 				 && ( CurrentScene != null ) )
 			{
 				bool zoom = Input2.GamePad0.Triangle.Down; // zoom = A key on PC
@@ -469,7 +469,7 @@ namespace Sce.Pss.HighLevel.GameEngine2D
 
 			for ( ; ; )
 			{
-				Sce.Pss.Core.Environment.SystemEvents.CheckEvents();
+				Sce.PlayStation.Core.Environment.SystemEvents.CheckEvents();
 
 				Update();
 				Render();

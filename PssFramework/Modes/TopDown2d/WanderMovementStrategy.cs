@@ -1,7 +1,7 @@
 using System;
-using Sce.Pss.Core;
-using Sce.Pss.HighLevel.GameEngine2D.Base;
-using PssMath = Sce.Pss.HighLevel.GameEngine2D.Base.Math;
+using Sce.PlayStation.Core;
+using Sce.PlayStation.HighLevel.GameEngine2D.Base;
+using PssMath = Sce.PlayStation.HighLevel.GameEngine2D.Base.Math;
 
 namespace PsmFramework.Modes.TopDown2d
 {
