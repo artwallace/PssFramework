@@ -262,7 +262,9 @@ namespace PsmFramework.Engines.DrawEngine2d
 		private void CleanupTexture2dManager()
 		{
 			//Textures
-			foreach(Texture2dPlus t in Textures.Values)
+			Texture2dPlus[] cleanup = new Texture2dPlus[Textures.Values.Count];
+			Textures.Values.CopyTo(cleanup, 0);
+			foreach(Texture2dPlus t in cleanup)
 				t.Dispose();
 			Textures.Clear();
 			Textures = null;
@@ -365,6 +367,11 @@ namespace PsmFramework.Engines.DrawEngine2d
 			
 			//Let the cache policy decide what to do.
 			ApplyTexture2dPlusCachePolicyForRemovalOfUser(key);
+		}
+		
+		public void SetOpenGlTexture(String key, Int32 index = 0)
+		{
+			GraphicsContext.SetTexture(index, Textures[key]);
 		}
 		
 		#endregion
@@ -486,6 +493,14 @@ namespace PsmFramework.Engines.DrawEngine2d
 			
 			//Let the cache policy decide what to do.
 			ApplyTiledTextureCachePolicyForRemovalOfUser(key);
+		}
+		
+		public TiledTexture GetTiledTexture(String key)
+		{
+			if(String.IsNullOrWhiteSpace(key))
+				throw new ArgumentNullException();
+			
+			return TiledTextures[key];
 		}
 		
 		#endregion
@@ -699,16 +714,13 @@ namespace PsmFramework.Engines.DrawEngine2d
 		
 		private void InitializeDebugFont()
 		{
-			DebugFont = new DebugFont();
+			DebugFont.CreateFont(this);
 		}
 		
 		private void CleanupDebugFont()
 		{
-			DebugFont.Dispose();
-			DebugFont = null;
+			DebugFont.RemoveFont(this);
 		}
-		
-		internal DebugFont DebugFont { get; private set; }
 		
 		#endregion
 		

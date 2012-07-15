@@ -148,6 +148,18 @@ namespace PsmFramework.Engines.DrawEngine2d.Textures
 		
 		#region GetTextureCoordinates
 		
+		public Single[] GetTextureCoordinates(TiledTextureIndex index)
+		{
+			switch(index.Type)
+			{
+				case TiledTextureIndexType.Column:
+					return ColumnIndex[index.Column].CoordinateArray;
+					
+				default:
+					throw new InvalidOperationException("Unknown index type.");
+			}
+		}
+		
 		public Single[] GetTextureCoordinates(TiledTextureIndex index, out Int32 width, out Int32 height)
 		{
 			switch(index.Type)
@@ -155,7 +167,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Textures
 				case TiledTextureIndexType.Column:
 					width = ColumnIndex[index.Column].Width;
 					height = ColumnIndex[index.Column].Height;
-					return ColumnIndex[index.Column].CoordinateArray;
+					return GetTextureCoordinates(index);
 					
 				default:
 					throw new InvalidOperationException("Unknown index type.");

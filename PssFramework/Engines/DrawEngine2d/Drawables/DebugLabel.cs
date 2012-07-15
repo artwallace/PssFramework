@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using PsmFramework.Engines.DrawEngine2d.Shaders;
 using PsmFramework.Engines.DrawEngine2d.Support;
+using PsmFramework.Engines.DrawEngine2d.Textures;
 using Sce.PlayStation.Core;
 using Sce.PlayStation.Core.Graphics;
 
@@ -100,15 +101,20 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 			//Set up the drawing
 			
 			//TODO: These need to be changed as little as possible, as seen in GOSLlib.
-			DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
 			DrawEngine2d.GraphicsContext.SetShaderProgram(Shader.ShaderProgram);
-			
-			DrawEngine2d.GraphicsContext.SetTexture(0, DrawEngine2d.DebugFont.Texture);
+			DrawEngine2d.SetOpenGlTexture(DebugFont.TextureKey);
 			
 			GenerateCachedRendering();
 			
 			foreach(RenderingCacheData cacheData in CachedRendering)
 			{
+				TiledTexture tt = DrawEngine2d.GetTiledTexture(DebugFont.TextureKey);
+				TiledTextureIndex index = DebugFont.GetCharTileIndex(cacheData.CharCode);
+				Single[] textureCoordinates = tt.GetTextureCoordinates(index);
+				
+				VertexBuffer.SetVertices(1, textureCoordinates);
+				DrawEngine2d.GraphicsContext.SetVertexBuffer(0, VertexBuffer);
+				
 				Matrix4 scaleMatrix = GetScalingMatrix(1.0f);
 				Matrix4 rotMatrix = GetRotationMatrix(1.0f);
 				Matrix4 transMatrix = GetTranslationMatrix(cacheData.Position.X, cacheData.Position.Y, 1.0f, 1.0f);
@@ -195,7 +201,7 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		private struct RenderingCacheData
 		{
 			public Coordinate2 Position;
-			public Int32 CharCode;
+			public Char CharCode;
 		}
 		
 		#endregion
@@ -367,12 +373,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		private void InitializeTextureCoordinates()
 		{
 			TextureCoordinates = new Single[4 * 2];
-			
-			//TODO: these are temporary, for testing.
-			TextureCoordinates_0_TopLeft = new Coordinate2(0.0f, 0.0f);
-			TextureCoordinates_1_BottomLeft = new Coordinate2(0.0f, 1.0f);
-			TextureCoordinates_2_TopRight = new Coordinate2(1.0f, 0.0f);
-			TextureCoordinates_3_BottomRight = new Coordinate2(1.0f, 1.0f);
 		}
 		
 		private void CleanupTextureCoordinates()
@@ -381,58 +381,6 @@ namespace PsmFramework.Engines.DrawEngine2d.Drawables
 		}
 		
 		private Single[] TextureCoordinates;
-		
-		private Coordinate2 TextureCoordinates_0_TopLeft
-		{
-			get
-			{
-				return new Coordinate2(TextureCoordinates[0], TextureCoordinates[1]);
-			}
-			set
-			{
-				TextureCoordinates[0] = value.X;
-				TextureCoordinates[1] = value.Y;
-			}
-		}
-		
-		private Coordinate2 TextureCoordinates_1_BottomLeft
-		{
-			get
-			{
-				return new Coordinate2(TextureCoordinates[2], TextureCoordinates[3]);
-			}
-			set
-			{
-				TextureCoordinates[2] = value.X;
-				TextureCoordinates[3] = value.Y;
-			}
-		}
-		
-		private Coordinate2 TextureCoordinates_2_TopRight
-		{
-			get
-			{
-				return new Coordinate2(TextureCoordinates[4], TextureCoordinates[5]);
-			}
-			set
-			{
-				TextureCoordinates[4] = value.X;
-				TextureCoordinates[5] = value.Y;
-			}
-		}
-		
-		private Coordinate2 TextureCoordinates_3_BottomRight
-		{
-			get
-			{
-				return new Coordinate2(TextureCoordinates[6], TextureCoordinates[7]);
-			}
-			set
-			{
-				TextureCoordinates[6] = value.X;
-				TextureCoordinates[7] = value.Y;
-			}
-		}
 		
 		#endregion
 		
